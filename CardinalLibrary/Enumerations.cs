@@ -31,4 +31,9 @@ namespace CardinalLibrary
         Available = 4,
         Blocked = 5
     };
+    public enum UserNotificationType
+    {
+        General = 0,
+        FriendRequest = 1
+    }
 }

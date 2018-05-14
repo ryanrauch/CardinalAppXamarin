@@ -7,6 +7,8 @@ namespace CardinalAppXamarin.Services.Interfaces
     public interface INavigationService
     {
         void Initialize();
+        void NavigateToMain();
+        void NavigateToLogin();
         Task NavigatePopAsync();
         Task NavigatePushAsync<T>(T page) where T : ViewPageBase<ViewModelBase>;
     }

@@ -11,23 +11,71 @@ namespace CardinalAppXamarin.ViewModels
     {
         private readonly IRequestService _requestService;
         private readonly ILocalCredentialService _localCredentialService;
+        private readonly IAppVersionService _appVersionService;
+        private readonly INavigationService _navigationService;
 
         public InitialViewModel(
             IRequestService requestService,
-            ILocalCredentialService localCredentialService)
+            ILocalCredentialService localCredentialService,
+            IAppVersionService appVersionService,
+            INavigationService navigationService)
         {
             _requestService = requestService;
             _localCredentialService = localCredentialService;
-            //InitializeAsync();
+            _appVersionService = appVersionService;
+            _navigationService = navigationService;
+        }
+
+        private string _message { get; set; }
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                RaisePropertyChanged(() => Message);
+            }
         }
 
         public override async Task OnAppearing()
         {
             await base.OnAppearing();
+            Message = "Checking Stored Credentials";
+            string username = _localCredentialService.UserName;
+            string password = _localCredentialService.Password;
+            if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+            {
+                var result = await _requestService.PostAuthenticationRequestAsync(username, password, true);
+                if (result)
+                {
+                    Message = "Checking Application Version";
+                    var checkVersion = await CheckAppVersion();
+                    if (checkVersion)
+                    {
+                        _navigationService.NavigateToMain();
+                    }
+                    else
+                    {
+                        Message = String.Format("Application Version {0} is out of date. Please update to the newest version.",
+                                                _appVersionService.Version);
+                    }
+                }
+                else
+                {
+                    Message = "Stored Credentials Failed.";
+                    _navigationService.NavigateToLogin();
+                }
+            }
+            else
+            {
+                _navigationService.NavigateToLogin();
+            }
         }
-        public override async Task OnDisappearing()
+        public async Task<bool> CheckAppVersion()
         {
-            await base.OnDisappearing();
+            string version = _appVersionService.Version;
+
+            return true;
         }
     }
 }

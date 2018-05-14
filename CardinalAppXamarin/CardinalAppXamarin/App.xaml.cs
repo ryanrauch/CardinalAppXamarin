@@ -18,11 +18,11 @@ namespace CardinalAppXamarin
 		{
 			InitializeComponent();
             Container = AutoFacContainerBuilder.CreateContainer();
-            MainPage = new NavigationPage(new MainMapView());
-			//MainPage = new CardinalAppXamarin.MainPage();
-		}
+            MainPage = new NavigationPage(new InitialView());
+            //MainPage = new NavigationPage(new MainMapView());
+        }
 
-		protected override void OnStart ()
+        protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
