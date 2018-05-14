@@ -17,9 +17,11 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
 
             containerBuilder.RegisterType<HexagonalEquilateralScale>().As<IHexagonal>();
+
+            containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
             containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
-            containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>();
-            
+            containerBuilder.RegisterType<HeatGradientService>().As<IHeatGradientService>().SingleInstance();
+
             //IAppVersionService appVersionService = DependencyService.Get<IAppVersionService>();
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();
 
