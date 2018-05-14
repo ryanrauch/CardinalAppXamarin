@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CardinalAppXamarin.Services.Interfaces;
+using CardinalAppXamarin.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace CardinalAppXamarin
 		{
 			InitializeComponent();
             Container = AutoFacContainerBuilder.CreateContainer();
-			MainPage = new CardinalAppXamarin.MainPage();
+            MainPage = new NavigationPage(new MainMapView());
+			//MainPage = new CardinalAppXamarin.MainPage();
 		}
 
 		protected override void OnStart ()

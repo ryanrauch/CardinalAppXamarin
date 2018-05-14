@@ -22,6 +22,26 @@ namespace CardinalAppXamarin.Views.Base
                 _viewModel = App.Container.Resolve<T>();
             }
             BindingContext = _viewModel;
+            AttachEventHandlers();
+        }
+
+        private void AttachEventHandlers()
+        {
+            Appearing += (sender, e) =>
+            {
+                if (BindingContext is ViewModelBase viewModelBase)
+                {
+                    viewModelBase.OnAppearing();
+                }
+            };
+
+            Disappearing += (sender, e) =>
+            {
+                if (BindingContext is ViewModelBase viewModelBase)
+                {
+                    viewModelBase.OnDisappearing();
+                }
+            };
         }
     }
 }

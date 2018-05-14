@@ -9,13 +9,17 @@ namespace CardinalAppXamarin.ViewModels
     public class MainMapViewModel : ViewModelBase
     {
         private readonly IHexagonal _hexagonal;
+        private readonly IHeatGradientService _heatGradientService;
 
-        public String Header { get; set; }
-
-        public MainMapViewModel(IHexagonal hexagonal)
+        public MainMapViewModel(
+            IHexagonal hexagonal,
+            IHeatGradientService heatGradientService)
         {
             _hexagonal = hexagonal;
+            _heatGradientService = heatGradientService;
             Header = "test";
         }
+
+        public String Header { get; set; }
     }
 }
