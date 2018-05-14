@@ -22,6 +22,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
             containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
             containerBuilder.RegisterType<HeatGradientService>().As<IHeatGradientService>().SingleInstance();
+            containerBuilder.RegisterType<ValidateVersionService>().As<IValidateVersionService>().SingleInstance();
 
             //IAppVersionService appVersionService = DependencyService.Get<IAppVersionService>();
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();

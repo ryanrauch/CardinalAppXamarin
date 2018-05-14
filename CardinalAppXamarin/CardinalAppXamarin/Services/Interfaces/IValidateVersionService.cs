@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace CardinalAppXamarin.Services.Interfaces
 {
-    public interface IAppVersionService
+    public interface IValidateVersionService
     {
-        String Version { get; }
+        Task<bool> ValidateVersionNumber(string app);
     }
 }
