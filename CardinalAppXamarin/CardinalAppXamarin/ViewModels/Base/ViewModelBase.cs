@@ -18,22 +18,6 @@ namespace CardinalAppXamarin.ViewModels.Base
 
         public ViewModelBase() { }
 
-        public virtual Task InitializeAsync(object navigationData)
-        {
-            return Task.FromResult(false);
-        }
-
-        public virtual Task OnAppearing()
-        {
-            return Task.FromResult(false);
-        }
-        public virtual Task OnDisappearing()
-        {
-            return Task.FromResult(false);
-        }
-        //public virtual Task OnLayoutChanged()
-        //{
-        //    return Task.FromResult(false);
-        //}
+        public abstract Task OnAppearingAsync();
     }
 }

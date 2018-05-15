@@ -23,7 +23,7 @@
 	<key>MinimumOSVersion</key>
 	<string>11.2</string>
 	<key>CFBundleDisplayName</key>
-	<string>CardinalAppXamarin</string>
+	<string>Cardinal</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.ryanrauch.cardinal</string>
 	<key>CFBundleVersion</key>

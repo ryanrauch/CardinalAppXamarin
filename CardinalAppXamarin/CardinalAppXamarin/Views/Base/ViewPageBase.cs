@@ -3,6 +3,7 @@ using CardinalAppXamarin.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CardinalAppXamarin.Views.Base
@@ -25,23 +26,28 @@ namespace CardinalAppXamarin.Views.Base
             AttachEventHandlers();
         }
 
+        //public async Task InitializeViewModelAsync()
+        //{
+        //    await (BindingContext as ViewModelBase).InitializeAsync();
+        //}
+
         private void AttachEventHandlers()
         {
-            Appearing += (sender, e) =>
+            Appearing += async (sender, e) =>
             {
                 if (BindingContext is ViewModelBase viewModelBase)
                 {
-                    viewModelBase.OnAppearing();
+                    await viewModelBase.OnAppearingAsync();
                 }
             };
 
-            Disappearing += (sender, e) =>
-            {
-                if (BindingContext is ViewModelBase viewModelBase)
-                {
-                    viewModelBase.OnDisappearing();
-                }
-            };
+            //Disappearing += (sender, e) =>
+            //{
+            //    if (BindingContext is ViewModelBase viewModelBase)
+            //    {
+            //        viewModelBase.OnDisappearing();
+            //    }
+            //};
         }
     }
 }

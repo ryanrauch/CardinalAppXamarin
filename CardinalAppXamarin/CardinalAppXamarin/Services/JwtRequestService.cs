@@ -27,7 +27,8 @@ namespace CardinalAppXamarin.Services
             _serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                //DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore
             };
             _serializerSettings.Converters.Add(new StringEnumConverter());
@@ -40,14 +41,13 @@ namespace CardinalAppXamarin.Services
 
         public async Task<Boolean> PostAuthenticationRequestAsync(string username, string password, bool persistent)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { "username", username },
-                { "password", password },
-                { "persistent", persistent.ToString() }
-            };
+            var parameters = new List<KeyValuePair<string, string>>();
+            parameters.Add(new KeyValuePair<string, string>("username", username));
+            parameters.Add(new KeyValuePair<string, string>("password", password));
+            parameters.Add(new KeyValuePair<string, string>("persistent", persistent.ToString()));
+
             var content = new FormUrlEncodedContent(parameters);
-            HttpResponseMessage response = await _client.PostAsync(_endPoint + "api/token", content);
+            HttpResponseMessage response = await _client.PostAsync(_endPoint + "api/Token", content);
             if (response.IsSuccessStatusCode)
             {
                 string token = await response.Content.ReadAsStringAsync();
@@ -60,7 +60,8 @@ namespace CardinalAppXamarin.Services
 
         public void SetJsonWebToken(String jsonWebToken)
         {
-            _jwt = jsonWebToken;
+            var trim = new char[] { '\"' };
+            _jwt = jsonWebToken.TrimStart(trim).TrimEnd(trim);
         }
 
         private void CheckInitialization()

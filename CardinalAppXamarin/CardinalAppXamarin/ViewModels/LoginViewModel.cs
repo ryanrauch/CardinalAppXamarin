@@ -100,5 +100,10 @@ namespace CardinalAppXamarin.ViewModels
         {
             return _password.Validate();
         }
+
+        public override Task OnAppearingAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

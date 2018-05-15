@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -52,7 +53,14 @@ namespace CardinalAppXamarin.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                Xamarin.Forms.Forms.Init(e);
+                // Should add UWP side assembly to rendererAssemblies
+                var rendererAssemblies = new[]
+                {
+                    typeof(Xamarin.Forms.GoogleMaps.UWP.MapRenderer).GetTypeInfo().Assembly
+                };
+                Xamarin.Forms.Forms.Init(e, rendererAssemblies);
+
+                Xamarin.FormsGoogleMaps.Init(Constants.BingMapsKey);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

@@ -7,9 +7,11 @@ namespace CardinalAppXamarin
     public class Constants
     {
         public static readonly string GoogleMapsSDKapiKeyiOS = "AIzaSyBVM-_pcDOXiS7g158niAorV0bBZ0Dp_-U"; // 2018-04-15 ... use this one
+        public static readonly string BingMapsKey = "AiHqrvxNx-gWXT1nvahipvOtOSh-kgUbCgVdEQ8i7Qo9m5tMCTORaILwkEey1d1-";
         //public static readonly string ApproxiMATEwebApiBase = "https://approximatewebapi.azurewebsites.net/";
         //public static readonly string ApproxiMATEwebApiBase = "https://10.11.23.107:44376/api/";
-        public static readonly string CardinalWebApiBase = "https://10.11.23.107:44323/";
+        //public static readonly string CardinalWebApiBase = "https://ryan-laptop-sur/";
+        public static readonly string CardinalWebApiBase = "https://cardinalwebapplication.azurewebsites.net/";
         public static readonly string ApplicationName = "com.ryanrauch.cardinal";
         public static readonly string AccountStorePasswordKey = "Password";
         public static readonly char BoundingBoxDelim = 'x';

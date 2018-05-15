@@ -2,16 +2,17 @@
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
-             xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
+             xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.MainMapView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding Path=Header}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <controls:CustomGoogleMap VerticalOptions="FillAndExpand"
-                                      HorizontalOptions="FillAndExpand"
-                                      HasZoomEnabled="True"/>
+            <googleMaps:Map VerticalOptions="FillAndExpand">
+                <googleMaps:Map.Behaviors>
+                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
+                    <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
+                </googleMaps:Map.Behaviors>
+            </googleMaps:Map>
         </StackLayout>
     </ContentPage.Content>
 </local:MainMapViewBase>

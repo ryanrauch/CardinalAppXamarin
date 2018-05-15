@@ -37,9 +37,8 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public override async Task OnAppearing()
+        public override async Task OnAppearingAsync()
         {
-            await base.OnAppearing();
             Message = "Checking Stored Credentials";
             string username = _localCredentialService.UserName;
             string password = _localCredentialService.Password;
@@ -71,6 +70,7 @@ namespace CardinalAppXamarin.ViewModels
                 _navigationService.NavigateToLogin();
             }
         }
+
         public async Task<bool> CheckAppVersion()
         {
             string version = _appVersionService.Version;

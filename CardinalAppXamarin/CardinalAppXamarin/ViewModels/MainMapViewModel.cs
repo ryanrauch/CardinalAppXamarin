@@ -4,8 +4,10 @@ using CardinalLibrary.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
 namespace CardinalAppXamarin.ViewModels
@@ -24,12 +26,12 @@ namespace CardinalAppXamarin.ViewModels
             _requestService = requestService;
             _hexagonal = hexagonal;
             _heatGradientService = heatGradientService;
-            Header = "test";
+            //Header = "test";
         }
 
-        public String Header { get; set; }
+        //public String Header { get; set; }
 
-        private ObservableCollection<Polygon> _polygons { get; set; }
+        private ObservableCollection<Polygon> _polygons { get; set; } = new ObservableCollection<Polygon>();
         public ObservableCollection<Polygon> Polygons
         {
             get { return _polygons; }
@@ -39,20 +41,34 @@ namespace CardinalAppXamarin.ViewModels
                 RaisePropertyChanged(() => Polygons);
             }
         }
+        public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(
+            args =>
+            {
+                var position = args.Point;
+                var polygon = new Polygon();
+                polygon.Positions.Add(position);
+                polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
+                polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
+                polygon.Positions.Add(position);
 
-        private IList<CurrentLayerContract> _currentLayerContracts { get; set; }
-        private IList<UserInfoContract> _userInfoContracts { get; set; }
+                polygon.IsClickable = true;
+                polygon.StrokeColor = Color.Green;
+                polygon.StrokeWidth = 3f;
+                polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
+                polygon.Tag = "POLYGON"; // Can set any object
 
-        public override async Task OnAppearing()
+                Polygons.Add(polygon);
+            });
+
+        private List<CurrentLayerContract> _currentLayerContracts { get; set; }
+        private List<UserInfoContract> _userInfoContracts { get; set; }
+
+        public override async Task OnAppearingAsync()
         {
-            await base.OnAppearing();
-            await RefreshData();
-        }
-
-        public async Task RefreshData()
-        {
-            _currentLayerContracts = await _requestService.GetAsync<List<CurrentLayerContract>>("api/UserLocation");
-            _userInfoContracts = await _requestService.GetAsync<List<UserInfoContract>>("api/UserInfo");
+            var layers = await _requestService.GetAsync<List<CurrentLayerContract>>("api/UserLocation");
+            var info = await _requestService.GetAsync<List<UserInfoContract>>("api/UserInfo");
+            _currentLayerContracts = layers.ToList();
+            _userInfoContracts = info.ToList();
         }
     }
 }

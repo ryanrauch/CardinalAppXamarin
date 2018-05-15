@@ -14,13 +14,17 @@ namespace CardinalAppXamarin
         public static IContainer CreateContainer()
         {
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterType<InitialViewModel>().SingleInstance();
+            containerBuilder.RegisterType<LoginViewModel>().SingleInstance();
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
 
             containerBuilder.RegisterType<HexagonalEquilateralScale>().As<IHexagonal>();
 
             containerBuilder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
-            containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
+            //containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
+            containerBuilder.RegisterInstance(new XamarinAuthLocalCredentialService()).AsImplementedInterfaces().SingleInstance();
+            //containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
+            containerBuilder.RegisterInstance(new JwtRequestService()).AsImplementedInterfaces().SingleInstance();
             containerBuilder.RegisterType<HeatGradientService>().As<IHeatGradientService>().SingleInstance();
             containerBuilder.RegisterType<ValidateVersionService>().As<IValidateVersionService>().SingleInstance();
 
