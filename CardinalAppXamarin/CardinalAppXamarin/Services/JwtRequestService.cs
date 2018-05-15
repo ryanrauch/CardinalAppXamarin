@@ -35,7 +35,7 @@ namespace CardinalAppXamarin.Services
             {
                 MaxResponseContentBufferSize = 256000
             };
-            _endPoint = Constants.ApproxiMATEwebApiBase;
+            _endPoint = Constants.CardinalWebApiBase;
         }
 
         public async Task<Boolean> PostAuthenticationRequestAsync(string username, string password, bool persistent)

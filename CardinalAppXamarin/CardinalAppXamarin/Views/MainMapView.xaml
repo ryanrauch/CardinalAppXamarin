@@ -2,12 +2,16 @@
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
              x:Class="CardinalAppXamarin.Views.MainMapView">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Path=Header}"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <controls:CustomGoogleMap VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand"
+                                      HasZoomEnabled="True"/>
         </StackLayout>
     </ContentPage.Content>
 </local:MainMapViewBase>
