@@ -86,8 +86,6 @@ namespace CardinalAppXamarin.ViewModels
                 MapSpan.FromCenterAndRadius(
                     currentPosition,
                     Distance.FromKilometers(2)));
-            //_hexagonal.SetLayer(_hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers));
-            //_hexagonal.SetCenter(currentPosition);
             int layer = _hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers);
             _hexagonal.Initialize(currentPosition.Latitude, currentPosition.Longitude, layer);
             var centeredPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
