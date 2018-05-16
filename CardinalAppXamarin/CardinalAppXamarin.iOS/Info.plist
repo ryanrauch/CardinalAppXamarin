@@ -49,18 +49,18 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
-	<string>CardinalAppXamarin</string>
+	<string>Cardinal</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
 	</array>
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string>This app needs access to location when open.</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>This app needs access to location when in the background.</string>
-  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-  <string>This app needs access to location when open and in the background.</string>
-  <key>NSCalendarsUsageDescription</key>
-  <string>Needs Calendar Permission</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Needs Calendar Permission</string>
 </dict>
 </plist>
