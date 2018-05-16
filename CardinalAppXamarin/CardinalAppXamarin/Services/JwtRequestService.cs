@@ -27,7 +27,7 @@ namespace CardinalAppXamarin.Services
             _serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                //DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore
             };

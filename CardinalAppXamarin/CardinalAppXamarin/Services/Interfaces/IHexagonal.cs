@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms.GoogleMaps;
 
 namespace CardinalAppXamarin.Services.Interfaces
@@ -15,5 +14,9 @@ namespace CardinalAppXamarin.Services.Interfaces
         void SetCenter(Position center);
         void SetLayer(int layer);
         void Initialize(double latitude, double longitude, int layer);
+        String AllLayersDelimited();
+        int CalculateLayerFromCameraPositionZoom(double zoom);
+        int CalculateLayerFromMapSpan(double radiusKilometers);
+        Polygon PolygonFromDelimited(String delimited);
     }
 }

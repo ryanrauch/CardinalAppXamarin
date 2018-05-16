@@ -21,12 +21,15 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<HexagonalEquilateralScale>().As<IHexagonal>();
 
             containerBuilder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            //containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
-            containerBuilder.RegisterInstance(new XamarinAuthLocalCredentialService()).AsImplementedInterfaces().SingleInstance();
-            //containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
-            containerBuilder.RegisterInstance(new JwtRequestService()).AsImplementedInterfaces().SingleInstance();
+            containerBuilder.RegisterType<XamarinAuthLocalCredentialService>().As<ILocalCredentialService>().SingleInstance();
+            //containerBuilder.RegisterInstance(new XamarinAuthLocalCredentialService()).AsImplementedInterfaces().SingleInstance();
+            containerBuilder.RegisterType<JwtRequestService>().As<IRequestService>().SingleInstance();
+            //containerBuilder.RegisterInstance(new JwtRequestService()).AsImplementedInterfaces().SingleInstance();
             containerBuilder.RegisterType<HeatGradientService>().As<IHeatGradientService>().SingleInstance();
             containerBuilder.RegisterType<ValidateVersionService>().As<IValidateVersionService>().SingleInstance();
+            containerBuilder.RegisterType<PermissionService>().As<IPermissionService>().SingleInstance();
+            containerBuilder.RegisterType<CrossGeolocatorService>().As<IGeolocatorService>().SingleInstance();
+            containerBuilder.RegisterType<LayerService>().As<ILayerService>().SingleInstance();
 
             //IAppVersionService appVersionService = DependencyService.Get<IAppVersionService>();
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();

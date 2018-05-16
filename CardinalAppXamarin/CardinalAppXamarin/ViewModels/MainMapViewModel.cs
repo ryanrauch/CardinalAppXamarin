@@ -9,27 +9,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
+using Xamarin.Forms.GoogleMaps.Bindings;
 
 namespace CardinalAppXamarin.ViewModels
 {
     public class MainMapViewModel : ViewModelBase
     {
         private readonly IRequestService _requestService;
+        private readonly ILayerService _layerService;
+        private readonly IGeolocatorService _geolocatorService;
         private readonly IHexagonal _hexagonal;
         private readonly IHeatGradientService _heatGradientService;
 
         public MainMapViewModel(
             IRequestService requestService,
+            ILayerService layerService,
+            IGeolocatorService geolocatorService,
             IHexagonal hexagonal,
             IHeatGradientService heatGradientService)
         {
             _requestService = requestService;
+            _layerService = layerService;
+            _geolocatorService = geolocatorService;
             _hexagonal = hexagonal;
             _heatGradientService = heatGradientService;
-            //Header = "test";
         }
-
-        //public String Header { get; set; }
 
         private ObservableCollection<Polygon> _polygons { get; set; } = new ObservableCollection<Polygon>();
         public ObservableCollection<Polygon> Polygons
@@ -60,15 +64,37 @@ namespace CardinalAppXamarin.ViewModels
                 Polygons.Add(polygon);
             });
 
-        private List<CurrentLayerContract> _currentLayerContracts { get; set; }
-        private List<UserInfoContract> _userInfoContracts { get; set; }
+        public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
 
+        private MapSpan _visibleRegion;
+        public MapSpan VisibleRegion
+        {
+            get { return _visibleRegion; }
+            set
+            {
+                _visibleRegion = value;
+                RaisePropertyChanged(() => VisibleRegion);
+            }
+        }
+
+        public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
         public override async Task OnAppearingAsync()
         {
-            var layers = await _requestService.GetAsync<List<CurrentLayerContract>>("api/UserLocation");
-            var info = await _requestService.GetAsync<List<UserInfoContract>>("api/UserInfo");
-            _currentLayerContracts = layers.ToList();
-            _userInfoContracts = info.ToList();
+            await _layerService.InitializeData();
+            var currentPosition = await _geolocatorService.GetCurrentPosition();
+            MoveRequest.MoveToRegion(
+                MapSpan.FromCenterAndRadius(
+                    currentPosition,
+                    Distance.FromKilometers(2)));
+            //_hexagonal.SetLayer(_hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers));
+            //_hexagonal.SetCenter(currentPosition);
+            int layer = _hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers);
+            _hexagonal.Initialize(currentPosition.Latitude, currentPosition.Longitude, layer);
+            var centeredPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
+            int usersInside = _layerService.NumberOfUsersInsidePolygonTag(centeredPoly.Tag.ToString());
+            centeredPoly.StrokeColor = _heatGradientService.SteppedColor(usersInside + 1);
+            centeredPoly.FillColor = _heatGradientService.SteppedColor(usersInside);
+            Polygons.Add(centeredPoly);
         }
     }
 }

@@ -11,6 +11,11 @@
                 <googleMaps:Map.Behaviors>
                     <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
                     <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
+                    
+                    <bindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>
+
+                    <bindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
+                    <bindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
         </StackLayout>
