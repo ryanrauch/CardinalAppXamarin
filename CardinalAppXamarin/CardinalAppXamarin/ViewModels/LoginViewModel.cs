@@ -1,6 +1,7 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.Validation;
 using CardinalAppXamarin.ViewModels.Base;
+using CardinalAppXamarin.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,13 +15,19 @@ namespace CardinalAppXamarin.ViewModels
     {
         private readonly IRequestService _requestService;
         private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
+        private readonly ILocalCredentialService _localCredentialService;
 
         public LoginViewModel(
             IRequestService requestService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IDialogService dialogService,
+            ILocalCredentialService localCredentialService)
         {
             _requestService = requestService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
+            _localCredentialService = localCredentialService;
             _userName = new ValidatableObject<string>();
             _password = new ValidatableObject<string>();
             AddValidations();
@@ -59,8 +66,37 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private bool _isValid;
+        public bool IsValid
+        {
+            get
+            {
+                return _isValid;
+            }
+            set
+            {
+                _isValid = value;
+                RaisePropertyChanged(() => IsValid);
+            }
+        }
+
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                _isEnabled = value;
+                RaisePropertyChanged(() => IsEnabled);
+            }
+        }
+
         public ICommand SignInCommand => new Command(async () => await SignInAsync());
-        public ICommand RegisterCommand => new Command(Register);
+        public ICommand RegisterCommand => new Command(async () => await Register());
+        public ICommand ValidateCommand => new Command(() => Enable());
 
         private async Task SignInAsync()
         {
@@ -70,14 +106,28 @@ namespace CardinalAppXamarin.ViewModels
                                                                                Persistent);
             if(result)
             {
-                //await _navigationService.NavigatePushAsync<MainMapViewBase>(new MainMapView());
+                if(Persistent)
+                {
+                    _localCredentialService.SaveCredentials(UserName.Value, Password.Value);
+                }
+                _navigationService.NavigateToMain();
+            }
+            else
+            {
+                await _dialogService.DisplayAlertAsync("Log-in Failed", "Invalid Username or Credentials", "OK");
             }
             IsBusy = false;
         }
 
-        private void Register()
+        private void Enable()
         {
-            //_openUrlService.OpenUrl(GlobalSetting.Instance.RegisterWebsite);
+            IsEnabled = !string.IsNullOrEmpty(UserName.Value) 
+                        && !string.IsNullOrEmpty(Password.Value);
+        }
+
+        private async Task Register()
+        {
+            await _navigationService.NavigatePushAsync(new RegisterView());
         }
 
         private void AddValidations()
@@ -103,7 +153,7 @@ namespace CardinalAppXamarin.ViewModels
 
         public override Task OnAppearingAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

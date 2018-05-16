@@ -46,6 +46,12 @@ namespace CardinalAppXamarin.Services
             if (avail)
             {
                 var geoPosition = await CrossGeolocator.Current.GetPositionAsync();
+
+                //TODO: remove this for actual release.
+                //      is changing the iOS simulator location from "Apple" to one close by
+                geoPosition.Latitude = 30.403;
+                geoPosition.Longitude = -97.73;
+
                 await _requestService.PostAsync("api/UserLocation", geoPosition.GeolocatorToDataContract());
                 return geoPosition.GeolocatorToGoogleMaps();
             }

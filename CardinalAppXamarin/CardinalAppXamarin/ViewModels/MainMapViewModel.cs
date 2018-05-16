@@ -88,11 +88,30 @@ namespace CardinalAppXamarin.ViewModels
                     Distance.FromKilometers(2)));
             int layer = _hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers);
             _hexagonal.Initialize(currentPosition.Latitude, currentPosition.Longitude, layer);
-            var centeredPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
-            int usersInside = _layerService.NumberOfUsersInsidePolygonTag(centeredPoly.Tag.ToString());
-            centeredPoly.StrokeColor = _heatGradientService.SteppedColor(usersInside + 1);
-            centeredPoly.FillColor = _heatGradientService.SteppedColor(usersInside);
-            Polygons.Add(centeredPoly);
+            for(int row = -5; row < 6; ++row)
+            {
+                for(int col = -5; col < 6; ++row)
+                {
+                    var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
+                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
+                    poly.FillColor = _heatGradientService.SteppedColor(heatCount);
+                    if (row == 0 && col == 0)
+                    {
+                        poly.StrokeColor = Color.Coral;
+                        poly.StrokeWidth = 5;
+                    }
+                    else
+                    {
+                        poly.StrokeColor = _heatGradientService.SteppedColor(heatCount + 1);
+                        poly.StrokeWidth = 1;
+                    }
+                }
+            }
+            //var centeredPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
+            //int usersInside = _layerService.NumberOfUsersInsidePolygonTag(centeredPoly.Tag.ToString());
+            //centeredPoly.StrokeColor = _heatGradientService.SteppedColor(usersInside + 1);
+            //centeredPoly.FillColor = _heatGradientService.SteppedColor(usersInside);
+            //Polygons.Add(centeredPoly);
         }
     }
 }

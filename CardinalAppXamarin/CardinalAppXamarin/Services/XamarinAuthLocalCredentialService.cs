@@ -32,6 +32,7 @@ namespace CardinalAppXamarin.Services
         {
             if (!String.IsNullOrWhiteSpace(userName) && !String.IsNullOrWhiteSpace(password))
             {
+                DeleteCredentials();
                 Account account = new Account
                 {
                     Username = userName

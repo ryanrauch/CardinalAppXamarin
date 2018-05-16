@@ -13,17 +13,20 @@ namespace CardinalAppXamarin.ViewModels
         private readonly ILocalCredentialService _localCredentialService;
         private readonly IAppVersionService _appVersionService;
         private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
 
         public InitialViewModel(
             IRequestService requestService,
             ILocalCredentialService localCredentialService,
             IAppVersionService appVersionService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IDialogService dialogService)
         {
             _requestService = requestService;
             _localCredentialService = localCredentialService;
             _appVersionService = appVersionService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
         }
 
         private string _message { get; set; }
@@ -48,15 +51,14 @@ namespace CardinalAppXamarin.ViewModels
                 if (result)
                 {
                     Message = "Checking Application Version";
-                    var checkVersion = await CheckAppVersion();
+                    var checkVersion = CheckAppVersion();
                     if (checkVersion)
                     {
                         _navigationService.NavigateToMain();
                     }
                     else
                     {
-                        Message = String.Format("Application Version {0} is out of date. Please update to the newest version.",
-                                                _appVersionService.Version);
+                        await _dialogService.DisplayAlertAsync(String.Format("Application Version {0} is out of date.", _appVersionService.Version), "Please update to the newest version.", "OK");
                     }
                 }
                 else
@@ -71,7 +73,7 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public async Task<bool> CheckAppVersion()
+        public bool CheckAppVersion()
         {
             string version = _appVersionService.Version;
 

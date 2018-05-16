@@ -20,7 +20,6 @@ namespace CardinalAppXamarin.Services
         public void Initialize()
         {
             CurrentApplication.MainPage = new NavigationPage(new InitialView());
-            //CurrentApplication.MainPage = new NavigationPage(new MainMapView());
         }
 
         public void NavigateToMain()
@@ -31,7 +30,7 @@ namespace CardinalAppXamarin.Services
         {
             CurrentApplication.MainPage = new NavigationPage(new LoginView());
         }
-        public async Task NavigatePushAsync<T>(T page) where T : ViewPageBase<ViewModelBase>
+        public async Task NavigatePushAsync<T>(T page) where T : Page
         {
             await CurrentApplication.MainPage.Navigation.PushAsync(page);
         }

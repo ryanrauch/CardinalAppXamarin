@@ -17,6 +17,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<InitialViewModel>().SingleInstance();
             containerBuilder.RegisterType<LoginViewModel>().SingleInstance();
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
+            containerBuilder.RegisterType<RegisterViewModel>().SingleInstance();
 
             containerBuilder.RegisterType<HexagonalEquilateralScale>().As<IHexagonal>();
 
@@ -30,6 +31,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<PermissionService>().As<IPermissionService>().SingleInstance();
             containerBuilder.RegisterType<CrossGeolocatorService>().As<IGeolocatorService>().SingleInstance();
             containerBuilder.RegisterType<LayerService>().As<ILayerService>().SingleInstance();
+            containerBuilder.RegisterType<DialogService>().As<IDialogService>().SingleInstance();
 
             //IAppVersionService appVersionService = DependencyService.Get<IAppVersionService>();
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();
