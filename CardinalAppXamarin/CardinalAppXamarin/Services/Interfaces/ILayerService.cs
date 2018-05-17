@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CardinalAppXamarin.Models;
+using CardinalAppXamarin.ViewModels;
 using CardinalLibrary.DataContracts;
 
 namespace CardinalAppXamarin.Services.Interfaces
@@ -14,6 +15,6 @@ namespace CardinalAppXamarin.Services.Interfaces
         string FindPolygonTagContainingUser(string userId, int layer);
         Task InitializeData();
         int NumberOfUsersInsidePolygonTag(string layerDelimited);
-        List<UserDisplayBrief> UsersInsidePolygonTagBrief(string layerDelimited);
+        List<UserInfoBriefViewCellModel> UsersInsidePolygonTagBrief(string layerDelimited);
     }
 }

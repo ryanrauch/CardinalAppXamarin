@@ -54,8 +54,8 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        private ObservableCollection<UserDisplayBrief> _selectedUsers { get; set; } = new ObservableCollection<UserDisplayBrief>();
-        public ObservableCollection<UserDisplayBrief> SelectedUsers
+        private ObservableCollection<UserInfoBriefViewCellModel> _selectedUsers { get; set; } = new ObservableCollection<UserInfoBriefViewCellModel>();
+        public ObservableCollection<UserInfoBriefViewCellModel> SelectedUsers
         {
             get { return _selectedUsers; }
             set
@@ -197,7 +197,7 @@ namespace CardinalAppXamarin.ViewModels
             if(SelectedPolygon != null)
             {
                 var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.Tag.ToString());
-                SelectedUsers = new ObservableCollection<UserDisplayBrief>(friends);
+                SelectedUsers = new ObservableCollection<UserInfoBriefViewCellModel>(friends);
                 PolygonUsersVisible = SelectedUsers.Count > 0;
             }
             else
@@ -206,5 +206,29 @@ namespace CardinalAppXamarin.ViewModels
                 PolygonUsersVisible = false;
             }
         }
+
+        private void MapClicked(MapClickedEventArgs args)
+        {
+            var position = args.Point;
+            var polygon = new Polygon();
+            polygon.Positions.Add(position);
+            polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
+            polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
+            polygon.Positions.Add(position);
+
+            polygon.IsClickable = true;
+            polygon.StrokeColor = Color.Green;
+            polygon.StrokeWidth = 3f;
+            polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
+            polygon.Tag = "POLYGON"; // Can set any object
+        }
+
+        public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
+        //public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(
+        //    args =>
+        //    {
+
+        //        //Polygons.Add(polygon);
+        //    });
     }
 }

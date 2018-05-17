@@ -2,21 +2,16 @@
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
-             xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
+             xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
-             xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+             xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.MainMapView">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <conv:TimeStampToLastUpdatedStringConverter x:Key="TimestampToUpdated" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="4*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <googleMaps:Map Grid.Row="0"
                             Grid.RowSpan="3" 
@@ -25,37 +20,29 @@
                             MapStyle="{Binding CustomMapStyle}"
                             InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
                 <googleMaps:Map.Behaviors>
-                    <!--<bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>-->
-                    <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
-                    <!--<bindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>-->
-                    <bindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
-                    <bindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
+                    <googleMapsBindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
+                    <googleMapsBindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
+                    <googleMapsBindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
+                    <googleMapsBindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
-            <ScrollView Grid.Row="1"
-                        Opacity="0.8"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand"
-                        IsVisible="{Binding PolygonUsersVisible}">
-                <ListView ItemsSource="{Binding SelectedUsers}">
+            <Frame Grid.Row="1" 
+                   Margin="10,10" 
+                   HasShadow="True" 
+                   CornerRadius="10"
+                   Opacity="0.8"
+                   IsVisible="{Binding PolygonUsersVisible}">
+                <ListView ItemsSource="{Binding SelectedUsers}"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand"
+                          HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" 
-                                           Text="{Binding UserName}"/>
-                                    <Label Grid.Column="1" 
-                                           Text="{Binding LastUpdated, Mode=OneWay, Converter={StaticResource TimestampToUpdated}}"/>
-                                </Grid>
-                            </ViewCell>
+                            <viewCells:UserInfoBriefViewCell BindingContext ="{Binding}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </ScrollView>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </local:MainMapViewBase>

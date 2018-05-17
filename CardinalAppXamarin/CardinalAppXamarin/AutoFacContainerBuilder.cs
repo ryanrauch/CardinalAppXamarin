@@ -20,6 +20,8 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
             containerBuilder.RegisterType<RegisterViewModel>().SingleInstance();
 
+            containerBuilder.RegisterType<UserInfoBriefViewCellModel>();
+
             if(mock)
             {
                 containerBuilder.RegisterType<MockGeolocatorService>().As<IGeolocatorService>().SingleInstance();

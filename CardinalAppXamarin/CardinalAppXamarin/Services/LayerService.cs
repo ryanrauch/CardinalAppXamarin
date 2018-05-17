@@ -1,5 +1,6 @@
 ﻿using CardinalAppXamarin.Models;
 using CardinalAppXamarin.Services.Interfaces;
+using CardinalAppXamarin.ViewModels;
 using CardinalLibrary.DataContracts;
 using System;
 using System.Collections.Generic;
@@ -86,25 +87,25 @@ namespace CardinalAppXamarin.Services
                                                      .Count();
         }
 
-        public List<UserDisplayBrief> UsersInsidePolygonTagBrief(string layerDelimited)
+        public List<UserInfoBriefViewCellModel> UsersInsidePolygonTagBrief(string layerDelimited)
         {
-            List<UserDisplayBrief> udb = new List<UserDisplayBrief>();
-            foreach (CurrentLayerContract layer in _currentLayerContracts
-                                                  .Where(c => SplitLayersDelimited(c.LayersDelimited)
-                                                             .Contains(layerDelimited)))
-            {
-                UserInfoContract info = _userInfoContracts.FirstOrDefault(u => u.Id.Equals(layer.UserId));
-                if (info != null && !udb.Any(u => u.UserId.Equals(info.Id)))
-                {
-                    udb.Add(new UserDisplayBrief()
-                    {
-                        UserId = layer.UserId,
-                        DisplayName = info.UserName,
-                        LastUpdated = layer.TimeStamp
-                    });
-                }
-            }
-            return udb;
+            var models = from c in _currentLayerContracts
+                         join u in _userInfoContracts on c.UserId equals u.Id
+                         where SplitLayersDelimited(c.LayersDelimited).Contains(layerDelimited)
+                         select new UserInfoBriefViewCellModel(u, c);
+            return new List<UserInfoBriefViewCellModel>(models);
+            //var udb = new List<UserInfoBriefViewCellModel>();
+            //foreach (CurrentLayerContract layer in _currentLayerContracts
+            //                                      .Where(c => SplitLayersDelimited(c.LayersDelimited)
+            //                                                 .Contains(layerDelimited)))
+            //{
+            //    UserInfoContract info = _userInfoContracts.FirstOrDefault(u => u.Id.Equals(layer.UserId));
+            //    if (info != null && !udb.Any(u => u.UserId.Equals(info.Id)))
+            //    {
+            //        udb.Add(new UserInfoBriefViewCellModel(info,layer));
+            //    }
+            //}
+            //return udb;
         }
     }
 }
