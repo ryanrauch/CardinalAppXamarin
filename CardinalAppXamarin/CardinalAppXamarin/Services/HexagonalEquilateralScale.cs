@@ -1,6 +1,7 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms.GoogleMaps;
 
@@ -150,7 +151,17 @@ namespace CardinalAppXamarin.Services
 
         public int CalculateLayerFromMapSpan(double radiusKilometers)
         {
-            return 1;
+            if(radiusKilometers < 1)
+            {
+                return 1;
+            }
+            int layer = Convert.ToInt32(Math.Pow(3,Math.Floor(radiusKilometers/3)));
+            int layerMax = Layers.Max();
+            if(layer > layerMax)
+            {
+                layer = layerMax;
+            }
+            return layer;
         }
 
         public int CalculateLayerFromCameraPositionZoom(double zoom)

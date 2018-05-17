@@ -57,19 +57,20 @@ namespace CardinalAppXamarin.Services
             return delimited.Split(Constants.LayerDelimChar).ToList();
         }
 
-        public string FindPolygonTagContainingUser(string userId)
+        public async Task<string> FindPolygonTagContainingUser(string userId)
         {
-            return FindPolygonTagContainingUser(userId, _hexagonal.Layers[0]);
+            return await FindPolygonTagContainingUser(userId, _hexagonal.Layers[0]);
         }
 
-        public string FindPolygonTagContainingUser(string userId, int layer)
+        public async Task<string> FindPolygonTagContainingUser(string userId, int layer)
         {
             var current = _currentLayerContracts.FirstOrDefault(c => c.UserId.Equals(userId));
             if (current == null)
             {
                 return String.Empty;
             }
-            var tag = SplitLayersDelimited(current.LayersDelimited).FirstOrDefault(s => DelimitedBelongsToLayer(s, layer));
+            var tag = await Task.Run(() => SplitLayersDelimited(current.LayersDelimited)
+                                           .FirstOrDefault(s => DelimitedBelongsToLayer(s, layer)));
             if(tag == null)
             {
                 return String.Empty;
@@ -77,16 +78,19 @@ namespace CardinalAppXamarin.Services
             return tag;
         }
 
-        public int NumberOfUsersInsidePolygonTag(string layerDelimited)
+        public async Task<int> NumberOfUsersInsidePolygonTag(string layerDelimited)
         {
-            return _currentLayerContracts.Where(c => SplitLayersDelimited(c.LayersDelimited).Contains(layerDelimited)).Count();
+            return await Task.Run(() => _currentLayerContracts.Where(c => SplitLayersDelimited(c.LayersDelimited)
+                                                                          .Contains(layerDelimited))
+                                                              .Count());
         }
 
-        public IList<UserInfoContract> UsersInsidePolygonTag(string layerDelimited)
+        public async Task<IList<UserInfoContract>> UsersInsidePolygonTag(string layerDelimited)
         {
-            var users = from u in _userInfoContracts
-                        join c in _currentLayerContracts on u.Id equals c.UserId
-                        select u;
+            var users = await Task.Run(() => from u in _userInfoContracts
+                                             join c in _currentLayerContracts on u.Id equals c.UserId
+                                             where SplitLayersDelimited(c.LayersDelimited).Contains(layerDelimited)
+                                             select u);
             return users.ToList();
         }
     }

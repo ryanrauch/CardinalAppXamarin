@@ -9,6 +9,8 @@ namespace CardinalAppXamarin.Services.Mock
 {
     public class MockGeolocatorService : IGeolocatorService
     {
+        public Position LastRecordedPosition => new Position(30.3986877, -97.72359399999999);
+
         public async Task<Position> GetCurrentPosition()
         {
             await Task.Delay(10);

@@ -6,21 +6,53 @@
              xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.MainMapView">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding Message}"/>
-            <googleMaps:Map VerticalOptions="FillAndExpand"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <googleMaps:Map Grid.Row="0"
+                            Grid.RowSpan="3" 
+                            VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
-                            MapStyle="{Binding CustomMapStyle}">
+                            MapStyle="{Binding CustomMapStyle}"
+                            InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
                 <googleMaps:Map.Behaviors>
-                    <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
+                    <!--<bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>-->
                     <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
-                    
                     <bindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>
-
                     <bindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
                     <bindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
-        </StackLayout>
+            <!--<BoxView Grid.Row="1"
+                     BackgroundColor="Color.White" 
+                     Opacity="0.8"
+                     IsVisible="{Binding PolygonUsersVisible}"/>-->
+            <ScrollView Grid.Row="1"
+                        Opacity="0.8"
+                        IsVisible="{Binding PolygonUsersVisible}">
+                <ListView ItemsSource="{Binding SelectedUsers}"
+                          Opacity="0.8">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" 
+                                           Text="{Binding Path=UserName}"/>
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding Path=DateOfBirth}"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </local:MainMapViewBase>

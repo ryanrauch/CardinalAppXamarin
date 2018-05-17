@@ -13,6 +13,19 @@ namespace CardinalAppXamarin.Services
         private readonly IRequestService _requestService;
         private bool _alreadyCheckedPermissions;
 
+        private Position _lastRecordedPosition { get; set; }
+        public Position LastRecordedPosition
+        {
+            get
+            {
+                if(_lastRecordedPosition == null)
+                {
+                    _lastRecordedPosition = GetCurrentPosition().Result;
+                }
+                return _lastRecordedPosition;
+            }
+        }
+
         public CrossGeolocatorService(
             IPermissionService permissionService,
             IRequestService requestService)
@@ -48,7 +61,8 @@ namespace CardinalAppXamarin.Services
                 var geoPosition = await CrossGeolocator.Current.GetPositionAsync();
 
                 await _requestService.PostAsync("api/UserLocation", geoPosition.GeolocatorToDataContract());
-                return geoPosition.GeolocatorToGoogleMaps();
+                _lastRecordedPosition = geoPosition.GeolocatorToGoogleMaps();
+                return _lastRecordedPosition;
             }
             return new Position();
         }

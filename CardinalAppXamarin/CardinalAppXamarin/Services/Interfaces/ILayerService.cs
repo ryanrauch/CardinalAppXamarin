@@ -9,10 +9,10 @@ namespace CardinalAppXamarin.Services.Interfaces
     {
         DateTime LastUpdated { get; }
 
-        string FindPolygonTagContainingUser(string userId);
-        string FindPolygonTagContainingUser(string userId, int layer);
+        Task<string> FindPolygonTagContainingUser(string userId);
+        Task<string> FindPolygonTagContainingUser(string userId, int layer);
         Task InitializeData();
-        int NumberOfUsersInsidePolygonTag(string layerDelimited);
-        IList<UserInfoContract> UsersInsidePolygonTag(string layerDelimited);
+        Task<int> NumberOfUsersInsidePolygonTag(string layerDelimited);
+        Task<IList<UserInfoContract>> UsersInsidePolygonTag(string layerDelimited);
     }
 }
