@@ -1,4 +1,5 @@
-﻿using CardinalAppXamarin.Services.Interfaces;
+﻿/*
+using CardinalAppXamarin.Services.Interfaces;
 using System;
 using System.Linq;
 using Xamarin.Auth;
@@ -56,3 +57,4 @@ namespace CardinalAppXamarin.Services
         }
     }
 }
+*/

@@ -12,13 +12,16 @@ namespace CardinalAppXamarin.Services
     {
         private readonly IRequestService _requestService;
         private readonly IHexagonal _hexagonal;
+        private readonly IMockDataUpdateService _mockDataUpdateService;
 
         public LayerService(
             IRequestService requestService,
-            IHexagonal hexagonal)
+            IHexagonal hexagonal,
+            IMockDataUpdateService mockDataUpdateService)
         {
             _requestService = requestService;
             _hexagonal = hexagonal;
+            _mockDataUpdateService = mockDataUpdateService;
             _lastUpdated = DateTime.MinValue;
         }
 
@@ -30,6 +33,7 @@ namespace CardinalAppXamarin.Services
 
         public async Task InitializeData()
         {
+            await _mockDataUpdateService.InitializeMockData();
             _currentLayerContracts = await _requestService.GetAsync<List<CurrentLayerContract>>("api/UserLocation");
             _userInfoContracts = await _requestService.GetAsync<List<UserInfoContract>>("api/UserInfo");
 

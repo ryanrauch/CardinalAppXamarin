@@ -33,6 +33,28 @@ namespace CardinalAppXamarin.ViewModels
             _geolocatorService = geolocatorService;
             _hexagonal = hexagonal;
             _heatGradientService = heatGradientService;
+            Message = "test label";
+        }
+        private string _message { get; set; }
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                RaisePropertyChanged(() => Message);
+            }
+        }
+
+        private Polygon _selectedPolygon { get; set; }
+        public Polygon SelectedPolygon
+        {
+            get { return _selectedPolygon; }
+            set
+            {
+                _selectedPolygon = value;
+                RaisePropertyChanged(() => SelectedPolygon);
+            }
         }
 
         private ObservableCollection<Polygon> _polygons { get; set; } = new ObservableCollection<Polygon>();
@@ -45,6 +67,7 @@ namespace CardinalAppXamarin.ViewModels
                 RaisePropertyChanged(() => Polygons);
             }
         }
+
         public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(
             args =>
             {
@@ -95,6 +118,8 @@ namespace CardinalAppXamarin.ViewModels
                     var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
                     int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
                     poly.FillColor = _heatGradientService.SteppedColor(heatCount);
+                    poly.IsClickable = true;
+                    poly.Clicked += Polygon_Clicked;
                     if (row == 0 && col == 0)
                     {
                         poly.StrokeColor = Color.Coral;
@@ -107,11 +132,11 @@ namespace CardinalAppXamarin.ViewModels
                     }
                 }
             }
-            //var centeredPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
-            //int usersInside = _layerService.NumberOfUsersInsidePolygonTag(centeredPoly.Tag.ToString());
-            //centeredPoly.StrokeColor = _heatGradientService.SteppedColor(usersInside + 1);
-            //centeredPoly.FillColor = _heatGradientService.SteppedColor(usersInside);
-            //Polygons.Add(centeredPoly);
+        }
+
+        private void Polygon_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

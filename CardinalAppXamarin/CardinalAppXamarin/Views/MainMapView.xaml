@@ -7,6 +7,7 @@
              x:Class="CardinalAppXamarin.Views.MainMapView">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="{Binding Message}"/>
             <googleMaps:Map VerticalOptions="FillAndExpand">
                 <googleMaps:Map.Behaviors>
                     <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
