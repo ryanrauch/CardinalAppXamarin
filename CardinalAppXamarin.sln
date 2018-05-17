@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardinalAppXamarin.iOS", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardinalAppXamarin.UWP", "CardinalAppXamarin\CardinalAppXamarin.UWP\CardinalAppXamarin.UWP.csproj", "{C1FB7001-4C29-47B6-9F28-79E9A583085E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardinalAppXamarin", "CardinalAppXamarin\CardinalAppXamarin\CardinalAppXamarin.csproj", "{9498503B-FDD6-4274-9CCE-55797F8E80E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardinalAppXamarin", "CardinalAppXamarin\CardinalAppXamarin\CardinalAppXamarin.csproj", "{9498503B-FDD6-4274-9CCE-55797F8E80E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardinalLibrary", "CardinalLibrary\CardinalLibrary.csproj", "{B043F139-7160-4871-965F-F8A4A387184C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardinalLibrary", "CardinalLibrary\CardinalLibrary.csproj", "{B043F139-7160-4871-965F-F8A4A387184C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

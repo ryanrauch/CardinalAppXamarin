@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CardinalAppXamarin.Models;
 using CardinalLibrary.DataContracts;
 
 namespace CardinalAppXamarin.Services.Interfaces
@@ -9,10 +10,10 @@ namespace CardinalAppXamarin.Services.Interfaces
     {
         DateTime LastUpdated { get; }
 
-        Task<string> FindPolygonTagContainingUser(string userId);
-        Task<string> FindPolygonTagContainingUser(string userId, int layer);
+        string FindPolygonTagContainingUser(string userId);
+        string FindPolygonTagContainingUser(string userId, int layer);
         Task InitializeData();
-        Task<int> NumberOfUsersInsidePolygonTag(string layerDelimited);
-        Task<IList<UserInfoContract>> UsersInsidePolygonTag(string layerDelimited);
+        int NumberOfUsersInsidePolygonTag(string layerDelimited);
+        List<UserDisplayBrief> UsersInsidePolygonTagBrief(string layerDelimited);
     }
 }

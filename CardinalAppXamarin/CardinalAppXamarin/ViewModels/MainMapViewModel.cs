@@ -1,4 +1,5 @@
-﻿using CardinalAppXamarin.Services.Interfaces;
+﻿using CardinalAppXamarin.Models;
+using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
 using CardinalLibrary.DataContracts;
 using System;
@@ -37,22 +38,30 @@ namespace CardinalAppXamarin.ViewModels
             _layerLast = 0;
             _currentPositionTag = String.Empty;
             _currentPosition = _geolocatorService.LastRecordedPosition;
-            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0);
+            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0); // zoom can be within: [2,21]
         }
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
-        public bool PolygonUsersVisible => SelectedPolygon != null && SelectedUsers.Count > 0;
+        private bool _polygonUsersVisible { get; set; } = false;
+        public bool PolygonUsersVisible
+        {
+            get { return _polygonUsersVisible; }
+            set
+            {
+                _polygonUsersVisible = value;
+                RaisePropertyChanged(() => PolygonUsersVisible);
+            }
+        }
 
-        private ObservableCollection<UserInfoContract> _selectedUsers { get; set; } = new ObservableCollection<UserInfoContract>();
-        public ObservableCollection<UserInfoContract> SelectedUsers
+        private ObservableCollection<UserDisplayBrief> _selectedUsers { get; set; } = new ObservableCollection<UserDisplayBrief>();
+        public ObservableCollection<UserDisplayBrief> SelectedUsers
         {
             get { return _selectedUsers; }
             set
             {
                 _selectedUsers = value;
                 RaisePropertyChanged(() => SelectedUsers);
-                RaisePropertyChanged(() => PolygonUsersVisible);
             }
         }
 
@@ -64,8 +73,6 @@ namespace CardinalAppXamarin.ViewModels
             {
                 _selectedPolygon = value;
                 RaisePropertyChanged(() => SelectedPolygon);
-                //RaisePropertyChanged(() => PolygonUsersVisible);
-                RefreshPolygonUsers();//.ConfigureAwait(true);
             }
         }
 
@@ -80,26 +87,7 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        //public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(
-        //    args =>
-        //    {
-        //        var position = args.Point;
-        //        var polygon = new Polygon();
-        //        polygon.Positions.Add(position);
-        //        polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
-        //        polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
-        //        polygon.Positions.Add(position);
-
-        //        polygon.IsClickable = true;
-        //        polygon.StrokeColor = Color.Green;
-        //        polygon.StrokeWidth = 3f;
-        //        polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
-        //        polygon.Tag = "POLYGON"; // Can set any object
-
-        //        Polygons.Add(polygon);
-        //    });
-
-        public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
+        //public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
 
         private MapSpan _visibleRegion;
         public MapSpan VisibleRegion
@@ -109,17 +97,6 @@ namespace CardinalAppXamarin.ViewModels
             {
                 _visibleRegion = value;
                 RaisePropertyChanged(() => VisibleRegion);
-                //if (!MainMapVisible
-                //    && _visibleRegion != null
-                //    && _moveRequestFinalPosition != null
-                //    && AreLocationsSameWithTolerance(_visibleRegion.Center, _moveRequestFinalPosition, 0.0001))
-                //{
-                //    MainMapVisible = true;
-                //}
-                //if (_visibleRegion != null)
-                //{
-                //    RefreshPolygons();//.ConfigureAwait(false);
-                //}
             }
         }
 
@@ -134,41 +111,13 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        private Position _moveRequestFinalPosition { get; set; }
+        //private Position _moveRequestFinalPosition { get; set; }
         public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
-
-        //private bool _mainMapVisible { get; set; } = true; //= false;
-        //public bool MainMapVisible
-        //{
-        //    get { return _mainMapVisible; }
-        //    set
-        //    {
-        //        _mainMapVisible = value;
-        //        RaisePropertyChanged(() => MainMapVisible);
-        //    }
-        //}
-
-        private bool AreLocationsSameWithTolerance(Position attempt, Position exact, double tolerance)
-        {
-            bool lat = attempt.Latitude.Equals(exact.Latitude)
-                       || (attempt.Latitude <= exact.Latitude + tolerance
-                           && attempt.Latitude >= exact.Latitude - tolerance);
-            bool lon = attempt.Longitude.Equals(exact.Longitude)
-                       || (attempt.Longitude <= exact.Longitude + tolerance
-                           && attempt.Longitude >= exact.Longitude - tolerance);
-            return lat && lon;
-        }
 
         public override async Task OnAppearingAsync()
         {
             await _layerService.InitializeData();
-            //_currentPosition = await _geolocatorService.GetCurrentPosition();
-            //_moveRequestFinalPosition = _currentPosition;
-            //MoveRequest.MoveToRegion(
-            //    MapSpan.FromCenterAndRadius(
-            //        _currentPosition,
-            //        Distance.FromKilometers(1)));
-            await RefreshPolygons();
+            RefreshPolygons();
         }
 
         private string _currentPositionTag { get; set; }
@@ -192,7 +141,7 @@ namespace CardinalAppXamarin.ViewModels
             _currentPositionTag = centerPoly.Tag.ToString();
         }
 
-        private async Task RefreshPolygons()
+        private void RefreshPolygons()
         {
             if(_visibleRegion == null)
             {
@@ -205,17 +154,16 @@ namespace CardinalAppXamarin.ViewModels
                 _layerLast = layer;
             }
             _hexagonal.Initialize(_visibleRegion.Center.Latitude, _visibleRegion.Center.Longitude, layer);
-            //ObservableCollection<Polygon> freshPolygons = new ObservableCollection<Polygon>();
-            for (int row = -5; row < 6; ++row)
+            for (int row = -2; row < 3; ++row)
             {
-                for (int col = -5; col < 6; ++col)
+                for (int col = -2; col < 3; ++col)
                 {
                     var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
                     if(Polygons.Any(p => p.Tag.ToString().Equals(poly.Tag.ToString())))
                     {
                         continue;
                     }
-                    int heatCount = await _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
+                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
                     poly.FillColor = _heatGradientService.SteppedColor(heatCount);
                     poly.IsClickable = true;
                     poly.Clicked += Polygon_Clicked;
@@ -232,28 +180,30 @@ namespace CardinalAppXamarin.ViewModels
                     Polygons.Add(poly);
                 }
             }
-            RaisePropertyChanged(() => Polygons);
-        }
-
-        private async Task RefreshPolygonUsers()
-        {
-            if(SelectedPolygon != null)
-            {
-                var friends = await _layerService.UsersInsidePolygonTag(SelectedPolygon.Tag.ToString());
-                SelectedUsers = new ObservableCollection<UserInfoContract>(friends);
-            }
-            else
-            {
-                SelectedUsers.Clear();
-            }
+            //RaisePropertyChanged(() => Polygons);
         }
 
         private void Polygon_Clicked(object sender, EventArgs e)
         {
-            if(sender is Polygon)
+            if (sender is Polygon)
             {
-                var poly = sender as Polygon;
-                SelectedPolygon = poly;
+                SelectedPolygon = (Polygon)sender;
+                RefreshPolygonUsers();
+            }
+        }
+
+        private void RefreshPolygonUsers()
+        {
+            if(SelectedPolygon != null)
+            {
+                var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.Tag.ToString());
+                SelectedUsers = new ObservableCollection<UserDisplayBrief>(friends);
+                PolygonUsersVisible = SelectedUsers.Count > 0;
+            }
+            else
+            {
+                SelectedUsers.Clear();
+                PolygonUsersVisible = false;
             }
         }
     }

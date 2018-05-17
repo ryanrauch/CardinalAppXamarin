@@ -2,9 +2,15 @@
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:bindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.MainMapView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:TimeStampToLastUpdatedStringConverter x:Key="TimestampToUpdated" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -21,20 +27,17 @@
                 <googleMaps:Map.Behaviors>
                     <!--<bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>-->
                     <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
-                    <bindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>
+                    <!--<bindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>-->
                     <bindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
                     <bindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
-            <!--<BoxView Grid.Row="1"
-                     BackgroundColor="Color.White" 
-                     Opacity="0.8"
-                     IsVisible="{Binding PolygonUsersVisible}"/>-->
             <ScrollView Grid.Row="1"
                         Opacity="0.8"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
                         IsVisible="{Binding PolygonUsersVisible}">
-                <ListView ItemsSource="{Binding SelectedUsers}"
-                          Opacity="0.8">
+                <ListView ItemsSource="{Binding SelectedUsers}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -44,9 +47,9 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.Column="0" 
-                                           Text="{Binding Path=UserName}"/>
+                                           Text="{Binding UserName}"/>
                                     <Label Grid.Column="1" 
-                                           Text="{Binding Path=DateOfBirth}"/>
+                                           Text="{Binding LastUpdated, Mode=OneWay, Converter={StaticResource TimestampToUpdated}}"/>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
