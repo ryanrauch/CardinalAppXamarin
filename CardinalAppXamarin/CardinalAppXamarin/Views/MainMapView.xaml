@@ -8,7 +8,9 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="{Binding Message}"/>
-            <googleMaps:Map VerticalOptions="FillAndExpand">
+            <googleMaps:Map VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            MapStyle="{Binding CustomMapStyle}">
                 <googleMaps:Map.Behaviors>
                     <bindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
                     <bindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>

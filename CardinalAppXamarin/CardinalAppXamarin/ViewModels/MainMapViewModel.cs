@@ -35,6 +35,9 @@ namespace CardinalAppXamarin.ViewModels
             _heatGradientService = heatGradientService;
             Message = "test label";
         }
+
+        public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
+
         private string _message { get; set; }
         public string Message
         {
@@ -101,19 +104,21 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
+
         public override async Task OnAppearingAsync()
         {
+            //CustomMapStyle = MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
             await _layerService.InitializeData();
             var currentPosition = await _geolocatorService.GetCurrentPosition();
             MoveRequest.MoveToRegion(
                 MapSpan.FromCenterAndRadius(
                     currentPosition,
-                    Distance.FromKilometers(2)));
+                    Distance.FromKilometers(1)));
             int layer = _hexagonal.CalculateLayerFromMapSpan(VisibleRegion.Radius.Kilometers);
             _hexagonal.Initialize(currentPosition.Latitude, currentPosition.Longitude, layer);
             for(int row = -5; row < 6; ++row)
             {
-                for(int col = -5; col < 6; ++row)
+                for(int col = -5; col < 6; ++col)
                 {
                     var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
                     int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
@@ -130,13 +135,19 @@ namespace CardinalAppXamarin.ViewModels
                         poly.StrokeColor = _heatGradientService.SteppedColor(heatCount + 1);
                         poly.StrokeWidth = 1;
                     }
+                    Polygons.Add(poly);
                 }
             }
         }
 
         private void Polygon_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if(sender is Polygon)
+            {
+                var poly = sender as Polygon;
+                var friendCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
+                Message = poly.Tag.ToString() + ":" + friendCount.ToString();
+            }
         }
     }
 }

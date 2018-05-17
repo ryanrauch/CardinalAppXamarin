@@ -19,8 +19,8 @@ namespace CardinalAppXamarin.Services.Mock
             MockDataInitializeContract mock = new MockDataInitializeContract()
             {
                 Email = "rauch.ryan@gmail.com",
-                Latitude = 30.4031,
-                Longitude = -97.7345
+                Latitude = 30.3986877,
+                Longitude = -97.72359399999999
             };
             await _requestService.PostAsync<MockDataInitializeContract>("api/MockData", mock);
         }

@@ -12,7 +12,7 @@ namespace CardinalAppXamarin.Services.Mock
         public async Task<Position> GetCurrentPosition()
         {
             await Task.Delay(10);
-            return new Position(30.4031, -97.7345);
+            return new Position(30.3986877, -97.72359399999999);
         }
 
         public async Task<bool> IsLocationAvailable()
