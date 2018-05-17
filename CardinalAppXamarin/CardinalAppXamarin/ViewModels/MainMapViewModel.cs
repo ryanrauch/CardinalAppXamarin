@@ -96,6 +96,8 @@ namespace CardinalAppXamarin.ViewModels
             set
             {
                 _visibleRegion = value;
+                SelectedPolygon = null;
+                RefreshPolygonUsers();
                 RaisePropertyChanged(() => VisibleRegion);
             }
         }
