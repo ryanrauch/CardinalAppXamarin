@@ -149,7 +149,12 @@ namespace CardinalAppXamarin.ViewModels
             {
                 return;
             }
-            int layer = _hexagonal.CalculateLayerFromMapSpan(_visibleRegion.Radius.Kilometers);
+            double radius = _visibleRegion.Radius.Kilometers;
+            //TODO:  set correct radius after user changes VisibleRegion
+            //       right now is only calculated from initial view.
+            //       and set to one smaller for iphone display purposes.
+            radius /= 3;
+            int layer = _hexagonal.CalculateLayerFromMapSpan(radius);
             if(layer != _layerLast)
             {
                 Polygons.Clear();
@@ -211,26 +216,20 @@ namespace CardinalAppXamarin.ViewModels
 
         private void MapClicked(MapClickedEventArgs args)
         {
-            var position = args.Point;
-            var polygon = new Polygon();
-            polygon.Positions.Add(position);
-            polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
-            polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
-            polygon.Positions.Add(position);
+            //var position = args.Point;
+            //var polygon = new Polygon();
+            //polygon.Positions.Add(position);
+            //polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
+            //polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
+            //polygon.Positions.Add(position);
 
-            polygon.IsClickable = true;
-            polygon.StrokeColor = Color.Green;
-            polygon.StrokeWidth = 3f;
-            polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
-            polygon.Tag = "POLYGON"; // Can set any object
+            //polygon.IsClickable = true;
+            //polygon.StrokeColor = Color.Green;
+            //polygon.StrokeWidth = 3f;
+            //polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
+            //polygon.Tag = "POLYGON"; // Can set any object
         }
 
         public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
-        //public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(
-        //    args =>
-        //    {
-
-        //        //Polygons.Add(polygon);
-        //    });
     }
 }

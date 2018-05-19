@@ -92,20 +92,9 @@ namespace CardinalAppXamarin.Services
             var models = from c in _currentLayerContracts
                          join u in _userInfoContracts on c.UserId equals u.Id
                          where SplitLayersDelimited(c.LayersDelimited).Contains(layerDelimited)
+                         orderby c.TimeStamp descending
                          select new UserInfoBriefViewCellModel(u, c);
             return new List<UserInfoBriefViewCellModel>(models);
-            //var udb = new List<UserInfoBriefViewCellModel>();
-            //foreach (CurrentLayerContract layer in _currentLayerContracts
-            //                                      .Where(c => SplitLayersDelimited(c.LayersDelimited)
-            //                                                 .Contains(layerDelimited)))
-            //{
-            //    UserInfoContract info = _userInfoContracts.FirstOrDefault(u => u.Id.Equals(layer.UserId));
-            //    if (info != null && !udb.Any(u => u.UserId.Equals(info.Id)))
-            //    {
-            //        udb.Add(new UserInfoBriefViewCellModel(info,layer));
-            //    }
-            //}
-            //return udb;
         }
     }
 }

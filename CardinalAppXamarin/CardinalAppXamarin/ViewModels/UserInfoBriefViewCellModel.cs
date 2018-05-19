@@ -17,26 +17,29 @@ namespace CardinalAppXamarin.ViewModels
         {
             _userInfoContract = userInfoContract;
             _currentLayerContract = currentLayerContract;
-
-            Name = _userInfoContract.UserName;
-            TimeSpan span = DateTime.Now.Subtract(_currentLayerContract.TimeStamp);
-            int hours = (int)Math.Floor(Math.Abs(span.TotalHours));
-            if(hours == 1)
-            {
-                LastUpdated = String.Format("{0}hr ago", hours);
-            }
-            else if (hours > 1)
-            {
-                LastUpdated = String.Format("{0}hrs ago", hours);
-            }
-            else
-            {
-                LastUpdated = String.Format("{0}mins ago", (int)Math.Floor(Math.Abs(span.TotalMinutes)));
-            }
         }
 
-        public string Name { get; set; } 
-        public string LastUpdated { get; set; }
+        public string Name => _userInfoContract.UserName;
+        public string LastUpdated
+        {
+            get
+            {
+                TimeSpan span = DateTime.Now.ToUniversalTime().Subtract(_currentLayerContract.TimeStamp);
+                int hours = (int)Math.Floor(Math.Abs(span.TotalHours));
+                if (hours == 1)
+                {
+                    return String.Format("{0}hr ago", hours);
+                }
+                else if (hours > 1)
+                {
+                    return String.Format("{0}hrs ago", hours);
+                }
+                else
+                {
+                    return String.Format("{0}mins ago", (int)Math.Floor(Math.Abs(span.TotalMinutes)));
+                }
+            }
+        }
 
         public override Task OnAppearingAsync()
         {
