@@ -39,6 +39,7 @@ namespace CardinalAppXamarin.ViewModels
             _currentPositionTag = String.Empty;
             _currentPosition = _geolocatorService.LastRecordedPosition;
             MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0); // zoom can be within: [2,21]
+            _initialized = false;
         }
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
@@ -115,11 +116,12 @@ namespace CardinalAppXamarin.ViewModels
 
         //private Position _moveRequestFinalPosition { get; set; }
         public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
-
+        private bool _initialized { get; set; }
         public override async Task OnAppearingAsync()
         {
             await _layerService.InitializeData();
             RefreshPolygons();
+            _initialized = true;
         }
 
         private string _currentPositionTag { get; set; }
@@ -136,6 +138,36 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private double _currentCameraZoom { get; set; }
+        private CameraIdledEventArgs _currentCameraIdledEventArgs {get;set;}
+        public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(CameraIdled);
+
+        private void CameraIdled(CameraIdledEventArgs args)
+        {
+            _currentCameraIdledEventArgs = args;
+            double zoom = args.Position.Zoom;
+            //_currentCameraZoom = zoom;
+            DebugLabel = zoom.ToString();
+            if (_initialized)
+            {
+                RefreshPolygons();
+            }
+        }
+
+        private string _debugLabel { get; set; } = string.Empty;
+        public string DebugLabel
+        {
+            get
+            {
+                return _debugLabel;
+            }
+            set
+            {
+                _debugLabel = value;
+                RaisePropertyChanged(() => DebugLabel);
+            }
+        }
+
         private void RefreshCurrentPositionTag()
         {
             _hexagonal.Initialize(_currentPosition.Latitude, _currentPosition.Longitude, _hexagonal.Layers.Min());
@@ -149,18 +181,13 @@ namespace CardinalAppXamarin.ViewModels
             {
                 return;
             }
-            double radius = _visibleRegion.Radius.Kilometers;
-            //TODO:  set correct radius after user changes VisibleRegion
-            //       right now is only calculated from initial view.
-            //       and set to one smaller for iphone display purposes.
-            radius /= 3;
-            int layer = _hexagonal.CalculateLayerFromMapSpan(radius);
+            int layer = _hexagonal.CalculateLayerFromCameraPositionZoom(_currentCameraIdledEventArgs.Position.Zoom);
             if(layer != _layerLast)
             {
                 Polygons.Clear();
                 _layerLast = layer;
             }
-            _hexagonal.Initialize(_visibleRegion.Center.Latitude, _visibleRegion.Center.Longitude, layer);
+            _hexagonal.Initialize(_currentCameraIdledEventArgs.Position.Target.Latitude, _currentCameraIdledEventArgs.Position.Target.Longitude, layer);
             for (int row = -2; row < 3; ++row)
             {
                 for (int col = -2; col < 3; ++col)

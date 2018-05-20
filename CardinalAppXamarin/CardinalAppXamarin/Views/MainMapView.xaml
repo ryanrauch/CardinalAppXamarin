@@ -24,6 +24,7 @@
                     <googleMapsBindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
                     <googleMapsBindings:BindingVisibleRegionBehavior Value="{Binding VisibleRegion}"/>
                     <googleMapsBindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
+                    <googleMapsBindings:CameraIdledToCommandBehavior Command="{Binding MapCameraIdled}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
             <Frame Grid.Row="1" 
@@ -43,6 +44,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
+            <Label Grid.Row="2" Text="{Binding DebugLabel}"/>
         </Grid>
     </ContentPage.Content>
 </local:MainMapViewBase>
