@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.GoogleMaps.Bindings;
@@ -19,6 +20,7 @@ namespace CardinalAppXamarin.ViewModels
         private readonly IRequestService _requestService;
         private readonly ILayerService _layerService;
         private readonly IGeolocatorService _geolocatorService;
+        private readonly INavigationService _navigationService;
         private readonly IHexagonal _hexagonal;
         private readonly IHeatGradientService _heatGradientService;
 
@@ -26,12 +28,14 @@ namespace CardinalAppXamarin.ViewModels
             IRequestService requestService,
             ILayerService layerService,
             IGeolocatorService geolocatorService,
+            INavigationService navigationService,
             IHexagonal hexagonal,
             IHeatGradientService heatGradientService)
         {
             _requestService = requestService;
             _layerService = layerService;
             _geolocatorService = geolocatorService;
+            _navigationService = navigationService;
             _hexagonal = hexagonal;
             _heatGradientService = heatGradientService;
 
@@ -136,6 +140,24 @@ namespace CardinalAppXamarin.ViewModels
                 _currentPositionValue = value;
                 RefreshCurrentPositionTag();
             }
+        }
+
+        private bool _settingsVisible { get; set; } = false;
+
+        public ICommand SettingsCommand => new Command(SettingsClicked);
+
+        private void SettingsClicked()
+        {
+            //TODO: Show settings view
+            if(_settingsVisible)
+            {
+                
+            }
+            else
+            {
+
+            }
+            _settingsVisible = !_settingsVisible;
         }
 
         private double _currentCameraZoom { get; set; }

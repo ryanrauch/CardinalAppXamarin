@@ -1,10 +1,182 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
              x:Class="CardinalAppXamarin.App">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
+        <ResourceDictionary>
+            <!-- Colors -->
+            <Color x:Key="WhiteColor">#FFFFFF</Color>
+            <Color x:Key="RedColor">#CC0000</Color>
+            <Color x:Key="GrayColor">#C0C0C0</Color>
+            <Color x:Key="ErrorColor">#FFA500</Color>
+            <!--<Color x:Key="TransparentWhiteColor">#BFffffff</Color>
+            <Color x:Key="BlueColor">#3063f5</Color>
+            <Color x:Key="TransparentBlueColor">#BF3063f5</Color>
+            <Color x:Key="BrightYellowColor">#ffed00</Color>
+            <Color x:Key="BackgroundGrayColor">#f4f6fa</Color>
+            <Color x:Key="ToolbarBlueColor">#3063f5</Color>
+            <Color x:Key="OrangeColor">#ff5e4d</Color>
+            <Color x:Key="ProfileGrayColor">#afb3be</Color>
+            <Color x:Key="BlackColor">#000000</Color>
+            <Color x:Key="GreenColor">#0aca91</Color>-->
 
+            <!-- Fonts -->
+            <!--<OnPlatform x:Key="MontserratRegular"
+                        x:TypeArguments="x:String"
+                        iOS="Montserrat-Regular"
+                        Android="Montserrat-Regular.ttf#Montserrat"
+                        WinPhone="Assets/Fonts/Montserrat-Regular.ttf#Montserrat"/>
+
+            <OnPlatform x:Key="SourceSansProRegular"
+                        x:TypeArguments="x:String"
+                        iOS="SourceSansPro-Regular"
+                        Android="SourceSansPro-Regular.ttf#Source Sans Pro"
+                        WinPhone="Assets/Fonts/SourceSansPro-Regular.ttf#Source Sans Pro"/>-->
+
+            <!-- Font Sizes -->
+            <OnPlatform x:Key="LittleSize"
+                        x:TypeArguments="x:Double"
+                        iOS="11"
+                        Android="12"
+                        WinPhone="12"/>
+
+            <OnPlatform x:Key="MidMediumSize"
+                        x:TypeArguments="x:Double"
+                        iOS="12"
+                        Android="14"
+                        WinPhone="14"/>
+
+            <OnPlatform x:Key="MediumSize"
+                        x:TypeArguments="x:Double"
+                        iOS="14"
+                        Android="16"
+                        WinPhone="16"/>
+
+            <OnPlatform x:Key="LargeSize"
+                        x:TypeArguments="x:Double"
+                        iOS="16"
+                        Android="18"
+                        WinPhone="18"/>
+
+            <OnPlatform x:Key="LargerSize"
+                        x:TypeArguments="x:Double"
+                        iOS="18"
+                        Android="20"
+                        WinPhone="20"/>
+
+            <OnPlatform x:Key="BigSize"
+                        x:TypeArguments="x:Double"
+                        iOS="20"
+                        Android="24"
+                        WinPhone="24"/>
+
+            <OnPlatform x:Key="ExtraBigSize"
+                      x:TypeArguments="x:Double"
+                      iOS="24"
+                      Android="32"
+                      WinPhone="32"/>
+
+            <OnPlatform x:Key="HugeSize"
+                        x:TypeArguments="x:Double"
+                        iOS="32"
+                        Android="48"
+                        WinPhone="48"/>
+
+            <!-- Styles -->
+            <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Key=RedColor}"/>
+                <Setter Property="BarTextColor" Value="{StaticResource Key=WhiteColor}"/>
+            </Style>
+            
+            <Style x:Key="BaseLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="effects:NumberOfLinesEffect.ApplyNumberOfLines" Value="True" />
+                <Setter Property="effects:NumberOfLinesEffect.NumberOfLines" Value="2" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="TextColor" Value="{StaticResource WhiteColor}"/>
+            </Style>
+
+            <Style TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource BaseLabelStyle}" />
+
+            <Style x:Key="EntryStyle"
+                   TargetType="{x:Type Entry}">
+                <!--<Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />-->
+                <Setter Property="TextColor"
+                        Value="{StaticResource RedColor}" />
+                <Setter Property="PlaceholderColor"
+                        Value="{StaticResource GrayColor}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+                <Setter Property="HorizontalOptions"
+                        Value="FillAndExpand" />
+
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="Opacity"
+                        Value="0.6" />
+                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                        Value="True" />
+                <Setter Property="effects:LineColorEffect.LineColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Style.Triggers>
+                    <Trigger TargetType="Entry"
+                             Property="IsFocused" 
+                             Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="UwpEntryStyle"
+                   TargetType="{x:Type Entry}">
+                <Setter Property="WidthRequest"
+                    Value="284" />
+                <!--<Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />-->
+                <Setter Property="TextColor"
+                    Value="{StaticResource RedColor}" />
+                <Setter Property="PlaceholderColor"
+                    Value="{StaticResource GrayColor}" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource LargeSize}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="FontAttributes"
+                    Value="Bold" />
+                <Setter Property="BackgroundColor" 
+                    Value="Transparent" />
+                <Setter Property="Opacity"
+                    Value="0.6" />
+                <Setter Property="effects:LineColorEffect.ApplyLineColor"
+                    Value="True" />
+                <Setter Property="effects:LineColorEffect.LineColor"
+                    Value="{StaticResource WhiteColor}" />
+                <Style.Triggers>
+                    <Trigger TargetType="Entry"
+                       Property="IsFocused"
+                       Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="effects:LineColorEffect.LineColor"                        
+                                Value="{StaticResource WhiteColor}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="ButtonStyle"
+                   TargetType="{x:Type Button}">
+                <!--<Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />-->
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource RedColor}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource WhiteColor}" />
+            </Style>
+        </ResourceDictionary>
 	</Application.Resources>
 </Application>

@@ -2,12 +2,99 @@
 <local:LoginViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
+             xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
+             xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.Views.LoginView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="SignInButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}">
+                <Setter Property="HeightRequest"
+                        Value="54" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="{StaticResource RedColor}">
+            <Entry x:Name="EntryUserName"
+                   Text="{Binding UserName.Value, Mode=TwoWay}"
+                   AutomationId="username"
+                   Placeholder="Username">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style"
+                        iOS="{StaticResource EntryStyle}"
+                        Android="{StaticResource EntryStyle}"
+                        WinPhone="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding UserName}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" 
+                         Binding="{Binding UserName.IsValid}" 
+                         Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            <Entry x:Name="EntryPassword"
+                   Text="{Binding Password.Value, Mode=TwoWay}"
+                   Placeholder="Password"
+                   AutomationId="password"
+                   IsPassword="true">
+                <Entry.Style>
+                    <OnPlatform 
+                            x:TypeArguments="Style"
+                            iOS="{StaticResource EntryStyle}"
+                            Android="{StaticResource EntryStyle}"
+                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding Password.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Remember me?" VerticalTextAlignment="Center"/>
+                <Switch IsToggled="{Binding Persistent}"/>
+            </StackLayout>
+            <Button x:Name="SignInButton"
+                    Command="{Binding SignInCommand}"
+                    Text="Sign in"
+                    AutomationId="signin"
+                    Style="{StaticResource SignInButtonStyle}">
+                <Button.IsVisible>
+                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                                            Android="True"
+                                            iOS="True"
+                                            UWP="False"/>
+                </Button.IsVisible>
+            </Button>
+            <Button x:Name="ButtonRegister"
+                    Command="{Binding RegisterCommand}"
+                    Text="Register"
+                    AutomationId="register"
+                    Style="{StaticResource SignInButtonStyle}">
+                <Button.IsVisible>
+                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                                            Android="True"
+                                            iOS="True"
+                                            UWP="False"/>
+                </Button.IsVisible>
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </local:LoginViewBase>

@@ -2,10 +2,14 @@
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.MainMapView">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings" Command="{Binding SettingsCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -32,8 +36,10 @@
                    HasShadow="True" 
                    CornerRadius="10"
                    Opacity="0.8"
+                   BackgroundColor="{StaticResource RedColor}"
                    IsVisible="{Binding PolygonUsersVisible}">
                 <ListView ItemsSource="{Binding SelectedUsers}"
+                          BackgroundColor="Transparent"
                           HorizontalOptions="FillAndExpand"
                           VerticalOptions="FillAndExpand"
                           HasUnevenRows="True">
