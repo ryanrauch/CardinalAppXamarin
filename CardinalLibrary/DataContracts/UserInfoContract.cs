@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CardinalLibrary.DataContracts
 {
@@ -13,7 +11,9 @@ namespace CardinalLibrary.DataContracts
         public DateTime DateOfBirth { get; set; }
         public AccountGender Gender { get; set; }
         public AccountType AccountType { get; set; }
-        //public String PhoneNumber { get; set; }
-        //public String Email { get; set; }
+        public String PhoneNumber { get; set; }
+        public String Email { get; set; }
+        //Only used when registering new users from api controller
+        public String Password { get; set; }
     }
 }

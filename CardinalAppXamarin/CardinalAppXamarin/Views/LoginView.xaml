@@ -25,10 +25,10 @@
                    AutomationId="username"
                    Placeholder="Username">
                 <Entry.Style>
-                    <OnPlatform x:TypeArguments="Style"
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
                         iOS="{StaticResource EntryStyle}"
                         Android="{StaticResource EntryStyle}"
-                        WinPhone="{StaticResource UwpEntryStyle}"/>
+                        UWP="{StaticResource UwpEntryStyle}"/>
                 </Entry.Style>
                 <Entry.Behaviors>
                     <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding UserName}" />
@@ -48,11 +48,10 @@
                    AutomationId="password"
                    IsPassword="true">
                 <Entry.Style>
-                    <OnPlatform 
-                            x:TypeArguments="Style"
-                            iOS="{StaticResource EntryStyle}"
-                            Android="{StaticResource EntryStyle}"
-                            WinPhone="{StaticResource UwpEntryStyle}"/>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
                 </Entry.Style>
                 <Entry.Behaviors>
                     <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />

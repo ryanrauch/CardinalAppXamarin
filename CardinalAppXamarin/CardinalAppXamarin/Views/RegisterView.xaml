@@ -2,12 +2,202 @@
 <local:RegisterViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
+             xmlns:converters="clr-namespace:CardinalAppXamarin.Converters"
+             xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
+             xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.Views.RegisterView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IntEnumConverter x:Key="IntEnum"/>
+            <Style x:Key="RegisterButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}">
+                <Setter Property="HeightRequest"
+                        Value="54" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource LargeSize}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="{StaticResource RedColor}">
+            <Entry x:Name="EntryDisplayName"
+                   Text="{Binding DisplayName.Value, Mode=TwoWay}"
+                   AutomationId="displayname"
+                   Placeholder="User Name">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding DisplayName}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger TargetType="Entry" 
+                         Binding="{Binding UserName.IsValid}" 
+                         Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
+            <Entry x:Name="EntryFirstName"
+                   Text="{Binding FirstName.Value, Mode=TwoWay}"
+                   Placeholder="First Name"
+                   AutomationId="firstname">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding FirstName}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding FirstName.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
+            <Entry x:Name="EntryLastName"
+                   Text="{Binding LastName.Value, Mode=TwoWay}"
+                   Placeholder="Last Name"
+                   AutomationId="lastname">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding LastName}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding LastName.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
+            <Entry x:Name="EntryEmail"
+                   Text="{Binding Email.Value, Mode=TwoWay}"
+                   Placeholder="Email Address"
+                   AutomationId="email">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Email}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding Email.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
+            <Entry x:Name="EntryPhoneNumber"
+                   Text="{Binding PhoneNumber.Value, Mode=TwoWay}"
+                   Placeholder="555-123-4567"
+                   AutomationId="phonenumber">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding PhoneNumber}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding PhoneNumber.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            
+            
+            <Entry x:Name="EntryPassword"
+                   Text="{Binding Password.Value, Mode=TwoWay}"
+                   Placeholder="Password"
+                   AutomationId="password"
+                   IsPassword="true">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding Password.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+
+            <Entry x:Name="EntryConfirmPassword"
+                   Text="{Binding ConfirmPassword.Value, Mode=TwoWay}"
+                   Placeholder="ConfirmPassword"
+                   AutomationId="confirmpassword"
+                   IsPassword="true">
+                <Entry.Style>
+                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                                              iOS="{StaticResource EntryStyle}"
+                                              Android="{StaticResource EntryStyle}"
+                                              UWP="{StaticResource UwpEntryStyle}"/>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding ConfirmPassword}" />
+                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+                            TargetType="Entry"
+                            Binding="{Binding ConfirmPassword.IsValid}"
+                            Value="False">
+                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+            
+            <Picker ItemsSource="{Binding GenderList}" 
+                    SelectedIndex="{Binding SelectedGender, Converter=IntEnum}"/>
+
+            <DatePicker x:Name="DatePickerDateOfBirth"
+                        Format="MMM d, yyyy"
+                        Date="{Binding DateOfBirth.Value, Mode=TwoWay}"/>
         </StackLayout>
     </ContentPage.Content>
 </local:RegisterViewBase>

@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CardinalAppXamarin.Views.ViewCells.UserInfoBriefViewCell"
           Height="20">
-    <StackLayout Orientation="Horizontal">
-        <Label Text="{Binding Name}" />
-        <Label Text="{Binding LastUpdated}"/>
+    <StackLayout Orientation="Horizontal" 
+                 HorizontalOptions="FillAndExpand">
+        <Label Text="{Binding Name}" 
+               HorizontalTextAlignment="Start" />
+        <Label Text="{Binding LastUpdated}" 
+               HorizontalTextAlignment="End"/>
     </StackLayout>
 </ViewCell>
