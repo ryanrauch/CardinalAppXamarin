@@ -4,12 +4,12 @@ using Xamarin.Forms.Xaml;
 
 namespace CardinalAppXamarin.Views
 {
-    public class RegisterViewBase : ViewPageBase<RegisterViewModel> { }
+    public class ProfileViewBase : ViewContentBase<ProfileViewModel> { }
 
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class RegisterView : RegisterViewBase
+	public partial class ProfileView : ProfileViewBase
 	{
-		public RegisterView ()
+		public ProfileView ()
 		{
 			InitializeComponent ();
 		}

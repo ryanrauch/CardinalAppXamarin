@@ -19,6 +19,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<LoginViewModel>().SingleInstance();
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
             containerBuilder.RegisterType<RegisterViewModel>().SingleInstance();
+            containerBuilder.RegisterType<ProfileViewModel>().SingleInstance();
 
             containerBuilder.RegisterType<UserInfoBriefViewCellModel>();
 

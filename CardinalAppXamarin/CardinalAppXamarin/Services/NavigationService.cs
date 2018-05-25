@@ -1,6 +1,7 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
 using CardinalAppXamarin.Views;
+using CardinalAppXamarin.Views.Pages;
 using CardinalAppXamarin.Views.Base;
 using System;
 using System.Collections.Generic;

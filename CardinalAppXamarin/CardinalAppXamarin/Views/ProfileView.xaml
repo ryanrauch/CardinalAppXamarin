@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:ProfileViewBase xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             x:Class="CardinalAppXamarin.Views.ProfileView">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="0"
+                   Text="{Binding DisplayName}"/>
+        
+        <Label Grid.Column="0"
+                   Grid.Row="1"
+                   Text="First Name"/>
+        <Label Grid.Column="1"
+                   Grid.Row="1"
+                   Text="{Binding FirstName}"/>
+
+        <Label Grid.Column="0"
+                   Grid.Row="2"
+                   Text="Last Name"/>
+        <Label Grid.Column="1"
+                   Grid.Row="2"
+                   Text="{Binding LastName}"/>
+
+        <Label Grid.Column="0"
+                   Grid.Row="3"
+                   Text="Email"/>
+        <Label Grid.Column="1"
+                   Grid.Row="3"
+                   Text="{Binding Email}"/>
+        
+        <Label Grid.Column="0"
+                   Grid.Row="4"
+                   Text="Phone Number"/>
+        <Label Grid.Column="1"
+                   Grid.Row="4"
+                   Text="{Binding PhoneNumber}"/>
+
+        <Label Grid.Column="0"
+                   Grid.Row="5"
+                   Text="Date of Birth"/>
+        <Label Grid.Column="1"
+                   Grid.Row="5"
+                   Text="{Binding DateOfBirth, StringFormat='MMM d, yyyy'}"/>
+    </Grid>
+</local:ProfileViewBase>

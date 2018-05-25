@@ -46,6 +46,12 @@ namespace CardinalAppXamarin.ViewModels
             _initialized = false;
         }
 
+        public ICommand ProfileCommand => new Command(ProfileClicked);
+        public ICommand SettingsCommand => new Command(SettingsClicked);
+        public ICommand FriendsCommand => new Command(FriendsClicked);
+        public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(CameraIdled);
+        public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
+
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
         private bool _polygonUsersVisible { get; set; } = false;
@@ -120,9 +126,13 @@ namespace CardinalAppXamarin.ViewModels
 
         //private Position _moveRequestFinalPosition { get; set; }
         public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
+
         private bool _initialized { get; set; }
+
         public override async Task OnAppearingAsync()
         {
+            var profile = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
+            UserProfile = new ProfileViewModel() { UserInfo = profile };
             await _layerService.InitializeData();
             RefreshPolygons();
             _initialized = true;
@@ -144,8 +154,6 @@ namespace CardinalAppXamarin.ViewModels
 
         private bool _settingsVisible { get; set; } = false;
 
-        public ICommand SettingsCommand => new Command(SettingsClicked);
-
         private void SettingsClicked()
         {
             //TODO: Show settings view
@@ -160,9 +168,40 @@ namespace CardinalAppXamarin.ViewModels
             _settingsVisible = !_settingsVisible;
         }
 
+        private void FriendsClicked()
+        {
+
+        }
+
+        private ProfileViewModel _userProfile { get; set; }
+        public ProfileViewModel UserProfile
+        {
+            get { return _userProfile; }
+            set
+            {
+                _userProfile = value;
+                RaisePropertyChanged(() => UserProfile);
+            }
+        }
+
+        private bool _profileVisible { get; set; } = false;
+        public bool ProfileVisible
+        {
+            get { return _profileVisible; }
+            set
+            {
+                _profileVisible = value;
+                RaisePropertyChanged(() => ProfileVisible);
+            }
+        }
+
+        private void ProfileClicked()
+        {
+            ProfileVisible = !ProfileVisible;
+        }
+
         private double _currentCameraZoom { get; set; }
         private CameraIdledEventArgs _currentCameraIdledEventArgs {get;set;}
-        public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(CameraIdled);
 
         private void CameraIdled(CameraIdledEventArgs args)
         {
@@ -241,10 +280,17 @@ namespace CardinalAppXamarin.ViewModels
 
         private void Polygon_Clicked(object sender, EventArgs e)
         {
-            if (sender is Polygon)
+            if (sender is Polygon sp)
             {
-                SelectedPolygon = (Polygon)sender;
-                RefreshPolygonUsers();
+                if (SelectedPolygon.Tag.ToString().Equals(sp.Tag.ToString()))
+                {
+                    PolygonUsersVisible = false;
+                }
+                else
+                {
+                    SelectedPolygon = sp;
+                    RefreshPolygonUsers();
+                }
             }
         }
 
@@ -265,20 +311,10 @@ namespace CardinalAppXamarin.ViewModels
 
         private void MapClicked(MapClickedEventArgs args)
         {
-            //var position = args.Point;
-            //var polygon = new Polygon();
-            //polygon.Positions.Add(position);
-            //polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude - 0.01d));
-            //polygon.Positions.Add(new Position(position.Latitude - 0.02d, position.Longitude + 0.01d));
-            //polygon.Positions.Add(position);
-
-            //polygon.IsClickable = true;
-            //polygon.StrokeColor = Color.Green;
-            //polygon.StrokeWidth = 3f;
-            //polygon.FillColor = Color.FromRgba(255, 0, 0, 64);
-            //polygon.Tag = "POLYGON"; // Can set any object
+            if(PolygonUsersVisible)
+            {
+                PolygonUsersVisible = false;
+            }
         }
-
-        public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
     }
 }

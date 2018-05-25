@@ -1,16 +1,11 @@
 ﻿using Autofac;
-using CardinalAppXamarin.Services.Interfaces;
-using CardinalAppXamarin.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using CardinalAppXamarin.Views.Pages;
 
 using Xamarin.Forms;
 
 namespace CardinalAppXamarin
 {
-	public partial class App : Application
+    public partial class App : Application
 	{
         public static IContainer Container { get; set; }
 

@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:MainMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
              xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+             xmlns:views="clr-namespace:CardinalAppXamarin.Views"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
-             x:Class="CardinalAppXamarin.Views.MainMapView">
+             x:Class="CardinalAppXamarin.Views.Pages.MainMapView">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Friends" Command="{Binding FriendsCommand}"/>
+        <ToolbarItem Text="Profile" Command="{Binding ProfileCommand}"/>
         <ToolbarItem Text="Settings" Command="{Binding SettingsCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
@@ -31,7 +34,17 @@
                     <googleMapsBindings:CameraIdledToCommandBehavior Command="{Binding MapCameraIdled}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
-            <Frame Grid.Row="1" 
+            <Frame Grid.Row="0"
+                   Margin="10,10"
+                   HasShadow="True"
+                   CornerRadius="10"
+                   Opacity="0.8"
+                   BackgroundColor="{StaticResource RedColor}"
+                   IsVisible="{Binding ProfileVisible}">
+                <views:ProfileView BindingContext="{Binding UserProfile}"/>
+            </Frame>
+            <Frame Grid.Row="1"
+                   Grid.RowSpan="2"
                    Margin="10,10" 
                    HasShadow="True" 
                    CornerRadius="10"
@@ -45,12 +58,12 @@
                           HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <viewCells:UserInfoBriefViewCell BindingContext ="{Binding}" />
+                            <viewCells:UserInfoBriefViewCell BindingContext="{Binding}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
-            <Label Grid.Row="2" Text="{Binding DebugLabel}"/>
+            <!--<Label Grid.Row="2" Text="{Binding DebugLabel}"/>-->
         </Grid>
     </ContentPage.Content>
 </local:MainMapViewBase>

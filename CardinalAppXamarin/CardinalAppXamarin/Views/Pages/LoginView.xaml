@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:LoginViewBase xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+             xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
              xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
              xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
-             x:Class="CardinalAppXamarin.Views.LoginView">
+             x:Class="CardinalAppXamarin.Views.Pages.LoginView">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="SignInButtonStyle"

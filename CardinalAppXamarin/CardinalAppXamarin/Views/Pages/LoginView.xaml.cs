@@ -2,14 +2,14 @@
 using CardinalAppXamarin.Views.Base;
 using Xamarin.Forms.Xaml;
 
-namespace CardinalAppXamarin.Views
+namespace CardinalAppXamarin.Views.Pages
 {
-    public class InitialViewBase : ViewPageBase<InitialViewModel> { }
+    public class LoginViewBase : ViewPageBase<LoginViewModel> { }
 
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class InitialView : InitialViewBase
+	public partial class LoginView : LoginViewBase
 	{
-		public InitialView ()
+		public LoginView ()
 		{
 			InitializeComponent ();
 		}

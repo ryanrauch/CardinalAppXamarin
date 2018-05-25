@@ -2,6 +2,7 @@
 using CardinalAppXamarin.Validation;
 using CardinalAppXamarin.ViewModels.Base;
 using CardinalAppXamarin.Views;
+using CardinalAppXamarin.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Text;
