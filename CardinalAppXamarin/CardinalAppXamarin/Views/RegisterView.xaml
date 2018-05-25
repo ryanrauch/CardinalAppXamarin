@@ -198,6 +198,19 @@
             <DatePicker x:Name="DatePickerDateOfBirth"
                         Format="MMM d, yyyy"
                         Date="{Binding DateOfBirth.Value, Mode=TwoWay}"/>
+
+            <Button x:Name="ButtonRegister"
+                    Command="{Binding RegisterCommand}"
+                    Text="Register"
+                    AutomationId="register"
+                    Style="{StaticResource RegisterButtonStyle}">
+                <Button.IsVisible>
+                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                                            Android="True"
+                                            iOS="True"
+                                            UWP="False"/>
+                </Button.IsVisible>
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </local:RegisterViewBase>
