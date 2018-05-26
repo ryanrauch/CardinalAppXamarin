@@ -12,11 +12,11 @@ namespace CardinalLibrary
         Male = 0,
         Female = 1
     };
-    public enum RegionType
+    /*public enum RegionType
     {
         Neighborhood = 0,
         SocialDistrict = 1
-    };
+    };*/
     public enum FriendRequestType
     {
         Normal = 0,
@@ -35,5 +35,10 @@ namespace CardinalLibrary
     {
         General = 0,
         FriendRequest = 1
+    };
+    public enum ZoneType
+    {
+        General = 0,
+        BarDistrict = 1
     }
 }
