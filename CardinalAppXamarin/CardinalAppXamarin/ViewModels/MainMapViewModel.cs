@@ -23,6 +23,7 @@ namespace CardinalAppXamarin.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IHexagonal _hexagonal;
         private readonly IHeatGradientService _heatGradientService;
+        private readonly IZoneService _zoneService;
 
         public MainMapViewModel(
             IRequestService requestService,
@@ -30,7 +31,8 @@ namespace CardinalAppXamarin.ViewModels
             IGeolocatorService geolocatorService,
             INavigationService navigationService,
             IHexagonal hexagonal,
-            IHeatGradientService heatGradientService)
+            IHeatGradientService heatGradientService,
+            IZoneService zoneService)
         {
             _requestService = requestService;
             _layerService = layerService;
@@ -38,6 +40,7 @@ namespace CardinalAppXamarin.ViewModels
             _navigationService = navigationService;
             _hexagonal = hexagonal;
             _heatGradientService = heatGradientService;
+            _zoneService = zoneService;
 
             _layerLast = 0;
             _currentPositionTag = String.Empty;
@@ -49,7 +52,7 @@ namespace CardinalAppXamarin.ViewModels
         public ICommand ProfileCommand => new Command(ProfileClicked);
         public ICommand SettingsCommand => new Command(SettingsClicked);
         public ICommand FriendsCommand => new Command(FriendsClicked);
-        public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(CameraIdled);
+        public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(async (a) => await CameraIdled(a));
         public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
@@ -133,8 +136,12 @@ namespace CardinalAppXamarin.ViewModels
         {
             var profile = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
             UserProfile = new ProfileViewModel() { UserInfo = profile };
-            await _layerService.InitializeData();
-            RefreshPolygons();
+
+            Task[] tasks = new Task[] { _layerService.InitializeData(), _zoneService.InitializeData() };
+            //await _layerService.InitializeData();
+            //await _zoneService.InitializeData();
+            await Task.WhenAll(tasks);
+            await RefreshPolygonsAsync();
             _initialized = true;
         }
 
@@ -203,7 +210,7 @@ namespace CardinalAppXamarin.ViewModels
         private double _currentCameraZoom { get; set; }
         private CameraIdledEventArgs _currentCameraIdledEventArgs {get;set;}
 
-        private void CameraIdled(CameraIdledEventArgs args)
+        private async Task CameraIdled(CameraIdledEventArgs args)
         {
             _currentCameraIdledEventArgs = args;
             double zoom = args.Position.Zoom;
@@ -211,7 +218,7 @@ namespace CardinalAppXamarin.ViewModels
             DebugLabel = zoom.ToString();
             if (_initialized)
             {
-                RefreshPolygons();
+                await RefreshPolygonsAsync();
             }
         }
 
@@ -235,8 +242,28 @@ namespace CardinalAppXamarin.ViewModels
             var centerPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
             _currentPositionTag = centerPoly.Tag.ToString();
         }
+        
+        private async Task RefreshZonesAsync()
+        {
+            var zones = await _zoneService.GetAllZoneContractsAsync();
+            foreach(var zc in zones)
+            {
+                Polygon poly = new Polygon()
+                {
+                    FillColor = Color.FromHex(zc.ARGBFill),
+                    StrokeColor = Color.FromHex(zc.ARGBFill),
+                    StrokeWidth = 1.0f,
+                    Tag = zc.Description
+                };
+                foreach (var shape in zc.ZoneShapes.Where(z => z.Order > 0).OrderBy(z=>z.Order))
+                {
+                    poly.Positions.Add(new Position(shape.Latitude, shape.Longitude));
+                }
+                Polygons.Add(poly);
+            }
+        }
 
-        private void RefreshPolygons()
+        private async Task RefreshPolygonsAsync()
         {
             if(_visibleRegion == null)
             {
@@ -275,6 +302,7 @@ namespace CardinalAppXamarin.ViewModels
                     Polygons.Add(poly);
                 }
             }
+            await RefreshZonesAsync();
             //RaisePropertyChanged(() => Polygons);
         }
 
