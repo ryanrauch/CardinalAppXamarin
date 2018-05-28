@@ -47,7 +47,12 @@ namespace CardinalAppXamarin.ViewModels
             string password = _localCredentialService.Password;
             if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
             {
-                var result = await _requestService.PostAuthenticationRequestAsync(username, password, true);
+                var parameters = new List<KeyValuePair<string, string>>();
+                parameters.Add(new KeyValuePair<string, string>("username", username));
+                parameters.Add(new KeyValuePair<string, string>("password", password));
+                parameters.Add(new KeyValuePair<string, string>("persistent", "True"));
+                var result = await _requestService.PostAsync<IEnumerable<KeyValuePair<string,string>>,bool>("api/Token", parameters, false);
+                //var result = await _requestService.PostAuthenticationRequestAsync(username, password, true);
                 if (result)
                 {
                     Message = "Checking Application Version";

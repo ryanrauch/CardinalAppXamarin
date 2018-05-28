@@ -102,9 +102,14 @@ namespace CardinalAppXamarin.ViewModels
         private async Task SignInAsync()
         {
             IsBusy = true;
-            bool result = await _requestService.PostAuthenticationRequestAsync(UserName.Value, 
-                                                                               Password.Value, 
-                                                                               Persistent);
+            var parameters = new List<KeyValuePair<string, string>>();
+            parameters.Add(new KeyValuePair<string, string>("username", UserName.Value));
+            parameters.Add(new KeyValuePair<string, string>("password", Password.Value));
+            parameters.Add(new KeyValuePair<string, string>("persistent", Persistent.ToString()));
+            var result = await _requestService.PostAsync<IEnumerable<KeyValuePair<string, string>>, bool>("api/Token", parameters, false);
+            //bool result = await _requestService.PostAuthenticationRequestAsync(UserName.Value, 
+            //                                                                   Password.Value, 
+            //                                                                   Persistent);
             if(result)
             {
                 if(Persistent)
@@ -122,8 +127,9 @@ namespace CardinalAppXamarin.ViewModels
 
         private void Enable()
         {
-            IsEnabled = !string.IsNullOrEmpty(UserName.Value) 
-                        && !string.IsNullOrEmpty(Password.Value);
+            //IsEnabled = !string.IsNullOrEmpty(UserName.Value) 
+            //            && !string.IsNullOrEmpty(Password.Value);
+            IsEnabled = Validate();
         }
 
         private async Task Register()

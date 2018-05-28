@@ -31,6 +31,17 @@ namespace CardinalAppXamarin.ViewModels
             AddValidations();
         }
 
+        private bool _isEnabled { get; set; }
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                _isEnabled = value;
+                RaisePropertyChanged(() => IsEnabled);
+            }
+        }
+
         private ValidatableObject<string> _email { get; set; }
         public ValidatableObject<string> Email
         {
@@ -139,6 +150,7 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public ICommand RegisterCommand => new Command(async () => await RegisterAsync());
+        public ICommand ValidateCommand => new Command(() => Enable());
 
         private void AddValidations()
         {
@@ -163,17 +175,49 @@ namespace CardinalAppXamarin.ViewModels
             _phoneNumber.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Phone Number is required." });
         }
 
+        private void Enable()
+        {
+            IsEnabled = Validate();
+        }
+
+        private bool Validate()
+        {
+            if(!_email.Validate()
+               || !_password.Validate()
+               || !_confirmPassword.Validate()
+               || !_displayName.Validate()
+               || !_firstName.Validate()
+               || !_lastName.Validate()
+               || !_dateOfBirth.Validate()
+               || !_phoneNumber.Validate())
+            {
+                return false;
+            }
+            if(!_password.Value.Equals(_confirmPassword.Value))
+            {
+                return false;
+            }
+            return true;
+        }
+
         private async Task RegisterAsync()
         {
             var data = new UserInfoContract();
-            var result = await _requestService.PostAsync<UserInfoContract, bool>("api/Registration", data);
-            if(result)
+            try
             {
-                _navigationService.NavigateToLogin();
+                var result = await _requestService.PostAsync<UserInfoContract, bool>("api/Registration", data);
+                if (result)
+                {
+                    _navigationService.NavigateToLogin();
+                }
+                else
+                {
+                    await _dialogService.DisplayAlertAsync("Registration Failed", "Registration process failed. Please verify information provided.", "OK");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                await _dialogService.DisplayAlertAsync("Registration Failed", "Registration process failed. Please verify information provided.", "OK");
+                await _dialogService.DisplayAlertAsync(ex.Message, ex.StackTrace, "OK");
             }
         }
 

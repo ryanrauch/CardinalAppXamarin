@@ -1,6 +1,7 @@
 ﻿using CardinalAppXamarin.Models;
 using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
+using CardinalLibrary;
 using CardinalLibrary.DataContracts;
 using System;
 using System.Collections.Generic;
@@ -240,7 +241,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             _hexagonal.Initialize(_currentPosition.Latitude, _currentPosition.Longitude, _hexagonal.Layers.Min());
             var centerPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
-            _currentPositionTag = centerPoly.Tag.ToString();
+            _currentPositionTag = ((PolygonTag)centerPoly.Tag).Tag;
         }
         
         private async Task RefreshZonesAsync()
@@ -253,7 +254,11 @@ namespace CardinalAppXamarin.ViewModels
                     FillColor = Color.FromHex(zc.ARGBFill),
                     StrokeColor = Color.FromHex(zc.ARGBFill),
                     StrokeWidth = 1.0f,
-                    Tag = zc.Description
+                    Tag = new PolygonTag()
+                                        {
+                                            PolygonTagType = PolygonTagType.Zone,
+                                            Tag = zc.Description
+                                        }
                 };
                 foreach (var shape in zc.ZoneShapes.Where(z => z.Order > 0).OrderBy(z=>z.Order))
                 {
@@ -281,15 +286,16 @@ namespace CardinalAppXamarin.ViewModels
                 for (int col = -2; col < 3; ++col)
                 {
                     var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
-                    if(Polygons.Any(p => p.Tag.ToString().Equals(poly.Tag.ToString())))
+                    if(Polygons.Any(p => ((PolygonTag)p.Tag).PolygonTagType.Equals(PolygonTagType.Hexagon)
+                                         && ((PolygonTag)p.Tag).Tag.Equals(((PolygonTag)poly.Tag).Tag)))
                     {
                         continue;
                     }
-                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.Tag.ToString());
+                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(((PolygonTag)poly.Tag).Tag);
                     poly.FillColor = _heatGradientService.SteppedColor(heatCount);
                     poly.IsClickable = true;
                     poly.Clicked += Polygon_Clicked;
-                    if (poly.Tag.ToString().Equals(_currentPositionTag))
+                    if (((PolygonTag)poly.Tag).Tag.Equals(_currentPositionTag))
                     {
                         poly.StrokeColor = Color.Coral;
                         poly.StrokeWidth = 5;
@@ -310,8 +316,11 @@ namespace CardinalAppXamarin.ViewModels
         {
             if (sender is Polygon sp)
             {
-                if (SelectedPolygon.Tag.ToString().Equals(sp.Tag.ToString()))
+                if (SelectedPolygon != null 
+                    && ((PolygonTag)SelectedPolygon.Tag).PolygonTagType.Equals(((PolygonTag)sp.Tag).PolygonTagType)
+                    && ((PolygonTag)SelectedPolygon.Tag).Tag.Equals(((PolygonTag)sp.Tag).Tag))
                 {
+                    SelectedPolygon = null;
                     PolygonUsersVisible = false;
                 }
                 else
@@ -326,8 +335,16 @@ namespace CardinalAppXamarin.ViewModels
         {
             if(SelectedPolygon != null)
             {
-                var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.Tag.ToString());
-                SelectedUsers = new ObservableCollection<UserInfoBriefViewCellModel>(friends);
+                if(((PolygonTag)SelectedPolygon.Tag).PolygonTagType.Equals(PolygonTagType.Hexagon))
+                {
+                    var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.Tag.ToString());
+                    SelectedUsers = new ObservableCollection<UserInfoBriefViewCellModel>(friends);
+                }
+                else
+                {
+                    //TODO: read friends inside of Zone from webapi
+                    SelectedUsers.Clear();
+                }
                 PolygonUsersVisible = SelectedUsers.Count > 0;
             }
             else
@@ -341,6 +358,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             if(PolygonUsersVisible)
             {
+                SelectedPolygon = null;
                 PolygonUsersVisible = false;
             }
         }

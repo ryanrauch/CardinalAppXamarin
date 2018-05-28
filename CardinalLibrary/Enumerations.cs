@@ -40,5 +40,10 @@ namespace CardinalLibrary
     {
         General = 0,
         BarDistrict = 1
+    };
+    public enum PolygonTagType
+    {
+        Hexagon = 0,
+        Zone = 1
     }
 }

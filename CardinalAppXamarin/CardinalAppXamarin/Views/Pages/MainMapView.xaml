@@ -39,7 +39,7 @@
                    HasShadow="True"
                    CornerRadius="10"
                    Opacity="0.8"
-                   BackgroundColor="{StaticResource RedColor}"
+                   BackgroundColor="{StaticResource CardinalSecondaryBackgroundColor}"
                    IsVisible="{Binding ProfileVisible}">
                 <views:ProfileView BindingContext="{Binding UserProfile}"/>
             </Frame>
@@ -49,7 +49,7 @@
                    HasShadow="True" 
                    CornerRadius="10"
                    Opacity="0.8"
-                   BackgroundColor="{StaticResource RedColor}"
+                   BackgroundColor="{StaticResource CardinalSecondaryBackgroundColor}"
                    IsVisible="{Binding PolygonUsersVisible}">
                 <ListView ItemsSource="{Binding SelectedUsers}"
                           BackgroundColor="Transparent"

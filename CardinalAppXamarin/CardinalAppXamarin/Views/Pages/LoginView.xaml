@@ -6,20 +6,8 @@
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
              xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.Views.Pages.LoginView">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="SignInButtonStyle"
-                   TargetType="{x:Type Button}"
-                   BasedOn="{StaticResource ButtonStyle}">
-                <Setter Property="HeightRequest"
-                        Value="54" />
-                <Setter Property="FontSize"
-                        Value="{StaticResource LargeSize}" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource RedColor}">
+        <StackLayout BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
             <Entry x:Name="EntryUserName"
                    Text="{Binding UserName.Value, Mode=TwoWay}"
                    AutomationId="username"
@@ -38,10 +26,12 @@
                     <DataTrigger TargetType="Entry" 
                          Binding="{Binding UserName.IsValid}" 
                          Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            
             <Entry x:Name="EntryPassword"
                    Text="{Binding Password.Value, Mode=TwoWay}"
                    Placeholder="Password"
@@ -62,19 +52,23 @@
                             TargetType="Entry"
                             Binding="{Binding Password.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
+            
             <StackLayout Orientation="Horizontal">
                 <Label Text="Remember me?" VerticalTextAlignment="Center"/>
                 <Switch IsToggled="{Binding Persistent}"/>
             </StackLayout>
+
             <Button x:Name="SignInButton"
                     Command="{Binding SignInCommand}"
                     Text="Sign in"
                     AutomationId="signin"
-                    Style="{StaticResource SignInButtonStyle}">
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource ButtonStyle}">
                 <Button.IsVisible>
                     <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"
@@ -82,11 +76,12 @@
                                             UWP="False"/>
                 </Button.IsVisible>
             </Button>
+
             <Button x:Name="ButtonRegister"
                     Command="{Binding RegisterCommand}"
                     Text="Register"
                     AutomationId="register"
-                    Style="{StaticResource SignInButtonStyle}">
+                    Style="{StaticResource ButtonStyle}">
                 <Button.IsVisible>
                     <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"

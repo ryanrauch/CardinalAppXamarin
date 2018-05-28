@@ -1,4 +1,5 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
+using CardinalLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,10 +69,18 @@ namespace CardinalAppXamarin.Services
             poly.Positions.Add(new Position(lat_bottom, lon_right));
             poly.Positions.Add(new Position(lat_bottom, lon_left));
             poly.Positions.Add(new Position(center.Latitude, center.Longitude - _flatRadius));
-            poly.Tag = CreateTagFromCoordinates(center, _layer);
+            //poly.Tag = CreateTagFromCoordinates(center, _layer);
+            poly.Tag = CreatePolygonTag(center, _layer);
             return poly;
         }
-
+        public PolygonTag CreatePolygonTag(Position position, int layer)
+        {
+            return new PolygonTag()
+            {
+                PolygonTagType = PolygonTagType.Hexagon,
+                Tag = CreateTagFromCoordinates(position, layer)
+            };
+        }
         public String CreateTagFromCoordinates(Position position, int layer)
         {
             double width = ZEROWIDTH * layer;

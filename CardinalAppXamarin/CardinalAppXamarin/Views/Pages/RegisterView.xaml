@@ -10,18 +10,13 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntEnumConverter x:Key="IntEnum"/>
-            <Style x:Key="RegisterButtonStyle"
-                   TargetType="{x:Type Button}"
-                   BasedOn="{StaticResource ButtonStyle}">
-                <Setter Property="HeightRequest"
-                        Value="54" />
-                <Setter Property="FontSize"
-                        Value="{StaticResource LargeSize}" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource RedColor}">
+        <!--look here for how to implement validations
+            https://docs.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/validation
+        -->
+        <StackLayout BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
             <Entry x:Name="EntryDisplayName"
                    Text="{Binding DisplayName.Value, Mode=TwoWay}"
                    AutomationId="displayname"
@@ -40,7 +35,8 @@
                     <DataTrigger TargetType="Entry" 
                          Binding="{Binding UserName.IsValid}" 
                          Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -64,7 +60,8 @@
                             TargetType="Entry"
                             Binding="{Binding FirstName.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -88,7 +85,8 @@
                             TargetType="Entry"
                             Binding="{Binding LastName.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -112,7 +110,8 @@
                             TargetType="Entry"
                             Binding="{Binding Email.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -136,7 +135,8 @@
                             TargetType="Entry"
                             Binding="{Binding PhoneNumber.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -162,7 +162,8 @@
                             TargetType="Entry"
                             Binding="{Binding Password.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
@@ -187,23 +188,26 @@
                             TargetType="Entry"
                             Binding="{Binding ConfirmPassword.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" Value="{StaticResource ErrorColor}" />
+                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                Value="{StaticResource CardinalErrorColor}" />
                     </DataTrigger>
                 </Entry.Triggers>
             </Entry>
             
-            <Picker ItemsSource="{Binding GenderList}" 
+            <Picker ItemsSource="{Binding GenderList}"
+                    Style="{StaticResource PickerStyle}"
                     SelectedIndex="{Binding SelectedGender, Converter=IntEnum}"/>
 
             <DatePicker x:Name="DatePickerDateOfBirth"
-                        Format="MMM d, yyyy"
+                        Style="{StaticResource DatePickerStyle}"
                         Date="{Binding DateOfBirth.Value, Mode=TwoWay}"/>
 
             <Button x:Name="ButtonRegister"
                     Command="{Binding RegisterCommand}"
                     Text="Register"
                     AutomationId="register"
-                    Style="{StaticResource RegisterButtonStyle}">
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource ButtonStyle}">
                 <Button.IsVisible>
                     <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"

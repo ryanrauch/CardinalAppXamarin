@@ -72,21 +72,21 @@ namespace CardinalAppXamarin.Effects
 
         class EntryLineColorEffect : RoutingEffect
         {
-            public EntryLineColorEffect() : base("BikeSharing.EntryLineColorEffect")
+            public EntryLineColorEffect() : base("CardinalAppXamarin.EntryLineColorEffect")
             {
             }
         }
 
         class DatePickerLineColorEffect : RoutingEffect
         {
-            public DatePickerLineColorEffect() : base("BikeSharing.DatePickerLineColorEffect")
+            public DatePickerLineColorEffect() : base("CardinalAppXamarin.DatePickerLineColorEffect")
             {
             }
         }
 
         class PickerLineColorEffect : RoutingEffect
         {
-            public PickerLineColorEffect() : base("BikeSharing.PickerLineColorEffect")
+            public PickerLineColorEffect() : base("CardinalAppXamarin.PickerLineColorEffect")
             {
             }
         }

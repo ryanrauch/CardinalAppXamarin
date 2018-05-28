@@ -8,20 +8,18 @@
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
             <!-- Colors -->
-            <Color x:Key="WhiteColor">#FFFFFF</Color>
-            <Color x:Key="RedColor">#CC0000</Color>
-            <Color x:Key="GrayColor">#C0C0C0</Color>
-            <Color x:Key="ErrorColor">#FFA500</Color>
-            <!--<Color x:Key="TransparentWhiteColor">#BFffffff</Color>
-            <Color x:Key="BlueColor">#3063f5</Color>
-            <Color x:Key="TransparentBlueColor">#BF3063f5</Color>
-            <Color x:Key="BrightYellowColor">#ffed00</Color>
-            <Color x:Key="BackgroundGrayColor">#f4f6fa</Color>
-            <Color x:Key="ToolbarBlueColor">#3063f5</Color>
-            <Color x:Key="OrangeColor">#ff5e4d</Color>
-            <Color x:Key="ProfileGrayColor">#afb3be</Color>
-            <Color x:Key="BlackColor">#000000</Color>
-            <Color x:Key="GreenColor">#0aca91</Color>-->
+            <Color x:Key="CardinalErrorColor">#FFA500</Color>
+            <Color x:Key="CardinalTransparentColor">#00FFFFFF</Color>
+            
+            <Color x:Key="CardinalPrimaryBackgroundColor">#FFFFFF</Color>
+            <Color x:Key="CardinalPrimaryBackgroundColorDimmed">#E2E2E2</Color>
+            <Color x:Key="CardinalPrimaryFontForegroundColor">#CC0000</Color>
+            <Color x:Key="CardinalPrimaryFontDimmedColor">#A0A0A0</Color>
+
+            <Color x:Key="CardinalSecondaryBackgroundColor">#CC0000</Color>
+            <Color x:Key="CardinalSecondaryBackgroundColorDimmed">#660000</Color>
+            <Color x:Key="CardinalSecondaryFontForegroundColor">#FFFFFF</Color>
+            <Color x:Key="CardinalSecondaryFontDimmedColor">#E2E2E2</Color>
 
             <!-- Fonts -->
             <!--<OnPlatform x:Key="MontserratRegular"
@@ -87,28 +85,35 @@
 
             <!-- Styles -->
             <Style ApplyToDerivedTypes="true" TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource Key=RedColor}"/>
-                <Setter Property="BarTextColor" Value="{StaticResource Key=WhiteColor}"/>
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Key=CardinalPrimaryBackgroundColor}"/>
+                <Setter Property="BarTextColor" Value="{StaticResource Key=CardinalPrimaryFontForegroundColor}"/>
             </Style>
             
-            <Style x:Key="BaseLabelStyle" TargetType="{x:Type Label}">
+            <!--Labels-->
+            <Style x:Key="PrimaryLabelStyle" TargetType="{x:Type Label}">
                 <Setter Property="effects:NumberOfLinesEffect.ApplyNumberOfLines" Value="True" />
                 <Setter Property="effects:NumberOfLinesEffect.NumberOfLines" Value="2" />
                 <Setter Property="LineBreakMode" Value="TailTruncation" />
-                <Setter Property="TextColor" Value="{StaticResource WhiteColor}"/>
+                <Setter Property="TextColor" Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
             </Style>
 
             <Style TargetType="{x:Type Label}"
-                   BasedOn="{StaticResource BaseLabelStyle}" />
+                   BasedOn="{StaticResource PrimaryLabelStyle}" />
 
+            <Style x:Key="SecondaryLabelStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource PrimaryLabelStyle}">
+                <Setter Property="TextColor" Value="{StaticResource CardinalSecondaryFontForegroundColor}"/>
+            </Style>
+            
             <Style x:Key="EntryStyle"
                    TargetType="{x:Type Entry}">
                 <!--<Setter Property="FontFamily"
                         Value="{StaticResource MontserratRegular}" />-->
                 <Setter Property="TextColor"
-                        Value="{StaticResource RedColor}" />
+                        Value="{StaticResource CardinalPrimaryFontForegroundColor}" />
                 <Setter Property="PlaceholderColor"
-                        Value="{StaticResource GrayColor}" />
+                        Value="{StaticResource CardinalPrimaryFontDimmedColor}" />
                 <Setter Property="FontSize"
                         Value="{StaticResource LargeSize}" />
                 <Setter Property="HorizontalOptions"
@@ -121,7 +126,7 @@
                 <Setter Property="effects:LineColorEffect.ApplyLineColor"
                         Value="True" />
                 <Setter Property="effects:LineColorEffect.LineColor"
-                        Value="{StaticResource WhiteColor}" />
+                        Value="{StaticResource CardinalPrimaryBackgroundColor}" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
                              Property="IsFocused" 
@@ -138,9 +143,9 @@
                 <!--<Setter Property="FontFamily"
                     Value="{StaticResource MontserratRegular}" />-->
                 <Setter Property="TextColor"
-                    Value="{StaticResource RedColor}" />
+                    Value="{StaticResource CardinalPrimaryFontForegroundColor}" />
                 <Setter Property="PlaceholderColor"
-                    Value="{StaticResource GrayColor}" />
+                    Value="{StaticResource CardinalPrimaryFontDimmedColor}" />
                 <Setter Property="FontSize"
                     Value="{StaticResource LargeSize}" />
                 <Setter Property="HorizontalOptions"
@@ -154,18 +159,32 @@
                 <Setter Property="effects:LineColorEffect.ApplyLineColor"
                     Value="True" />
                 <Setter Property="effects:LineColorEffect.LineColor"
-                    Value="{StaticResource WhiteColor}" />
+                    Value="{StaticResource CardinalPrimaryBackgroundColor}" />
                 <Style.Triggers>
                     <Trigger TargetType="Entry"
                        Property="IsFocused"
                        Value="True">
                         <Setter Property="Opacity" Value="1" />
                         <Setter Property="effects:LineColorEffect.LineColor"                        
-                                Value="{StaticResource WhiteColor}" />
+                                Value="{StaticResource CardinalPrimaryBackgroundColor}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="PickerStyle"
+                   TargetType="{x:Type Picker}">
+                <Setter Property="TextColor"
+                        Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
+            </Style>
+            
+            <Style x:Key="DatePickerStyle"
+                   TargetType="{x:Type DatePicker}">
+                <Setter Property="Format"
+                        Value="MMM d, yyyy"/>
+                <Setter Property="TextColor"
+                        Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
+            </Style>
+            
             <Style x:Key="ButtonStyle"
                    TargetType="{x:Type Button}">
                 <!--<Setter Property="FontFamily"
@@ -173,9 +192,9 @@
                 <Setter Property="FontAttributes"
                         Value="Bold" />
                 <Setter Property="TextColor"
-                        Value="{StaticResource RedColor}" />
+                        Value="{StaticResource CardinalPrimaryBackgroundColor}" />
                 <Setter Property="BackgroundColor"
-                        Value="{StaticResource WhiteColor}" />
+                        Value="{StaticResource CardinalPrimaryFontForegroundColor}" />
             </Style>
         </ResourceDictionary>
 	</Application.Resources>

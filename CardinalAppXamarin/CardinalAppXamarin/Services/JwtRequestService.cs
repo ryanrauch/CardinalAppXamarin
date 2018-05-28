@@ -93,17 +93,38 @@ namespace CardinalAppXamarin.Services
             return PostAsync<TResult, TResult>(uri, data);
         }
 
-        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data)
+        public async Task<TResult> PostAsync<TRequest, TResult>(string uri, TRequest data, bool auth = true)
         {
-            CheckInitialization();
+            if (auth)
+            {
+                CheckInitialization();
+            }
             if (!String.IsNullOrEmpty(_endPoint))
             {
                 uri = _endPoint + uri;
             }
-            string serialized = await Task.Run(() => JsonConvert.SerializeObject(data, _serializerSettings));
-            HttpResponseMessage response = await _client.PostAsync(uri, new StringContent(serialized, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response;
+            // Special-case for login
+            if (data is IEnumerable<KeyValuePair<string, string>> parameters)
+            {
+                var content = new FormUrlEncodedContent(parameters);
+                response = await _client.PostAsync(uri, content);
+            }
+            else
+            {
+                string serialized = await Task.Run(() => JsonConvert.SerializeObject(data, _serializerSettings));
+                response = await _client.PostAsync(uri, new StringContent(serialized, Encoding.UTF8, "application/json"));
+            }
             await HandleResponse(response);
             string responseData = await response.Content.ReadAsStringAsync();
+            //handle special case for login -- assumes TResult is bool
+            if (!auth && uri.EndsWith("api/Token"))
+            {
+                string token = await response.Content.ReadAsStringAsync();
+                SetJsonWebToken(token);
+                _initialized = true;
+                responseData = "true";
+            }
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
 

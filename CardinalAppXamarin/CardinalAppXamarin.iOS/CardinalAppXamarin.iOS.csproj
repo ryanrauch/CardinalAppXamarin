@@ -69,7 +69,9 @@
     <MtouchArch>ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer: ryan.rauch@outlook.com (5R3938P9XH)</CodesignKey>
-    <CodesignProvision>VS: com.ryanrauch.cardinal Development</CodesignProvision>
+    <CodesignProvision>
+    </CodesignProvision>
+    <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -101,6 +103,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DependencyService\AppVersionProvider.cs" />
+    <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist">
