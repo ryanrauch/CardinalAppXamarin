@@ -5,10 +5,11 @@
              xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
              x:Class="CardinalAppXamarin.Views.Pages.MainZoneView">
     <ContentPage.Content>
-        <StackLayout>
+        <!--<StackLayout>-->
             <ListView ItemsSource="{Binding ZonesList}"
                       HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand"
+                      VerticalOptions="StartAndExpand"
+                      MinimumHeightRequest="10"
                       HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -16,6 +17,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackLayout>
+        <!--</StackLayout>-->
     </ContentPage.Content>
 </local:MainZoneViewBase>

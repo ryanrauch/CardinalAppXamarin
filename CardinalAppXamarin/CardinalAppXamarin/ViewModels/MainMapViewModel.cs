@@ -217,6 +217,7 @@ namespace CardinalAppXamarin.ViewModels
         private void ZonesClicked()
         {
             _navigationService.NavigateToZones();
+            //_navigationService.NavigatePushAsync<MainZoneViewModel>(MainZoneViewModel)
         }
 
         private void FriendsClicked()

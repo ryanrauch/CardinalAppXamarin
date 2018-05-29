@@ -3,18 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
              x:Class="CardinalAppXamarin.Views.ViewCells.ZoneViewCell">
-        <StackLayout>
-            <Label Text="{Binding ZoneDescription}"/>
-            <ListView ItemsSource="{Binding ZoneUsers}"
-                      BackgroundColor="{StaticResource CardinalSecondaryBackgroundColor}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" 
+               Text="{Binding ZoneDescription}"
+                   Style="{StaticResource PrimaryLabelDimmedStyle}"/>
+        <ListView Grid.Row="1" 
+                  ItemsSource="{Binding ZoneUsers}"
+                      BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
                       HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand"
                       HasUnevenRows="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <viewCells:UserInfoBriefViewCell BindingContext="{Binding}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <!--<viewCells:UserInfoBriefViewCell BindingContext="{Binding}" />-->
+                    <ViewCell Height="20">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Name}"/>
+                            <Label Text="{Binding LastUpdated}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ViewCell>

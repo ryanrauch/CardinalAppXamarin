@@ -14,7 +14,7 @@
             <Color x:Key="CardinalPrimaryBackgroundColor">#FFFFFF</Color>
             <Color x:Key="CardinalPrimaryBackgroundColorDimmed">#E2E2E2</Color>
             <Color x:Key="CardinalPrimaryFontForegroundColor">#CC0000</Color>
-            <Color x:Key="CardinalPrimaryFontDimmedColor">#A0A0A0</Color>
+            <Color x:Key="CardinalPrimaryFontDimmedColor">#660000</Color>
 
             <Color x:Key="CardinalSecondaryBackgroundColor">#CC0000</Color>
             <Color x:Key="CardinalSecondaryBackgroundColorDimmed">#660000</Color>
@@ -95,6 +95,12 @@
                 <Setter Property="effects:NumberOfLinesEffect.NumberOfLines" Value="2" />
                 <Setter Property="LineBreakMode" Value="TailTruncation" />
                 <Setter Property="TextColor" Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
+            </Style>
+
+            <Style x:Key="PrimaryLabelDimmedStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource PrimaryLabelStyle}">
+                <Setter Property="TextColor" Value="{StaticResource CardinalPrimaryFontDimmedColor}"/>
             </Style>
 
             <Style TargetType="{x:Type Label}"
