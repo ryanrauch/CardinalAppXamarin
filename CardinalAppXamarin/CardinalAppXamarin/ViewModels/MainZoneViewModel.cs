@@ -21,6 +21,8 @@ namespace CardinalAppXamarin.ViewModels
             _zoneService = zoneService;
         }
 
+        private UserInfoBriefViewCellModel _emptyUserInfo = new UserInfoBriefViewCellModel("No Friends in this zone.");
+
         private ObservableCollection<ZoneViewModel> _zonesList { get; set; } = new ObservableCollection<ZoneViewModel>();
         public ObservableCollection<ZoneViewModel> ZonesList
         {
@@ -40,6 +42,10 @@ namespace CardinalAppXamarin.ViewModels
             foreach(var zone in zones)
             {
                 var zoneUsers = _layerService.UsersInsideZone(zone.ZoneID);
+                if(zoneUsers.Count == 0)
+                {
+                    zoneUsers.Add(_emptyUserInfo);
+                }
                 ZonesList.Add(new ZoneViewModel(zone, zoneUsers));
             }
         }

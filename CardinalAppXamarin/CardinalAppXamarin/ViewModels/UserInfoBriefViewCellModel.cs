@@ -11,6 +11,11 @@ namespace CardinalAppXamarin.ViewModels
         private readonly UserInfoContract _userInfoContract;
         private readonly CurrentLayerContract _currentLayerContract;
 
+        public UserInfoBriefViewCellModel(string emptyMessage)
+        {
+            EmptyMessage = emptyMessage;
+        }
+
         public UserInfoBriefViewCellModel(
             UserInfoContract userInfoContract,
             CurrentLayerContract currentLayerContract)
@@ -19,11 +24,36 @@ namespace CardinalAppXamarin.ViewModels
             _currentLayerContract = currentLayerContract;
         }
 
-        public string Name => _userInfoContract.UserName;
+        private string _emptyMessage { get; set; }
+        public string EmptyMessage
+        {
+            get { return _emptyMessage; }
+            set
+            {
+                _emptyMessage = value;
+                RaisePropertyChanged(() => EmptyMessage);
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if(!string.IsNullOrEmpty(EmptyMessage))
+                {
+                    return EmptyMessage;
+                }
+                return _userInfoContract.UserName;
+            }
+        }
         public string LastUpdated
         {
             get
             {
+                if(!string.IsNullOrEmpty(EmptyMessage))
+                {
+                    return string.Empty;
+                }
                 TimeSpan span = DateTime.Now.ToUniversalTime().Subtract(_currentLayerContract.TimeStamp);
                 int hours = (int)Math.Floor(Math.Abs(span.TotalHours));
                 if (hours == 1)
