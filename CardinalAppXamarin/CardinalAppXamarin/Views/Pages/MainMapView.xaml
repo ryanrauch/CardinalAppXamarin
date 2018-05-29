@@ -18,13 +18,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
             <googleMaps:Map Grid.Row="0"
-                            Grid.RowSpan="3" 
+                            Grid.RowSpan="4" 
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             MapStyle="{Binding CustomMapStyle}"
+                            MapType="{Binding CustomMapType}"
                             InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
                 <googleMaps:Map.Behaviors>
                     <googleMapsBindings:MapClickedToCommandBehavior Command="{Binding MapClickedCommand}"/>
@@ -63,7 +65,28 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
-            <!--<Label Grid.Row="2" Text="{Binding DebugLabel}"/>-->
+            <StackLayout Grid.Row="2"
+                         Orientation="Horizontal"
+                         Margin="10,0"
+                         HorizontalOptions="FillAndExpand">
+                <Button Text="Satellite" 
+                        Command="{Binding MapTypeCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        CommandParameter="Satellite"/>
+                <Button Text="Street" 
+                        Command="{Binding MapTypeCommand}" 
+                        HorizontalOptions="FillAndExpand"
+                        CommandParameter="Street"/>
+                <Button Text="Terrain" 
+                        Command="{Binding MapTypeCommand}" 
+                        HorizontalOptions="FillAndExpand"
+                        CommandParameter="Terrain"/>
+                <Button Text="Hybrid" 
+                        Command="{Binding MapTypeCommand}" 
+                        HorizontalOptions="FillAndExpand"
+                        CommandParameter="Hybrid"/>
+            </StackLayout>
+            <!--<Label Grid.Row="3" Text="{Binding DebugLabel}"/>-->
         </Grid>
     </ContentPage.Content>
 </local:MainMapViewBase>

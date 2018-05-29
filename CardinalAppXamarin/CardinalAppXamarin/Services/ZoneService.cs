@@ -33,6 +33,11 @@ namespace CardinalAppXamarin.Services
             return _zoneContracts;
         }
 
+        public ZoneContract GetZoneContract(string zoneId)
+        {
+            return _zoneContracts.Find(z => z.ZoneID.Equals(zoneId));
+        }
+
         public async Task<ZoneContract> GetZoneContractAsync(string zoneId)
         {
             if(!_initialized)

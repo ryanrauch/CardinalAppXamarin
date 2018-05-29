@@ -1,4 +1,5 @@
-﻿using CardinalAppXamarin.Models;
+﻿using CardinalAppXamarin.Extensions;
+using CardinalAppXamarin.Models;
 using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
 using CardinalLibrary;
@@ -46,7 +47,9 @@ namespace CardinalAppXamarin.ViewModels
             _layerLast = 0;
             _currentPositionTag = String.Empty;
             _currentPosition = _geolocatorService.LastRecordedPosition;
-            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0); // zoom can be within: [2,21]
+            //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0); // zoom can be within: [2,21]
+            CameraPosition cp = new CameraPosition(_currentPosition, 12.0, 0.0, 60.0);
+            MainMapInitialCameraUpdate = CameraUpdateFactory.NewCameraPosition(cp);
             _initialized = false;
         }
 
@@ -56,7 +59,20 @@ namespace CardinalAppXamarin.ViewModels
         public Command<CameraIdledEventArgs> MapCameraIdled => new Command<CameraIdledEventArgs>(async (a) => await CameraIdled(a));
         public Command<MapClickedEventArgs> MapClickedCommand => new Command<MapClickedEventArgs>(MapClicked);
 
+        public ICommand MapTypeCommand => new Command<string>(MapTypeClicked);
+
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
+
+        private MapType _customMapType { get; set; } = MapType.Street;
+        public MapType CustomMapType
+        {
+            get { return _customMapType; }
+            set
+            {
+                _customMapType = value;
+                RaisePropertyChanged(() => CustomMapType);
+            }
+        }
 
         private bool _polygonUsersVisible { get; set; } = false;
         public bool PolygonUsersVisible
@@ -176,6 +192,27 @@ namespace CardinalAppXamarin.ViewModels
             _settingsVisible = !_settingsVisible;
         }
 
+        private void MapTypeClicked(string str)
+        {
+            switch(str)
+            {
+                case "Satellite":
+                    CustomMapType = MapType.Satellite;
+                    break;
+                case "Street":
+                    CustomMapType = MapType.Street;
+                    break;
+                case "Terrain":
+                    CustomMapType = MapType.Terrain;
+                    break;
+                case "Hybrid":
+                    CustomMapType = MapType.Hybrid;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void FriendsClicked()
         {
 
@@ -241,7 +278,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             _hexagonal.Initialize(_currentPosition.Latitude, _currentPosition.Longitude, _hexagonal.Layers.Min());
             var centerPoly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation);
-            _currentPositionTag = ((PolygonTag)centerPoly.Tag).Tag;
+            _currentPositionTag = centerPoly.ExtractPolygonTag().Tag;
         }
         
         private async Task RefreshZonesAsync()
@@ -286,16 +323,15 @@ namespace CardinalAppXamarin.ViewModels
                 for (int col = -2; col < 3; ++col)
                 {
                     var poly = _hexagonal.HexagonalPolygon(_hexagonal.CenterLocation, col, row);
-                    if(Polygons.Any(p => ((PolygonTag)p.Tag).PolygonTagType.Equals(PolygonTagType.Hexagon)
-                                         && ((PolygonTag)p.Tag).Tag.Equals(((PolygonTag)poly.Tag).Tag)))
+                    if(Polygons.Any(p => p.PolygonTagEquals(poly)))
                     {
                         continue;
                     }
-                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(((PolygonTag)poly.Tag).Tag);
+                    int heatCount = _layerService.NumberOfUsersInsidePolygonTag(poly.ExtractPolygonTag().Tag);
                     poly.FillColor = _heatGradientService.SteppedColor(heatCount);
                     poly.IsClickable = true;
                     poly.Clicked += Polygon_Clicked;
-                    if (((PolygonTag)poly.Tag).Tag.Equals(_currentPositionTag))
+                    if (poly.PolygonTagStringEquals(_currentPositionTag))
                     {
                         poly.StrokeColor = Color.Coral;
                         poly.StrokeWidth = 5;
@@ -317,8 +353,7 @@ namespace CardinalAppXamarin.ViewModels
             if (sender is Polygon sp)
             {
                 if (SelectedPolygon != null 
-                    && ((PolygonTag)SelectedPolygon.Tag).PolygonTagType.Equals(((PolygonTag)sp.Tag).PolygonTagType)
-                    && ((PolygonTag)SelectedPolygon.Tag).Tag.Equals(((PolygonTag)sp.Tag).Tag))
+                    && SelectedPolygon.PolygonTagEquals(sp))
                 {
                     SelectedPolygon = null;
                     PolygonUsersVisible = false;
@@ -335,14 +370,18 @@ namespace CardinalAppXamarin.ViewModels
         {
             if(SelectedPolygon != null)
             {
-                if(((PolygonTag)SelectedPolygon.Tag).PolygonTagType.Equals(PolygonTagType.Hexagon))
+                if(SelectedPolygon.PolygonTagTypeEquals(PolygonTagType.Hexagon))
                 {
-                    var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.Tag.ToString());
+                    var friends = _layerService.UsersInsidePolygonTagBrief(SelectedPolygon.ExtractPolygonTag().Tag);
                     SelectedUsers = new ObservableCollection<UserInfoBriefViewCellModel>(friends);
+                }
+                else if(SelectedPolygon.PolygonTagTypeEquals(PolygonTagType.Zone))
+                {
+                    //TODO: read friends inside of Zone from webapi
+                    SelectedUsers.Clear();
                 }
                 else
                 {
-                    //TODO: read friends inside of Zone from webapi
                     SelectedUsers.Clear();
                 }
                 PolygonUsersVisible = SelectedUsers.Count > 0;

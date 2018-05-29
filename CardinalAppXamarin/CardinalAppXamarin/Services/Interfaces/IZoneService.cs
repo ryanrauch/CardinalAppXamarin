@@ -10,5 +10,7 @@ namespace CardinalAppXamarin.Services.Interfaces
         Task<ZoneContract> GetZoneContractAsync(string zoneId);
         Task<List<ZoneShapeContract>> GetZoneShapesAsync(string zoneId);
         Task InitializeData();
+
+        ZoneContract GetZoneContract(string zoneId);
     }
 }

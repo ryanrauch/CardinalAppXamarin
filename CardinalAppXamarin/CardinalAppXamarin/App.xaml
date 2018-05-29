@@ -185,6 +185,7 @@
                         Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
             </Style>
             
+            <!--Buttons-->            
             <Style x:Key="ButtonStyle"
                    TargetType="{x:Type Button}">
                 <!--<Setter Property="FontFamily"
@@ -196,6 +197,17 @@
                 <Setter Property="BackgroundColor"
                         Value="{StaticResource CardinalPrimaryFontForegroundColor}" />
             </Style>
+            <Style x:Key="SecondaryButtonStyle"
+                   TargetType="{x:Type Button}">
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource CardinalSecondaryBackgroundColor}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource CardinalSecondaryFontForegroundColor}" />
+            </Style>
+            <Style TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}" />
         </ResourceDictionary>
 	</Application.Resources>
 </Application>

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CardinalLibrary.DataContracts
 {
@@ -9,5 +7,6 @@ namespace CardinalLibrary.DataContracts
         public String UserId { get; set; }
         public DateTime TimeStamp { get; set; }
         public String LayersDelimited { get; set; }
+        public String CurrentZoneId { get; set; }
     }
 }
