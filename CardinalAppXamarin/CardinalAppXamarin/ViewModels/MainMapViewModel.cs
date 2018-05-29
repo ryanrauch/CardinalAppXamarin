@@ -2,6 +2,7 @@
 using CardinalAppXamarin.Models;
 using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
+using CardinalAppXamarin.Views.Pages;
 using CardinalLibrary;
 using CardinalLibrary.DataContracts;
 using System;
@@ -44,16 +45,27 @@ namespace CardinalAppXamarin.ViewModels
             _heatGradientService = heatGradientService;
             _zoneService = zoneService;
 
+            Initialized = false;
             _layerLast = 0;
             _currentPositionTag = String.Empty;
             _currentPosition = _geolocatorService.LastRecordedPosition;
             //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(_currentPosition, 12.0); // zoom can be within: [2,21]
             CameraPosition cp = new CameraPosition(_currentPosition, 12.0, 0.0, 60.0);
             MainMapInitialCameraUpdate = CameraUpdateFactory.NewCameraPosition(cp);
-            _initialized = false;
         }
 
-        public ICommand ZonesCommand => new Command(ZonesClicked);
+        private bool _initialized { get; set; }
+        public bool Initialized
+        {
+            get { return _initialized; }
+            set
+            {
+                _initialized = value;
+                RaisePropertyChanged(() => Initialized);
+            }
+        }
+
+        public ICommand ZonesCommand => new Command(async () => await ZonesClicked());
         public ICommand ProfileCommand => new Command(ProfileClicked);
         public ICommand SettingsCommand => new Command(SettingsClicked);
         public ICommand FriendsCommand => new Command(FriendsClicked);
@@ -148,19 +160,20 @@ namespace CardinalAppXamarin.ViewModels
         //private Position _moveRequestFinalPosition { get; set; }
         public MoveToRegionRequest MoveRequest { get; } = new MoveToRegionRequest();
 
-        private bool _initialized { get; set; }
-
         public override async Task OnAppearingAsync()
         {
-            var profile = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
-            UserProfile = new ProfileViewModel() { UserInfo = profile };
+            if (!Initialized)
+            {
+                var profile = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
+                UserProfile = new ProfileViewModel() { UserInfo = profile };
 
-            Task[] tasks = new Task[] { _layerService.InitializeData(), _zoneService.InitializeData() };
-            //await _layerService.InitializeData();
-            //await _zoneService.InitializeData();
-            await Task.WhenAll(tasks);
-            await RefreshPolygonsAsync();
-            _initialized = true;
+                Task[] tasks = new Task[] { _layerService.InitializeData(), _zoneService.InitializeData() };
+                //await _layerService.InitializeData();
+                //await _zoneService.InitializeData();
+                await Task.WhenAll(tasks);
+                await RefreshPolygonsAsync();
+                Initialized = true;
+            }
         }
 
         private string _currentPositionTag { get; set; }
@@ -214,10 +227,13 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        private void ZonesClicked()
+        private async Task ZonesClicked()
         {
-            _navigationService.NavigateToZones();
-            //_navigationService.NavigatePushAsync<MainZoneViewModel>(MainZoneViewModel)
+            //_navigationService.NavigateToZones();
+            if(Initialized)
+            {
+                await _navigationService.NavigatePushAsync(new MainZoneView());
+            }
         }
 
         private void FriendsClicked()
@@ -261,7 +277,7 @@ namespace CardinalAppXamarin.ViewModels
             double zoom = args.Position.Zoom;
             //_currentCameraZoom = zoom;
             DebugLabel = zoom.ToString();
-            if (_initialized)
+            if (Initialized)
             {
                 await RefreshPolygonsAsync();
             }

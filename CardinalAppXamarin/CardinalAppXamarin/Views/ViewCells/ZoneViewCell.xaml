@@ -2,7 +2,7 @@
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
           xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
-          xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+          xmlns:triggers="clr-namespace:CardinalAppXamarin.Triggers"
           x:Class="CardinalAppXamarin.Views.ViewCells.ZoneViewCell">
     <StackLayout>
         <Label Text="{Binding ZoneDescription}"
@@ -13,10 +13,10 @@
                                   VerticalOptions="FillAndExpand">
             <controls:StackLayoutList.ItemTemplate>
                 <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Name}"/>
-                            <Label Text="{Binding LastUpdated}"/>
-                        </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}"/>
+                        <Label Text="{Binding LastUpdated}"/>
+                    </StackLayout>
                 </DataTemplate>
             </controls:StackLayoutList.ItemTemplate>
         </controls:StackLayoutList>

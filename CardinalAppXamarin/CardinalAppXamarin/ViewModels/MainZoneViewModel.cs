@@ -19,6 +19,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             _layerService = layerService;
             _zoneService = zoneService;
+            IsBusy = true;
         }
 
         private UserInfoBriefViewCellModel _emptyUserInfo = new UserInfoBriefViewCellModel("No Friends in this zone.");
@@ -48,6 +49,7 @@ namespace CardinalAppXamarin.ViewModels
                 }
                 ZonesList.Add(new ZoneViewModel(zone, zoneUsers));
             }
+            IsBusy = false;
         }
     }
 }
