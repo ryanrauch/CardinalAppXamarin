@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:MainZoneViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+             xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+             x:Class="CardinalAppXamarin.Views.Pages.MainZoneView">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding ZonesList}"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <viewCells:ZoneViewCell BindingContext="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</local:MainZoneViewBase>

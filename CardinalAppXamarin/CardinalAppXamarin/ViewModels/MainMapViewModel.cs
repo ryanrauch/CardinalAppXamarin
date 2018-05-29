@@ -53,6 +53,7 @@ namespace CardinalAppXamarin.ViewModels
             _initialized = false;
         }
 
+        public ICommand ZonesCommand => new Command(ZonesClicked);
         public ICommand ProfileCommand => new Command(ProfileClicked);
         public ICommand SettingsCommand => new Command(SettingsClicked);
         public ICommand FriendsCommand => new Command(FriendsClicked);
@@ -213,6 +214,11 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private void ZonesClicked()
+        {
+            _navigationService.NavigateToZones();
+        }
+
         private void FriendsClicked()
         {
 
@@ -345,7 +351,6 @@ namespace CardinalAppXamarin.ViewModels
                 }
             }
             await RefreshZonesAsync();
-            //RaisePropertyChanged(() => Polygons);
         }
 
         private void Polygon_Clicked(object sender, EventArgs e)
@@ -378,7 +383,8 @@ namespace CardinalAppXamarin.ViewModels
                 else if(SelectedPolygon.PolygonTagTypeEquals(PolygonTagType.Zone))
                 {
                     //TODO: read friends inside of Zone from webapi
-                    SelectedUsers.Clear();
+                    var friends = _layerService.UsersInsideZone(SelectedPolygon.ExtractPolygonTag().Tag);
+                    SelectedUsers = new ObservableCollection<UserInfoBriefViewCellModel>(friends);
                 }
                 else
                 {

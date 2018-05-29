@@ -16,17 +16,20 @@ namespace CardinalAppXamarin.Services
         private readonly IHexagonal _hexagonal;
         private readonly IMockDataUpdateService _mockDataUpdateService;
         private readonly IZoneService _zoneService;
+        private readonly IDialogService _dialogService;
 
         public LayerService(
             IRequestService requestService,
             IHexagonal hexagonal,
             IMockDataUpdateService mockDataUpdateService,
-            IZoneService zoneService)
+            IZoneService zoneService,
+            IDialogService dialogService)
         {
             _requestService = requestService;
             _hexagonal = hexagonal;
             _mockDataUpdateService = mockDataUpdateService;
             _zoneService = zoneService;
+            _dialogService = dialogService;
 
             _lastUpdated = DateTime.MinValue;
         }
@@ -113,14 +116,19 @@ namespace CardinalAppXamarin.Services
             return null;
         }
 
-        public List<UserInfoBriefViewCellModel> UsersInsizeZone(string zoneId)
+        public List<UserInfoBriefViewCellModel> UsersInsideZone(string zoneId)
         {
-            var models = from c in _currentLayerContracts
-                         join u in _userInfoContracts on c.UserId equals u.Id
-                         where !String.IsNullOrEmpty(c.CurrentZoneId) && c.CurrentZoneId.Equals(zoneId)
-                         orderby c.TimeStamp descending
-                         select new UserInfoBriefViewCellModel(u, c);
-            return new List<UserInfoBriefViewCellModel>(models);
+            if (_currentLayerContracts.Any(c => c.CurrentZoneId != null
+                                                && c.CurrentZoneId.Equals(zoneId)))
+            {
+                var models = from c in _currentLayerContracts
+                                join u in _userInfoContracts on c.UserId equals u.Id
+                                where c.CurrentZoneId != null && c.CurrentZoneId.Equals(zoneId)
+                                orderby c.TimeStamp descending
+                                select new UserInfoBriefViewCellModel(u, c);
+                return new List<UserInfoBriefViewCellModel>(models);
+            }
+            return new List<UserInfoBriefViewCellModel>();
         }
     }
 }

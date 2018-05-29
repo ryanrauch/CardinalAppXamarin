@@ -16,6 +16,6 @@ namespace CardinalAppXamarin.Services.Interfaces
         List<UserInfoBriefViewCellModel> UsersInsidePolygonTagBrief(string layerDelimited);
 
         string FindZoneContainingUser(string userId);
-        List<UserInfoBriefViewCellModel> UsersInsizeZone(string zoneId);
+        List<UserInfoBriefViewCellModel> UsersInsideZone(string zoneId);
     }
 }

@@ -31,6 +31,10 @@ namespace CardinalAppXamarin.Services
         {
             CurrentApplication.MainPage = new NavigationPage(new LoginView());
         }
+        public void NavigateToZones()
+        {
+            CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
+        }
         public async Task NavigatePushAsync<T>(T page) where T : Page
         {
             await CurrentApplication.MainPage.Navigation.PushAsync(page);

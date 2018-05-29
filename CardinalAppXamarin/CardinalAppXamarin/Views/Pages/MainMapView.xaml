@@ -9,6 +9,7 @@
              xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
              x:Class="CardinalAppXamarin.Views.Pages.MainMapView">
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Zones" Command="{Binding ZonesCommand}"/>
         <ToolbarItem Text="Friends" Command="{Binding FriendsCommand}"/>
         <ToolbarItem Text="Profile" Command="{Binding ProfileCommand}"/>
         <ToolbarItem Text="Settings" Command="{Binding SettingsCommand}"/>

@@ -3,9 +3,6 @@ using CardinalAppXamarin.Services;
 using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.Services.Mock;
 using CardinalAppXamarin.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace CardinalAppXamarin
@@ -20,7 +17,10 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<MainMapViewModel>().SingleInstance();
             containerBuilder.RegisterType<RegisterViewModel>().SingleInstance();
             containerBuilder.RegisterType<ProfileViewModel>().SingleInstance();
+            containerBuilder.RegisterType<MainZoneViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
 
+            containerBuilder.RegisterType<ZoneViewModel>();
             containerBuilder.RegisterType<UserInfoBriefViewCellModel>();
 
             if(mock)

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+             x:Class="CardinalAppXamarin.Views.ViewCells.ZoneViewCell">
+        <StackLayout>
+            <Label Text="{Binding ZoneDescription}"/>
+            <ListView ItemsSource="{Binding ZoneUsers}"
+                      BackgroundColor="{StaticResource CardinalSecondaryBackgroundColor}"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <viewCells:UserInfoBriefViewCell BindingContext="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+</ViewCell>
