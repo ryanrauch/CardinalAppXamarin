@@ -28,8 +28,6 @@
                                               UWP="{StaticResource UwpEntryStyle}"/>
                 </Entry.Style>
                 <Entry.Behaviors>
-                    <behaviors:AnimateSizeBehavior EasingFunctionName="BounceIn"
-                                                   Scale="1.5"/>
                     <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding DisplayName}" />
                     <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
                 </Entry.Behaviors>
