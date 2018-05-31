@@ -46,5 +46,10 @@
 	<string>Needs Calendar Permission</string>
 	<key>XSAppIconAssets</key>
 	<string>Media.xcassets/AppIcons.appiconset</string>
+  <key>UIAppFonts</key>
+  <array>
+    <string>highlandgothiclightflf.ttf</string>
+    <string>fa-regular-400.ttf</string>
+  </array>
 </dict>
 </plist>

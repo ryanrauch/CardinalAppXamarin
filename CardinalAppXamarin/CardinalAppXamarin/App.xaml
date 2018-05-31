@@ -26,6 +26,16 @@
             <Color x:Key="CardinalMiddleGradientColor">#6600FF</Color>
 
             <!-- Fonts -->
+            <OnPlatform x:Key="HighlandGothicLightFLF"
+                        x:TypeArguments="x:String"
+                        iOS="highlandgothiclightflf"
+                        Android="highlandgothiclightflf.ttf#highlandgothiclightflf"
+                        WinPhone="Assets/highlandgothiclightflf.ttf#highlandgothiclightflf"/>
+            <OnPlatform x:Key="FontAwesome"
+                        x:TypeArguments="x:String"
+                        iOS="Font Awesome 5 Free"
+                        Android="fa-regular-400.ttf#Font Awesome 5 Free Regular" 
+                        WinPhone="Assets/fa-regular-400.ttf#Font Awesome 5 Free"/>
             <!--<OnPlatform x:Key="MontserratRegular"
                         x:TypeArguments="x:String"
                         iOS="Montserrat-Regular"
@@ -95,6 +105,7 @@
             
             <!--Labels-->
             <Style x:Key="PrimaryLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="FontFamily" Value="{StaticResource HighlandGothicLightFLF}" />
                 <Setter Property="effects:NumberOfLinesEffect.ApplyNumberOfLines" Value="True" />
                 <Setter Property="effects:NumberOfLinesEffect.NumberOfLines" Value="2" />
                 <Setter Property="LineBreakMode" Value="TailTruncation" />

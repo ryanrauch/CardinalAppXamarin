@@ -21,7 +21,6 @@
                FontSize="{StaticResource LittleSize}"/>
         <controls:GradientView Grid.Row="1"
                                Grid.Column="0"
-                               VerticalOptions="StartAndExpand"
                                StartColor="{StaticResource CardinalFemaleGradientColor}"
                                MiddleColor="{StaticResource CardinalMiddleGradientColor}"
                                EndColor="{StaticResource CardinalMaleGradientColor}"
@@ -31,35 +30,14 @@
                Grid.Column="1"
                VerticalTextAlignment="End"
                Text="{Binding ZoneDescription}"
-               FontSize="{StaticResource ExtraBigSize}"/>
-        <BoxView Grid.Row="0"
-                 Grid.Column="2"/>
+               FontSize="{StaticResource BigSize}"/>
+        <Label Grid.Row="0"
+               Grid.Column="2"
+               FontFamily="{StaticResource FontAwesome}"
+               Text="&#xf124;"/>
         <Label Grid.Row="1"
                Grid.Column="2"
                Text="{Binding DistanceText}"
                FontSize="{StaticResource LittleSize}"/>
     </Grid>
 </ViewCell>
-<!--<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
-          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-          xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
-          xmlns:triggers="clr-namespace:CardinalAppXamarin.Triggers"
-          x:Class="CardinalAppXamarin.Views.ViewCells.ZoneViewCell">
-    <StackLayout>
-        <Label Text="{Binding ZoneDescription}"
-                   Style="{StaticResource PrimaryLabelDimmedStyle}"/>
-        <controls:StackLayoutList ItemsSource="{Binding ZoneUsers}"
-                                  BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
-                                  HorizontalOptions="FillAndExpand"
-                                  VerticalOptions="FillAndExpand">
-            <controls:StackLayoutList.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Name}"/>
-                        <Label Text="{Binding LastUpdated}"/>
-                    </StackLayout>
-                </DataTemplate>
-            </controls:StackLayoutList.ItemTemplate>
-        </controls:StackLayoutList>
-    </StackLayout>
-</ViewCell>-->
