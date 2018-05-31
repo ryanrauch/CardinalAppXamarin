@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
+          xmlns:triggers="clr-namespace:CardinalAppXamarin.Triggers"
+          x:Class="CardinalAppXamarin.Views.ViewCells.ZoneListViewCell">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               Text="{Binding FriendsText}"
+               VerticalTextAlignment="End"
+               FontSize="{StaticResource LittleSize}"/>
+        <controls:GradientView Grid.Row="1"
+                               Grid.Column="0"
+                               VerticalOptions="StartAndExpand"
+                               StartColor="{StaticResource CardinalFemaleGradientColor}"
+                               MiddleColor="{StaticResource CardinalMiddleGradientColor}"
+                               EndColor="{StaticResource CardinalMaleGradientColor}"
+                               Percent="{Binding RatioFriends}"/>
+        <Label Grid.Row="0"
+               Grid.RowSpan="2"
+               Grid.Column="1"
+               VerticalTextAlignment="End"
+               Text="{Binding ZoneDescription}"
+               FontSize="{StaticResource ExtraBigSize}"/>
+        <BoxView Grid.Row="0"
+                 Grid.Column="2"/>
+        <Label Grid.Row="1"
+               Grid.Column="2"
+               Text="{Binding DistanceText}"
+               FontSize="{StaticResource LittleSize}"/>
+    </Grid>
+</ViewCell>
+<!--<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
+          xmlns:triggers="clr-namespace:CardinalAppXamarin.Triggers"
+          x:Class="CardinalAppXamarin.Views.ViewCells.ZoneViewCell">
+    <StackLayout>
+        <Label Text="{Binding ZoneDescription}"
+                   Style="{StaticResource PrimaryLabelDimmedStyle}"/>
+        <controls:StackLayoutList ItemsSource="{Binding ZoneUsers}"
+                                  BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
+                                  HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="FillAndExpand">
+            <controls:StackLayoutList.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}"/>
+                        <Label Text="{Binding LastUpdated}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </controls:StackLayoutList.ItemTemplate>
+        </controls:StackLayoutList>
+    </StackLayout>
+</ViewCell>-->

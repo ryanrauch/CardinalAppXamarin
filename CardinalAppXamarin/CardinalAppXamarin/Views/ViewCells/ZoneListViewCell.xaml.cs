@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace CardinalAppXamarin.Views.ViewCells
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ZoneViewCell : ViewCell
+	public partial class ZoneListViewCell : ViewCell
 	{
-		public ZoneViewCell ()
+		public ZoneListViewCell ()
 		{
 			InitializeComponent ();
 		}

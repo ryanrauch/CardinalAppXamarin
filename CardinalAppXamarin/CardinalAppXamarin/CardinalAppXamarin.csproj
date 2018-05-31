@@ -22,12 +22,15 @@
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ViewCells\ZoneViewCell.xaml.cs">
-      <DependentUpon>ZoneViewCell.xaml</DependentUpon>
+    <Compile Update="Views\ViewCells\ZoneListViewCell.xaml.cs">
+      <DependentUpon>ZoneListViewCell.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\HeaderView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Pages\MainZoneView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -43,7 +46,7 @@
     <EmbeddedResource Update="Views\ViewCells\UserInfoBriefViewCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ViewCells\ZoneViewCell.xaml">
+    <EmbeddedResource Update="Views\ViewCells\ZoneListViewCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

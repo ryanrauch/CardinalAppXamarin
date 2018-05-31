@@ -21,6 +21,10 @@
             <Color x:Key="CardinalSecondaryFontForegroundColor">#FFFFFF</Color>
             <Color x:Key="CardinalSecondaryFontDimmedColor">#E2E2E2</Color>
 
+            <Color x:Key="CardinalFemaleGradientColor">#FF00FF</Color>
+            <Color x:Key="CardinalMaleGradientColor">#0099FF</Color>
+            <Color x:Key="CardinalMiddleGradientColor">#6600FF</Color>
+
             <!-- Fonts -->
             <!--<OnPlatform x:Key="MontserratRegular"
                         x:TypeArguments="x:String"

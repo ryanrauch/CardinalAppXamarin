@@ -1,9 +1,6 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CardinalAppXamarin.ViewModels
@@ -43,10 +40,6 @@ namespace CardinalAppXamarin.ViewModels
             foreach(var zone in zones)
             {
                 var zoneUsers = _layerService.UsersInsideZone(zone.ZoneID);
-                if(zoneUsers.Count == 0)
-                {
-                    zoneUsers.Add(_emptyUserInfo);
-                }
                 ZonesList.Add(new ZoneViewModel(zone, zoneUsers));
             }
             IsBusy = false;

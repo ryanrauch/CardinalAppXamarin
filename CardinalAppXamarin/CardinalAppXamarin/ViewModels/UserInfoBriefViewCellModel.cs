@@ -1,5 +1,6 @@
 ﻿using CardinalAppXamarin.Models;
 using CardinalAppXamarin.ViewModels.Base;
+using CardinalLibrary;
 using CardinalLibrary.DataContracts;
 using System;
 using System.Threading.Tasks;
@@ -69,6 +70,11 @@ namespace CardinalAppXamarin.ViewModels
                     return String.Format("{0}mins ago", (int)Math.Floor(Math.Abs(span.TotalMinutes)));
                 }
             }
+        }
+
+        public AccountGender Gender
+        {
+            get{ return _userInfoContract.Gender; }
         }
 
         public override Task OnAppearingAsync()

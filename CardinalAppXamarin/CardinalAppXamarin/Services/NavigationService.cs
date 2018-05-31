@@ -25,7 +25,8 @@ namespace CardinalAppXamarin.Services
 
         public void NavigateToMain()
         {
-            CurrentApplication.MainPage = new NavigationPage(new MainMapView());
+            //CurrentApplication.MainPage = new NavigationPage(new MainMapView());
+            CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
         }
         public void NavigateToLogin()
         {

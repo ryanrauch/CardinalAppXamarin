@@ -106,6 +106,8 @@
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renderers\FlyoverKitMapRenderer.cs" />
+    <Compile Include="Renderers\GradientViewRenderer.cs" />
     <None Include="Entitlements.plist">
       <SubType>Designer</SubType>
     </None>
@@ -142,6 +144,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\FlyoverKit.iOS\FlyoverKit.iOS.csproj">
+      <Project>{f7e7507f-740f-41cd-858c-23582e275018}</Project>
+      <Name>FlyoverKit.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\CardinalAppXamarin\CardinalAppXamarin.csproj">
       <Project>{9498503B-FDD6-4274-9CCE-55797F8E80E2}</Project>
       <Name>CardinalAppXamarin</Name>
@@ -197,4 +205,5 @@
   <ItemGroup>
     <BundleResource Include="Resources\cardinallaunchlogo1536x1536.png" />
   </ItemGroup>
+  <ItemGroup />
 </Project>

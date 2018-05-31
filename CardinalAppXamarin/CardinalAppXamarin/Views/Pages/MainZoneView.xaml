@@ -1,23 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:MainZoneViewBase xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
-             xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
-             xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
-             x:Class="CardinalAppXamarin.Views.Pages.MainZoneView" 
-             Title="MainZoneView">
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
+                        xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                        xmlns:views="clr-namespace:CardinalAppXamarin.Views"
+                        xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                        x:Class="CardinalAppXamarin.Views.Pages.MainZoneView" 
+                        Title="MainZoneView">
     <ContentPage.Content>
         <AbsoluteLayout>
-            <ListView ItemsSource="{Binding ZonesList}"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <views:HeaderView Grid.Row="0"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"/>
+                <ListView ItemsSource="{Binding ZonesList}"
+                      Grid.Row="1"
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand"
                       HasUnevenRows="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <viewCells:ZoneViewCell BindingContext="{Binding}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <viewCells:ZoneListViewCell BindingContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
             <ActivityIndicator IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
                                AbsoluteLayout.LayoutFlags="PositionProportional"
