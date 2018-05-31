@@ -9,13 +9,16 @@ namespace CardinalAppXamarin.ViewModels
     {
         private readonly ILayerService _layerService;
         private readonly IZoneService _zoneService;
+        private readonly INavigationService _navigationService;
 
         public MainZoneViewModel(
             ILayerService layerService,
-            IZoneService zoneService)
+            IZoneService zoneService,
+            INavigationService navigationService)
         {
             _layerService = layerService;
             _zoneService = zoneService;
+            _navigationService = navigationService;
             IsBusy = true;
         }
 
@@ -29,6 +32,17 @@ namespace CardinalAppXamarin.ViewModels
             {
                 _zonesList = value;
                 RaisePropertyChanged(() => ZonesList);
+            }
+        }
+
+        private ZoneViewModel _selectedZone { get; set; }
+        public ZoneViewModel SelectedZone
+        {
+            get { return _selectedZone; }
+            set
+            {
+                _selectedZone = value;
+                RaisePropertyChanged(() => SelectedZone);
             }
         }
 

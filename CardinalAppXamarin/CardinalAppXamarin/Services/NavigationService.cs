@@ -32,7 +32,7 @@ namespace CardinalAppXamarin.Services
         {
             CurrentApplication.MainPage = new NavigationPage(new LoginView());
         }
-        public void NavigateToZones()
+        public void NavigateToMainZones()
         {
             CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
         }
