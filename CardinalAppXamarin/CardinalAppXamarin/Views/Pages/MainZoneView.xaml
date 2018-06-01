@@ -18,11 +18,12 @@
                 <views:HeaderView Grid.Row="0"
                               HorizontalOptions="FillAndExpand"
                               VerticalOptions="FillAndExpand"/>
-                <ListView ItemsSource="{Binding ZonesList}"
-                      Grid.Row="1"
-                      HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand"
-                      HasUnevenRows="True">
+                <ListView Grid.Row="1"
+                          ItemsSource="{Binding ZonesList}"
+                          SelectedItem="{Binding SelectedZone}"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand"
+                          HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <viewCells:ZoneListViewCell BindingContext="{Binding}" />

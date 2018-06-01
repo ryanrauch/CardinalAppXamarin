@@ -1,24 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<views:ZoneViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+<local:ZoneViewBase xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
-                    xmlns:views="clr-namespace:CardinalAppXamarin.Views"
+                    xmlns:local="clr-namespace:CardinalAppXamarin.Views"
                     x:Class="CardinalAppXamarin.Views.ZoneView">
-    <ContentView.Content>
-
-        <Grid>
-            <Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <controls:FlyoverKitMap Grid.Row="0" 
-                                HorizontalOptions="FillAndExpand"
-                                VerticalOptions="FillAndExpand"/>
-            <controls:GradientView Grid.Row="1"
+        <controls:FlyoverKitMap Grid.Row="0">
+            
+        </controls:FlyoverKitMap>
+        <controls:GradientView Grid.Row="1"
                                StartColor="{StaticResource CardinalFemaleGradientColor}"
                                MiddleColor="{StaticResource CardinalMiddleGradientColor}"
                                EndColor="{StaticResource CardinalMaleGradientColor}"
-                               Percent="{Binding RatioFriends}"/>
-        </Grid>
-    </ContentView.Content>
-</views:ZoneViewBase>
+                               Percent="{Binding RatioFriends}" />
+    </Grid>
+</local:ZoneViewBase>

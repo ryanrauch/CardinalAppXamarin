@@ -16,6 +16,6 @@ namespace CardinalAppXamarin.Controls
             var cf = CameraUpdateFactory.NewPositionZoom(location, 13.0);
             this.InitialCameraUpdate = cf;
         }
-
+        public FlyoverKitMap() { }
     }
 }

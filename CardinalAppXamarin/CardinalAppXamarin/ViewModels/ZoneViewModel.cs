@@ -12,9 +12,17 @@ namespace CardinalAppXamarin.ViewModels
 {
     public class ZoneViewModel : ViewModelBase
     {
+        public ZoneViewModel()
+        { }
+
         public ZoneViewModel(
             ZoneContract zoneContract,
             List<UserInfoBriefViewCellModel> zoneUsers)
+        {
+            Initialize(zoneContract, zoneUsers);
+        }
+
+        public void Initialize(ZoneContract zoneContract, List<UserInfoBriefViewCellModel> zoneUsers)
         {
             ZoneContractInfo = zoneContract;
             if (zoneUsers != null && zoneUsers.Count > 0)

@@ -24,6 +24,7 @@ namespace CardinalAppXamarin.Controls
                                                             typeof(double),
                                                             typeof(GradientView),
                                                             0.0);
+
         public Color StartColor
         {
             get { return (Color)GetValue(StartColorProperty); }
