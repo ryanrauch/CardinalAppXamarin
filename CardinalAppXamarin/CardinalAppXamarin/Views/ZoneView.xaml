@@ -9,7 +9,7 @@
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-        <controls:FlyoverKitMap Grid.Row="0">
+        <controls:FlyoverKitMap Grid.Row="0" MapType="Satellite">
             
         </controls:FlyoverKitMap>
         <controls:GradientView Grid.Row="1"

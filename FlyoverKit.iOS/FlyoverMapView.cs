@@ -44,14 +44,13 @@ namespace FlyoverKit.iOS
             FlyoverCameraConfiguration configuration = null)
         {
             //this.Frame = CGRect.Empty; //super.init(frame: .zero)
-
+            // Set flyover map type
+            FlyoverMapType = mapType;
             if (configuration == null)
             {
                 configuration = new FlyoverCameraConfiguration(FlyoverCameraConfigurationTheme.Default);
             }
             FlyoverCamera = new FlyoverCamera(this, configuration);
-            // Set flyover map type
-            FlyoverMapType = mapType;
             // Hide compass on iOS
             ShowsCompass = false;
             ShowsBuildings = true;
