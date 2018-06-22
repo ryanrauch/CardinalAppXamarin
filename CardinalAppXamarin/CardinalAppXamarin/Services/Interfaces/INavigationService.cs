@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CardinalAppXamarin.ViewModels.Base;
-using CardinalAppXamarin.Views.Base;
 using Xamarin.Forms;
 
 namespace CardinalAppXamarin.Services.Interfaces
@@ -13,5 +11,6 @@ namespace CardinalAppXamarin.Services.Interfaces
         void NavigateToMainZones();
         Task NavigatePopAsync();
         Task NavigatePushAsync<T>(T page) where T : Page;
+        Task NavigatePushAsync<T>(T page, object param) where T : Page;
     }
 }

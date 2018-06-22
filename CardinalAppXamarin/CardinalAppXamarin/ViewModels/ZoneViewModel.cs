@@ -17,7 +17,7 @@ namespace CardinalAppXamarin.ViewModels
 
         public ZoneViewModel(
             ZoneContract zoneContract,
-            List<UserInfoBriefViewCellModel> zoneUsers)
+            List<UserInfoBriefViewCellModel> zoneUsers = null)
         {
             Initialize(zoneContract, zoneUsers);
         }
@@ -28,6 +28,10 @@ namespace CardinalAppXamarin.ViewModels
             if (zoneUsers != null && zoneUsers.Count > 0)
             {
                 ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>(zoneUsers);
+            }
+            else
+            {
+                ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>();
             }
         }
 

@@ -16,7 +16,23 @@ namespace CardinalAppXamarin.ViewModels.Base
             }
         }
 
+        private object _initializeParameter { get; set; }
+        public object InitializeParameter
+        {
+            get { return _initializeParameter; }
+            set
+            {
+                _initializeParameter = value;
+                RaisePropertyChanged(() => InitializeParameter);
+            }
+        }
+
         public ViewModelBase() { }
+        
+        public virtual void Initialize(object param)
+        {
+            InitializeParameter = param;
+        }
 
         public abstract Task OnAppearingAsync();
     }

@@ -1,4 +1,5 @@
-﻿using CardinalAppXamarin.Controls;
+﻿/*
+using CardinalAppXamarin.Controls;
 using CardinalAppXamarin.iOS.Renderers;
 using FlyoverKit.iOS;
 using MapKit;
@@ -33,3 +34,4 @@ namespace CardinalAppXamarin.iOS.Renderers
         }
     }
 }
+*/

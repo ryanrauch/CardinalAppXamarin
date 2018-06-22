@@ -120,7 +120,9 @@
     <BundleResource Include="Resources\highlandgothiclightflf.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
-    <BundleResource Include="Resources\fa-regular-400.ttf" />
+    <BundleResource Include="Resources\fa-regular-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\CardinalLaunchScreen.storyboard" />
@@ -148,12 +150,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\FlyoverKit.iOS\FlyoverKit.iOS.csproj">
-      <Project>{f7e7507f-740f-41cd-858c-23582e275018}</Project>
-      <Name>FlyoverKit.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
     <ProjectReference Include="..\CardinalAppXamarin\CardinalAppXamarin.csproj">
       <Project>{9498503B-FDD6-4274-9CCE-55797F8E80E2}</Project>
       <Name>CardinalAppXamarin</Name>

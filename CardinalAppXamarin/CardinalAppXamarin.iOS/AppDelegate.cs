@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using CarouselView.FormsPlugin.iOS;
+using Foundation;
 using UIKit;
 
 
@@ -21,6 +22,7 @@ namespace CardinalAppXamarin.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.GoogleMapsSDKapiKeyiOS);
+            CarouselViewRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

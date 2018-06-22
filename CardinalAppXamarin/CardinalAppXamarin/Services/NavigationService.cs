@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using CardinalLibrary.DataContracts;
 
 namespace CardinalAppXamarin.Services
 {
@@ -26,18 +27,28 @@ namespace CardinalAppXamarin.Services
         public void NavigateToMain()
         {
             //CurrentApplication.MainPage = new NavigationPage(new MainMapView());
-            CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
+            //CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
+            CurrentApplication.MainPage = new NavigationPage(new ZoneHexagonView());
         }
+
         public void NavigateToLogin()
         {
             CurrentApplication.MainPage = new NavigationPage(new LoginView());
         }
+
         public void NavigateToMainZones()
         {
             CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
         }
+
         public async Task NavigatePushAsync<T>(T page) where T : Page
         {
+            await CurrentApplication.MainPage.Navigation.PushAsync(page);
+        }
+
+        public async Task NavigatePushAsync<T>(T page, object param) where T : Page
+        {
+            (page.BindingContext as ViewModelBase).Initialize(param);
             await CurrentApplication.MainPage.Navigation.PushAsync(page);
         }
 

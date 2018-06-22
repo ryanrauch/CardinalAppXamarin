@@ -2,6 +2,7 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
+             xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.App">
 	<Application.Resources>
 
@@ -31,11 +32,17 @@
                         iOS="highlandgothiclightflf"
                         Android="highlandgothiclightflf.ttf#highlandgothiclightflf"
                         WinPhone="Assets/highlandgothiclightflf.ttf#highlandgothiclightflf"/>
-            <OnPlatform x:Key="FontAwesome"
+
+            <helpers:OnCustomPlatform x:Key="FontAwesome"  
+                                      x:TypeArguments="x:String"
+                                      iOS="Font Awesome 5 Free Regular"
+                                      Android="fa-regular-400.ttf#Font Awesome 5 Free Regular"
+                                      UWP="Assets/fa-regular-400.ttf#Font Awesome 5 Free"/>
+            <!--<OnPlatform x:Key="FontAwesome"
                         x:TypeArguments="x:String"
-                        iOS="Font Awesome 5 Free"
+                        iOS="Font Awesome 5 Free Regular"
                         Android="fa-regular-400.ttf#Font Awesome 5 Free Regular" 
-                        WinPhone="Assets/fa-regular-400.ttf#Font Awesome 5 Free"/>
+                        WinPhone="Assets/fa-regular-400.ttf#Font Awesome 5 Free"/>-->
             <!--<OnPlatform x:Key="MontserratRegular"
                         x:TypeArguments="x:String"
                         iOS="Montserrat-Regular"
@@ -125,6 +132,11 @@
                    TargetType="{x:Type Label}"
                    BasedOn="{StaticResource PrimaryLabelStyle}">
                 <Setter Property="TextColor" Value="{StaticResource CardinalSecondaryFontForegroundColor}"/>
+            </Style>
+
+            <Style x:Key="FontAwesomeLabelStyle"
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
             </Style>
             
             <Style x:Key="EntryStyle"

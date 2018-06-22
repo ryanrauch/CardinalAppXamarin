@@ -1,4 +1,4 @@
-﻿using CardinalAppXamarin.Services.Interfaces;
+﻿/*using CardinalAppXamarin.Services.Interfaces;
 using Xamarin.Forms.GoogleMaps;
 
 namespace CardinalAppXamarin.Controls
@@ -19,3 +19,4 @@ namespace CardinalAppXamarin.Controls
         public FlyoverKitMap() { }
     }
 }
+*/

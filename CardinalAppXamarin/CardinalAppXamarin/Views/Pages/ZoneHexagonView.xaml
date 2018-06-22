@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:ZoneHexagonViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:b="clr-namespace:CardinalAppXamarin.Behaviors"
+                           xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
+                           xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                           xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                           x:Class="CardinalAppXamarin.Views.Pages.ZoneHexagonView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Text="{Binding HeaderText}"/>
+            <ListView Grid.Row="1"
+                          ItemsSource="{Binding ZonesList}"
+                          SelectedItem="{Binding SelectedZone}"
+                          HorizontalOptions="FillAndExpand"
+                          VerticalOptions="FillAndExpand"
+                          HasUnevenRows="True">
+                <ListView.Behaviors>
+                    <b:EventToCommandBehavior EventName="ItemTapped"
+                                              Command="{Binding SelectZoneCommand}"
+                                              EventArgsConverter="{StaticResource ItemTappedConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <viewCells:ZoneListBriefViewCell BindingContext="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</local:ZoneHexagonViewBase>

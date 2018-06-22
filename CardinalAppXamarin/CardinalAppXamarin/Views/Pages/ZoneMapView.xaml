@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:ZoneMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                       xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+                       xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+                       xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
+                       xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                       x:Class="CardinalAppXamarin.Views.Pages.ZoneMapView">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" 
+                   Text="{Binding HeaderText}"
+                   FontSize="{StaticResource BigSize}"/>
+            <googleMaps:Map Grid.Row="1"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            MapStyle="{Binding CustomMapStyle}"
+                            MapType="{Binding CustomMapType}"
+                            InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
+                <googleMaps:Map.Behaviors>
+                    <googleMapsBindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
+                </googleMaps:Map.Behaviors>
+            </googleMaps:Map>
+            <cv:CarouselViewControl Grid.Row="2">
+                <cv:CarouselViewControl.ItemsSource>
+                    <x:Array Type="{x:Type View}">
+                        <!-- total number of friends/pictures -->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding ZoneUsersCountText}"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="pictures of friends"/>
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Grid.RowSpan="2"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource CardinalSecondaryFontDimmedColor}"
+                                   FontFamily="{StaticResource FontAwesome}"
+                                   Text="{Binding ArrowRight}"/>
+                        </Grid>
+                        <!-- aggregate statistic data -->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Grid.Column="0"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   Style="{StaticResource FontAwesomeLabelStyle}"
+                                   TextColor="{StaticResource CardinalSecondaryFontDimmedColor}"
+                                   Text="{Binding ArrowLeft}"/>
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="aggregate data"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="50% m / 50% f"/>
+                        </Grid>
+                    </x:Array>
+                </cv:CarouselViewControl.ItemsSource>
+            </cv:CarouselViewControl>
+        </Grid>
+    </ContentPage.Content>
+</local:ZoneMapViewBase>
