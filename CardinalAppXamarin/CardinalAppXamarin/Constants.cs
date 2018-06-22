@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace CardinalAppXamarin
 {
     public class Constants
     {
+        public const string CardinalRedARGB = "FFCC0000";
+
         public const Char BoundingBoxDelim = 'x';
         public const Char LayerDelimChar = '|';
         public const string GoogleMapsSDKapiKeyiOS = "AIzaSyAJzJfaVM0xbGKDlRckeDQ2mePXJuPjl6w";

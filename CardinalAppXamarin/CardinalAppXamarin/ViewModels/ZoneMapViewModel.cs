@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
+using Xamarin.Forms.GoogleMaps.Bindings;
 
 namespace CardinalAppXamarin.ViewModels
 {
@@ -42,6 +43,8 @@ namespace CardinalAppXamarin.ViewModels
                 return String.Empty;
             }
         }
+
+        public MoveToRegionRequest MoveRequest => new MoveToRegionRequest();
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
@@ -90,10 +93,6 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public String ArrowLeft => "\uf100";
-
-        public String ArrowRight => "\uf101";
-
         public String ZoneUsersCountText
         {
             get
@@ -120,16 +119,35 @@ namespace CardinalAppXamarin.ViewModels
 
         public override async Task OnAppearingAsync()
         {
+            if (_zoneContract == null)
+            {
+                return;
+            }
+
+            SetMapPosition();
             SetPolygons();
+
             await _layerService.InitializeData();
 
-            if (_zoneContract == null)
-                return;
             var users = _layerService.UsersInsideZone(_zoneContract.ZoneID);
             if(users != null && users.Count > 0)
             {
                 ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>(users);
             }
+        }
+
+        private void SetMapPosition()
+        {
+            double minLat = _zoneContract.ZoneShapes.Min(z => z.Latitude),
+                   minLon = _zoneContract.ZoneShapes.Min(z => z.Longitude),
+                   maxLat = _zoneContract.ZoneShapes.Max(z => z.Latitude),
+                   maxLon = _zoneContract.ZoneShapes.Max(z => z.Longitude);
+            Position cp = new Position(minLat + ((maxLat - minLat) / 2),
+                                       minLon + ((maxLon - minLon) / 2));
+            MapSpan ms = MapSpan.FromPositions(Polygons.First().Positions);
+            //MapSpan ms = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.5));
+            MoveRequest.MoveToRegion(ms);
+            //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 8.0); // zoom can be within: [2,21]
         }
 
         private void SetPolygons()
@@ -138,10 +156,17 @@ namespace CardinalAppXamarin.ViewModels
 
             Polygons.Clear();
 
+            if(zc == null)
+            {
+                return;
+            }
+
             Polygon poly = new Polygon()
             {
-                FillColor = Color.FromHex(zc.ARGBFill),
-                StrokeColor = Color.FromHex(zc.ARGBFill),
+                //FillColor = Color.FromHex(zc.ARGBFill),
+                //StrokeColor = Color.FromHex(zc.ARGBFill),
+                FillColor = Color.FromHex(Constants.CardinalRedARGB),
+                StrokeColor = Color.FromHex(Constants.CardinalRedARGB),
                 StrokeWidth = 1.0f,
                 Tag = new PolygonTag()
                 {

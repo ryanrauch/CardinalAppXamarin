@@ -25,6 +25,7 @@
                             InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
                 <googleMaps:Map.Behaviors>
                     <googleMapsBindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
+                    <googleMapsBindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
             <cv:CarouselViewControl Grid.Row="2">
@@ -52,8 +53,8 @@
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    TextColor="{StaticResource CardinalSecondaryFontDimmedColor}"
-                                   FontFamily="{StaticResource FontAwesome}"
-                                   Text="{Binding ArrowRight}"/>
+                                   FontFamily="{StaticResource FontAwesomeSolid}"
+                                   Text="&#xf101;"/>
                         </Grid>
                         <!-- aggregate statistic data -->
                         <Grid>
@@ -70,9 +71,9 @@
                                    Grid.Column="0"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
-                                   Style="{StaticResource FontAwesomeLabelStyle}"
+                                   FontFamily="{StaticResource FontAwesomeSolid}"
                                    TextColor="{StaticResource CardinalSecondaryFontDimmedColor}"
-                                   Text="{Binding ArrowLeft}"/>
+                                   Text="&#xf100;"/>
                             <Label Grid.Row="0"
                                    Grid.Column="1"
                                    Text="aggregate data"/>
