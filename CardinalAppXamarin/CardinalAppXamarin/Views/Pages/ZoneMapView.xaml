@@ -11,7 +11,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" 
@@ -25,7 +25,7 @@
                             InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}">
                 <googleMaps:Map.Behaviors>
                     <googleMapsBindings:BindingPolygonsBehavior Value="{Binding Polygons}"/>
-                    <googleMapsBindings:MoveToRegionBehavior Request="{Binding MoveRequest}"/>
+                    <googleMapsBindings:MoveCameraBehavior Request="{Binding MoveCameraRequest}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
             <cv:CarouselViewControl Grid.Row="2">
@@ -43,6 +43,9 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0"
                                    Grid.Column="0"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="{StaticResource BigSize}"
                                    Text="{Binding ZoneUsersCountText}"/>
                             <Label Grid.Row="1"
                                    Grid.Column="0"

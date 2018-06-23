@@ -8,6 +8,7 @@ namespace CardinalAppXamarin
     public class Constants
     {
         public const string CardinalRedARGB = "FFCC0000";
+        public const string CardinalRed50ARGB = "80CC0000";
 
         public const Char BoundingBoxDelim = 'x';
         public const Char LayerDelimChar = '|';

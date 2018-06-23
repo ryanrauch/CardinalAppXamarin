@@ -26,25 +26,34 @@ namespace CardinalAppXamarin.ViewModels
             _layerService = layerService;
             _geolocatorService = geolocatorService;
             var cp = _geolocatorService.LastRecordedPosition;
-            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 12.0); // zoom can be within: [2,21]
+            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
         }
 
-        private ZoneContract _zoneContract;
+        private ZoneContract _zoneContract { get; set; }
+        public ZoneContract ZoneContract
+        {
+            get { return _zoneContract; }
+            set
+            {
+                _zoneContract = value;
+                RaisePropertyChanged(() => ZoneContract);
+                RaisePropertyChanged(() => HeaderText);
+            }
+        }
 
-        //private String _headerText { get; set; }
         public String HeaderText
         {
             get
             {
-                if (_zoneContract != null)
+                if(ZoneContract != null)
                 {
-                    return _zoneContract.Description;
+                    return ZoneContract.Description;
                 }
                 return String.Empty;
             }
         }
 
-        public MoveToRegionRequest MoveRequest => new MoveToRegionRequest();
+        public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
@@ -97,13 +106,18 @@ namespace CardinalAppXamarin.ViewModels
         {
             get
             {
-                if(ZoneUsers.Count == 1)
+                int zc = ZoneUsers.Count;
+                if(zc == 0)
+                {
+                    return "No Friends";
+                }
+                else if(zc == 1)
                 {
                     return "1 Friend";
                 }
                 else
                 {
-                    return String.Format("{0} Friends", ZoneUsers.Count);
+                    return String.Format("{0} Friends", zc);
                 }
             }
         }
@@ -113,13 +127,13 @@ namespace CardinalAppXamarin.ViewModels
             base.Initialize(param);
             if (param is ZoneContract zp)
             {
-                _zoneContract = zp;
+                ZoneContract = zp;
             }
         }
 
         public override async Task OnAppearingAsync()
         {
-            if (_zoneContract == null)
+            if (ZoneContract == null)
             {
                 return;
             }
@@ -138,21 +152,23 @@ namespace CardinalAppXamarin.ViewModels
 
         private void SetMapPosition()
         {
-            double minLat = _zoneContract.ZoneShapes.Min(z => z.Latitude),
-                   minLon = _zoneContract.ZoneShapes.Min(z => z.Longitude),
-                   maxLat = _zoneContract.ZoneShapes.Max(z => z.Latitude),
-                   maxLon = _zoneContract.ZoneShapes.Max(z => z.Longitude);
+            double minLat = ZoneContract.ZoneShapes.Min(z => z.Latitude),
+                   minLon = ZoneContract.ZoneShapes.Min(z => z.Longitude),
+                   maxLat = ZoneContract.ZoneShapes.Max(z => z.Latitude),
+                   maxLon = ZoneContract.ZoneShapes.Max(z => z.Longitude),
+                   halfLat = (maxLat - minLat) / 2,
+                   halfLon = (maxLon - minLon) / 2;
             Position cp = new Position(minLat + ((maxLat - minLat) / 2),
                                        minLon + ((maxLon - minLon) / 2));
-            MapSpan ms = MapSpan.FromPositions(Polygons.First().Positions);
-            //MapSpan ms = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.5));
-            MoveRequest.MoveToRegion(ms);
-            //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 8.0); // zoom can be within: [2,21]
+            Bounds b = new Bounds(new Position(minLat - halfLat, minLon - halfLon),
+                                  new Position(maxLat + halfLat, maxLon + halfLon));
+            //MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewPositionZoom(cp, 14.0));
+            MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewBounds(b, 0));
         }
 
         private void SetPolygons()
         {
-            var zc = _zoneContract;
+            var zc = ZoneContract;
 
             Polygons.Clear();
 
@@ -165,8 +181,8 @@ namespace CardinalAppXamarin.ViewModels
             {
                 //FillColor = Color.FromHex(zc.ARGBFill),
                 //StrokeColor = Color.FromHex(zc.ARGBFill),
-                FillColor = Color.FromHex(Constants.CardinalRedARGB),
-                StrokeColor = Color.FromHex(Constants.CardinalRedARGB),
+                FillColor = Color.FromHex(Constants.CardinalRed50ARGB),
+                StrokeColor = Color.FromHex(Constants.CardinalRed50ARGB),
                 StrokeWidth = 1.0f,
                 Tag = new PolygonTag()
                 {
