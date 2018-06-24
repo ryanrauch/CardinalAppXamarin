@@ -6541,9 +6541,6 @@ namespace CardinalAppXamarin.Droid
 			// aapt resource value: 0x7f080036
 			public const int abc_toolbar_collapse_description = 2131230774;
 			
-			// aapt resource value: 0x7f08004d
-			public const int app_name = 2131230797;
-			
 			// aapt resource value: 0x7f080044
 			public const int appbar_scrolling_view_behavior = 2131230788;
 			
@@ -6604,8 +6601,8 @@ namespace CardinalAppXamarin.Droid
 			// aapt resource value: 0x7f080010
 			public const int common_signin_button_text_long = 2131230736;
 			
-			// aapt resource value: 0x7f08004e
-			public const int library_name = 2131230798;
+			// aapt resource value: 0x7f08004d
+			public const int library_name = 2131230797;
 			
 			// aapt resource value: 0x7f080011
 			public const int mr_button_content_description = 2131230737;
