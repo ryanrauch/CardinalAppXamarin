@@ -4,6 +4,7 @@
                            xmlns:b="clr-namespace:CardinalAppXamarin.Behaviors"
                            xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                           xmlns:views="clr-namespace:CardinalAppXamarin.Views"
                            xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
                            x:Class="CardinalAppXamarin.Views.Pages.ZoneHexagonView">
     <ContentPage.Resources>
@@ -14,12 +15,14 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0"
+            <views:HeaderView Grid.Row="0"/>
+            <Label Grid.Row="1"
                    Text="{Binding HeaderText}"/>
-            <ListView Grid.Row="1"
+            <ListView Grid.Row="2"
                           ItemsSource="{Binding ZonesList}"
                           SelectedItem="{Binding SelectedZone}"
                           HorizontalOptions="FillAndExpand"

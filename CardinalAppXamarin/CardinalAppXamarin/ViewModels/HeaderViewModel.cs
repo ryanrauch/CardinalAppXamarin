@@ -1,5 +1,6 @@
 ﻿using CardinalAppXamarin.ViewModels.Base;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CardinalAppXamarin.ViewModels
 {
@@ -10,9 +11,11 @@ namespace CardinalAppXamarin.ViewModels
 
         }
 
-        public string TitleText => "Cardinal";
+        public string TitleText => "TitleText";
+        public string SubtitleText => "Subtitle";
+        public bool BackButtonVisible => true;
 
-        public string WelcomeText => "Welcome, MockUser.";
+        public ICommand BackButtonCommand => null;
 
         public override Task OnAppearingAsync()
         {

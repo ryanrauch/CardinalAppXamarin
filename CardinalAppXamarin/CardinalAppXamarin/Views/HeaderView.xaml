@@ -1,10 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:HeaderViewBase xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:CardinalAppXamarin.Views"
-             x:Class="CardinalAppXamarin.Views.HeaderView">
-    <StackLayout Orientation="Vertical">
-        <Label Text="{Binding TitleText}" />
-        <Label Text="{Binding WelcomeText}" />
-    </StackLayout>
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:local="clr-namespace:CardinalAppXamarin.Views"
+                      xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
+                      x:Class="CardinalAppXamarin.Views.HeaderView">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="69"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Column="0"
+               Grid.Row="0"
+               Aspect="AspectFit"
+               Source="{exs:ImageResource CardinalAppXamarin.Images.cardinalheader.png}"/>
+        <!--<Image Grid.Column="0"
+               Grid.Row="0"
+               Aspect="AspectFit"
+               Source="CardinalAppXamarin.Images.cardinalheader.png"/>-->
+        <Button Grid.Column="0"
+                Grid.Row="1"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                Text="&#xf3e5;"
+                IsVisible="{Binding BackButtonVisible}"
+                Command="{Binding BackButtonCommand}"/>
+        <Label Grid.Column="1"
+               Grid.Row="0"
+               Text="{Binding TitleText}"
+               HorizontalTextAlignment="Start"
+               VerticalTextAlignment="Center"
+               TextColor="{StaticResource CardinalTitleColor}"
+               FontSize="{StaticResource ExtraBigSize}"/>
+        <Label Grid.Column="1"
+               Grid.Row="1"
+               Text="{Binding SubtitleText}"
+               HorizontalTextAlignment="Start"
+               VerticalTextAlignment="Center"
+               TextColor="{StaticResource CardinalSubtitleColor}"
+               FontSize="{StaticResource BigSize}"/>
+    </Grid>
 </local:HeaderViewBase>

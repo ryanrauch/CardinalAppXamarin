@@ -10,7 +10,10 @@
             <!-- Colors -->
             <Color x:Key="CardinalErrorColor">#FFA500</Color>
             <Color x:Key="CardinalTransparentColor">#00FFFFFF</Color>
-            
+
+            <Color x:Key="CardinalTitleColor">#000000</Color>
+            <Color x:Key="CardinalSubtitleColor">#CC0000</Color>
+
             <Color x:Key="CardinalPrimaryBackgroundColor">#FFFFFF</Color>
             <Color x:Key="CardinalPrimaryBackgroundColorDimmed">#E2E2E2</Color>
             <Color x:Key="CardinalPrimaryFontForegroundColor">#CC0000</Color>
