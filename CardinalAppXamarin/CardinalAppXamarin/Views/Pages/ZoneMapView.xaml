@@ -8,7 +8,7 @@
                        xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
                        x:Class="CardinalAppXamarin.Views.Pages.ZoneMapView">
     <ContentPage.Content>
-        <Grid>
+        <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="2*"/>

@@ -240,6 +240,13 @@
             </Style>
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}" />
+            
+            <!--ContentPageGrid-Style-->
+            <Style x:Key="GridContentPageStyle"
+                   TargetType="{x:Type Grid}">
+                <Setter Property="Margin"
+                        Value="10,10,10,10"/>
+            </Style>
         </ResourceDictionary>
 	</Application.Resources>
 </Application>
