@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.GoogleMaps.Bindings;
@@ -16,15 +17,19 @@ namespace CardinalAppXamarin.ViewModels
     {
         private readonly ILayerService _layerService;
         private readonly IGeolocatorService _geolocatorService;
+        private readonly INavigationService _navigationService;
 
         public ZoneMapViewModel(
             ILayerService layerService,
-            IGeolocatorService geolocatorService)
+            IGeolocatorService geolocatorService,
+            INavigationService navigationService)
         {
             _layerService = layerService;
             _geolocatorService = geolocatorService;
+            _navigationService = navigationService;
             var cp = _geolocatorService.LastRecordedPosition;
-            MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
+            MapRegion = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.2));
+            //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
         }
 
         public string TitleText => "Cardinal";
@@ -41,7 +46,8 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public bool BackButtonVisible => false;
+        public bool BackButtonVisible => true;
+        public ICommand BackButtonCommand => new Command(() => _navigationService.NavigateToMain());
 
         private ZoneContract _zoneContract { get; set; }
         public ZoneContract ZoneContract
@@ -54,8 +60,21 @@ namespace CardinalAppXamarin.ViewModels
                 RaisePropertyChanged(() => SubtitleText);
             }
         }
+        private MapSpan _region { get; set; }
+        public MapSpan MapRegion
+        {
+            get { return _region; }
+            set
+            {
+                _region = value;
+                RaisePropertyChanged(() => MapRegion);
+            }
+        }
 
-        public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
+        public bool MapAnimated => false;
+
+        //public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
+        //public MoveToRegionRequest MoveToRegionRequest { get; } = new MoveToRegionRequest();
 
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
@@ -70,16 +89,16 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        private CameraUpdate _mainMapInitialCameraUpdate { get; set; }
-        public CameraUpdate MainMapInitialCameraUpdate
-        {
-            get { return _mainMapInitialCameraUpdate; }
-            set
-            {
-                _mainMapInitialCameraUpdate = value;
-                RaisePropertyChanged(() => MainMapInitialCameraUpdate);
-            }
-        }
+        //private CameraUpdate _mainMapInitialCameraUpdate { get; set; }
+        //public CameraUpdate MainMapInitialCameraUpdate
+        //{
+        //    get { return _mainMapInitialCameraUpdate; }
+        //    set
+        //    {
+        //        _mainMapInitialCameraUpdate = value;
+        //        RaisePropertyChanged(() => MainMapInitialCameraUpdate);
+        //    }
+        //}
 
         private ObservableCollection<Polygon> _polygons { get; set; } = new ObservableCollection<Polygon>();
         public ObservableCollection<Polygon> Polygons
@@ -139,7 +158,6 @@ namespace CardinalAppXamarin.ViewModels
             {
                 return;
             }
-
             SetMapPosition();
             SetPolygons();
 
@@ -164,8 +182,10 @@ namespace CardinalAppXamarin.ViewModels
                                        minLon + ((maxLon - minLon) / 2));
             Bounds b = new Bounds(new Position(minLat - halfLat, minLon - halfLon),
                                   new Position(maxLat + halfLat, maxLon + halfLon));
+            MapRegion = MapSpan.FromBounds(b);
             //MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewPositionZoom(cp, 14.0));
-            MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewBounds(b, 0));
+            //MoveToRegionRequest.MoveToRegion(MapSpan.FromBounds(b));
+            //MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewBounds(b, 0));
         }
 
         private void SetPolygons()

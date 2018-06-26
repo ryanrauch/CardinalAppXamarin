@@ -27,6 +27,7 @@ namespace CardinalAppXamarin.ViewModels
         public String TitleText => "Cardinal";
         public String SubtitleText => String.Empty;
         public bool BackButtonVisible => false;
+        public ICommand BackButtonCommand => null;
 
         private ObservableCollection<ZoneViewModel> _zonesList { get; set; } = new ObservableCollection<ZoneViewModel>();
         public ObservableCollection<ZoneViewModel> ZonesList
