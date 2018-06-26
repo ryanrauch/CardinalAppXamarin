@@ -22,6 +22,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             _zoneService = zoneService;
             _navigationService = navigationService;
+            IsBusy = true;
         }
 
         public String TitleText => "Cardinal";
@@ -62,6 +63,7 @@ namespace CardinalAppXamarin.ViewModels
             {
                 ZonesList.Add(new ZoneViewModel(zone));
             }
+            IsBusy = false;
         }
 
         private async Task SelectZoneAsync(ZoneViewModel zvm)

@@ -27,6 +27,7 @@ namespace CardinalAppXamarin.ViewModels
             _layerService = layerService;
             _geolocatorService = geolocatorService;
             _navigationService = navigationService;
+            IsBusy = true;
             var cp = _geolocatorService.LastRecordedPosition;
             MapRegion = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.2));
             //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
@@ -127,6 +128,10 @@ namespace CardinalAppXamarin.ViewModels
         {
             get
             {
+                if(IsBusy)
+                {
+                    return "Loading...";
+                }
                 int zc = ZoneUsers.Count;
                 if(zc == 0)
                 {
@@ -168,6 +173,11 @@ namespace CardinalAppXamarin.ViewModels
             {
                 ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>(users);
             }
+            else
+            {
+                ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>();
+            }
+            IsBusy = false;
         }
 
         private void SetMapPosition()
