@@ -3,6 +3,7 @@
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:b="clr-namespace:CardinalAppXamarin.Behaviors"
                            xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
+                           xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
                            xmlns:views="clr-namespace:CardinalAppXamarin.Views"
                            xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
@@ -15,14 +16,53 @@
     <ContentPage.Content>
         <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="85"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="80"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <views:HeaderView Grid.Row="0"/>
-            <Label Grid.Row="1"
-                   Text="{Binding HeaderText}"/>
-            <ListView Grid.Row="2"
+            <!--Start of header section-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="52"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.RowSpan="3"
+                           Margin="0,5,0,0"
+                           Aspect="AspectFit"
+                           Source="{exs:ImageResource CardinalAppXamarin.Images.cardinalheader207x238.png}"/>
+                <Button Grid.Column="0"
+                            Grid.Row="2"
+                            FontFamily="{StaticResource FontAwesomeSolid}"
+                            Text="&#xf3e5;"
+                            BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
+                            TextColor="{StaticResource CardinalPrimaryFontForegroundColor}"
+                            IsVisible="{Binding BackButtonVisible}"
+                            Command="{Binding BackButtonCommand}"/>
+                <Label Grid.Column="1"
+                           Grid.Row="1"
+                           Margin="10,0,0,0"
+                           Text="{Binding TitleText}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="End"
+                           TextColor="{StaticResource CardinalTitleColor}"
+                           FontSize="{StaticResource HugeSize}"/>
+                <Label Grid.Column="1"
+                           Grid.Row="2"
+                           Margin="10,0,0,0"
+                           Text="{Binding SubtitleText}"
+                           HorizontalTextAlignment="Start"
+                           VerticalTextAlignment="Start"
+                           TextColor="{StaticResource CardinalSubtitleColor}"
+                           FontSize="{StaticResource ExtraBigSize}"/>
+            </Grid>
+            <!--End of header section-->
+            <ListView Grid.Row="1"
                           ItemsSource="{Binding ZonesList}"
                           SelectedItem="{Binding SelectedZone}"
                           HorizontalOptions="FillAndExpand"

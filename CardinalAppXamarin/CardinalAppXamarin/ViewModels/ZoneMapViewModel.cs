@@ -3,10 +3,8 @@ using CardinalAppXamarin.ViewModels.Base;
 using CardinalLibrary;
 using CardinalLibrary.DataContracts;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -29,6 +27,22 @@ namespace CardinalAppXamarin.ViewModels
             MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
         }
 
+        public string TitleText => "Cardinal";
+
+        public String SubtitleText
+        {
+            get
+            {
+                if (ZoneContract != null)
+                {
+                    return ZoneContract.Description;
+                }
+                return String.Empty;
+            }
+        }
+
+        public bool BackButtonVisible => false;
+
         private ZoneContract _zoneContract { get; set; }
         public ZoneContract ZoneContract
         {
@@ -37,19 +51,7 @@ namespace CardinalAppXamarin.ViewModels
             {
                 _zoneContract = value;
                 RaisePropertyChanged(() => ZoneContract);
-                RaisePropertyChanged(() => HeaderText);
-            }
-        }
-
-        public String HeaderText
-        {
-            get
-            {
-                if(ZoneContract != null)
-                {
-                    return ZoneContract.Description;
-                }
-                return String.Empty;
+                RaisePropertyChanged(() => SubtitleText);
             }
         }
 

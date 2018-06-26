@@ -6,7 +6,7 @@ namespace CardinalAppXamarin.Views.Base
 {
     public class ViewPageBase<T> : ContentPage where T : ViewModelBase
     {
-        readonly T _viewModel;
+        private readonly T _viewModel;
         public T ViewModel
         {
             get { return _viewModel; }

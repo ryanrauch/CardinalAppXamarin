@@ -22,19 +22,11 @@ namespace CardinalAppXamarin.ViewModels
         {
             _zoneService = zoneService;
             _navigationService = navigationService;
-            HeaderText = "Cardinal";
         }
 
-        private String _headerText { get; set; }
-        public String HeaderText
-        {
-            get { return _headerText; }
-            set
-            {
-                _headerText = value;
-                RaisePropertyChanged(() => HeaderText);
-            }
-        }
+        public String TitleText => "Cardinal";
+        public String SubtitleText => String.Empty;
+        public bool BackButtonVisible => false;
 
         private ObservableCollection<ZoneViewModel> _zonesList { get; set; } = new ObservableCollection<ZoneViewModel>();
         public ObservableCollection<ZoneViewModel> ZonesList

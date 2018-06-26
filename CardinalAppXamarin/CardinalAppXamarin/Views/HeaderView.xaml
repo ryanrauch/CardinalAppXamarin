@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<local:HeaderViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                       xmlns:local="clr-namespace:CardinalAppXamarin.Views"
                       xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                       x:Class="CardinalAppXamarin.Views.HeaderView">
-    <Grid ColumnSpacing="0"
-          RowSpacing="0">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="52"/>
             <ColumnDefinition Width="*"/>
@@ -46,4 +45,4 @@
                TextColor="{StaticResource CardinalSubtitleColor}"
                FontSize="{StaticResource ExtraBigSize}"/>
     </Grid>
-</local:HeaderViewBase>
+</ContentView>

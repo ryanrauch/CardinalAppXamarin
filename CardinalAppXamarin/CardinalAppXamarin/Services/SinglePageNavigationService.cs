@@ -1,4 +1,5 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
+using CardinalAppXamarin.ViewModels.Base;
 using CardinalAppXamarin.Views.Pages;
 using System;
 using System.Collections.Generic;
@@ -27,12 +28,14 @@ namespace CardinalAppXamarin.Services
 
         public Task NavigatePushAsync<T>(T page) where T : Page
         {
-            throw new NotImplementedException();
+            CurrentApplication.MainPage = page;
+            return Task.CompletedTask;
         }
 
         public Task NavigatePushAsync<T>(T page, object param) where T : Page
         {
-            throw new NotImplementedException();
+            (page.BindingContext as ViewModelBase).Initialize(param);
+            return NavigatePushAsync(page);
         }
 
         public void NavigateToLogin()
