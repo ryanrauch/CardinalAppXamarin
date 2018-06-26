@@ -58,6 +58,42 @@ namespace CardinalAppXamarin.iOS.Renderers
 
             var pointyTop = true;
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
+
+            var txt = Element.Text;
+            //DrawText(context, txt, cx, cy);
+            DrawCenteredTextAtPoint(context, cx, cy, txt, 25);
+        }
+
+        protected virtual void DrawText(CGContext context, String text, float cx, float cy)
+        {
+            
+            float fontSize = 15f;
+            context.ScaleCTM(1, -1);
+            context.TranslateCTM(0, -Bounds.Height);
+            //context.TranslateCTM(0, cy - fontSize / 2);
+            //context.TranslateCTM(0, fontSize);
+            //context.TranslateCTM(x, 0);
+            //measure size of text first
+            context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
+            context.ShowText(text);
+            var textWidth = (float)context.TextPosition.X - cx;
+            //actually draw text
+            context.SetFillColor(UIColor.Red.CGColor);
+            //context.SetStrokeColor(UIColor.Green.CGColor);
+            context.SetTextDrawingMode(CGTextDrawingMode.Fill);
+            context.SelectFont("Helvetica", fontSize, CGTextEncoding.MacRoman);
+            //context.ShowText(text);
+            context.ShowTextAtPoint(cx - textWidth / 2, cy, text);
+        }
+
+        protected void DrawCenteredTextAtPoint(CGContext context, float cx, float cy, string text, int textHeight)
+        {
+            context.SelectFont("Helvetica-Bold", textHeight, CGTextEncoding.MacRoman);
+            context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
+            context.ShowTextAtPoint(cx, cy, text, text.Length);
+            context.SetTextDrawingMode(CGTextDrawingMode.Fill);
+            context.SetFillColor(UIColor.Green.CGColor);
+            context.ShowTextAtPoint(cx - (context.TextPosition.X - cx) / 2, cy, text, text.Length);
         }
 
         protected virtual void DrawHexagon(CGContext context, float x, float y, float outerRadius, bool pointyTop, bool fill, bool stroke)
@@ -68,32 +104,24 @@ namespace CardinalAppXamarin.iOS.Renderers
                 points.Add(new CGPoint(x + outerRadius * (float)Math.Cos((i * 60 - 30) * Math.PI / 180f), 
                                        y + outerRadius * (float)Math.Sin((i * 60 - 30) * Math.PI / 180f)));
             }
-            DrawPoints(context, points, 0, fill, stroke);
+            DrawPoints(context, points, fill, stroke);
         }
 
-        protected virtual void DrawPoints(CGContext context, List<CGPoint> points, float cornerRadius, bool fill, bool stroke, float x = 0f, float y = 0f)
+        protected virtual void DrawPoints(CGContext context, List<CGPoint> points, bool fill, bool stroke)
         {
             if (points == null || points.Count == 0)
                 return;
-
             var midPoint = new CGPoint(0.5 * (points[0].X + points[1].X), 0.5 * (points[0].Y + points[1].Y));
             var path = new CGPath();
-
             path.MoveToPoint(midPoint);
 
             for (var i = 0; i < points.Count; ++i)
             {
-                path.AddArcToPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y, points[(i + 2) % points.Count].X, points[(i + 2) % points.Count].Y, cornerRadius);
+                path.AddLineToPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y);
             }
-
             path.CloseSubpath();
-
-            var transform = CGAffineTransform.MakeTranslation(x, y);
-            //path = path.CopyByTransformingPath(transform);
-
             context.AddPath(path);
-
-            this.DrawPath(context, fill, stroke);
+            DrawPath(context, fill, stroke);
         }
 
         private void DrawPath(CGContext context, bool fill, bool stroke)

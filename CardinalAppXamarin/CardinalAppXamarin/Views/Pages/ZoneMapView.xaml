@@ -108,8 +108,9 @@
                                                       ItemsSource="{BindingZoneUsers}">
                             </controls:StackLayoutList>-->
                             <controls:HexagonShapeView Grid.Row="1"
-                                                       Grid.Column="0" 
-                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                                                       Grid.Column="0"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
+                                                       Text="test"/>
                             <Label Grid.Row="0"
                                    Grid.Column="1"
                                    Grid.RowSpan="2"
