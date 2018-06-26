@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <None Remove="Images\cardinalheader.png" />
+    <None Remove="Images\cardinalheader207x238.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\cardinalheader207x238.png" />
   </ItemGroup>
 
   <ItemGroup>

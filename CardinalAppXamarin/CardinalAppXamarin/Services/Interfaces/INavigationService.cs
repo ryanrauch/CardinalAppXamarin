@@ -8,7 +8,7 @@ namespace CardinalAppXamarin.Services.Interfaces
         void Initialize();
         void NavigateToMain();
         void NavigateToLogin();
-        void NavigateToMainZones();
+        //void NavigateToMainZones();
         Task NavigatePopAsync();
         Task NavigatePushAsync<T>(T page) where T : Page;
         Task NavigatePushAsync<T>(T page, object param) where T : Page;

@@ -11,9 +11,9 @@ namespace CardinalAppXamarin.ViewModels
 
         }
 
-        public string TitleText => "TitleText";
-        public string SubtitleText => "Subtitle";
-        public bool BackButtonVisible => true;
+        public string TitleText => "Cardinal";
+        public string SubtitleText => "Rockrose";
+        public bool BackButtonVisible => false;
 
         public ICommand BackButtonCommand => null;
 

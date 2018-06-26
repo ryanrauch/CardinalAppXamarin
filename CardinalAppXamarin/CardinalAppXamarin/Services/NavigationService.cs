@@ -36,10 +36,10 @@ namespace CardinalAppXamarin.Services
             CurrentApplication.MainPage = new NavigationPage(new LoginView());
         }
 
-        public void NavigateToMainZones()
-        {
-            CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
-        }
+        //public void NavigateToMainZones()
+        //{
+        //    CurrentApplication.MainPage = new NavigationPage(new MainZoneView());
+        //}
 
         public async Task NavigatePushAsync<T>(T page) where T : Page
         {
