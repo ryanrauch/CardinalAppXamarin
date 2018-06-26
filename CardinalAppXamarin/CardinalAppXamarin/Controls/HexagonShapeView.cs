@@ -12,10 +12,20 @@ namespace CardinalAppXamarin.Controls
                                                     typeof(Color),
                                                     typeof(HexagonShapeView),
                                                     Color.Transparent);
+        public static readonly BindableProperty BorderColorProperty =
+                    BindableProperty.Create(nameof(BorderColor),
+                                            typeof(Color),
+                                            typeof(HexagonShapeView),
+                                            Color.Transparent);
         public Color ShapeColor
         {
             get { return (Color)GetValue(ShapeColorProperty); }
             set { SetValue(ShapeColorProperty, value); }
+        }
+        public Color BorderColor
+        {
+            get { return (Color)GetValue(BorderColorProperty); }
+            set { SetValue(BorderColorProperty, value); }
         }
     }
 }

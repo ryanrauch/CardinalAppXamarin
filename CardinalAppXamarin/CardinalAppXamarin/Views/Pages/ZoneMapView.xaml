@@ -2,6 +2,7 @@
 <local:ZoneMapViewBase xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                       xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
                        xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
                        xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                        xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
@@ -99,9 +100,16 @@
                                    VerticalTextAlignment="Center"
                                    FontSize="{StaticResource BigSize}"
                                    Text="{Binding ZoneUsersCountText}"/>
-                            <Label Grid.Row="1"
+                            <!--<Label Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="pictures of friends"/>
+                                   Text="pictures of friends"/>-->
+                            <!--<controls:StackLayoutList Grid.Row="1"
+                                                      Grid.Column="0"
+                                                      ItemsSource="{BindingZoneUsers}">
+                            </controls:StackLayoutList>-->
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="0" 
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
                             <Label Grid.Row="0"
                                    Grid.Column="1"
                                    Grid.RowSpan="2"
