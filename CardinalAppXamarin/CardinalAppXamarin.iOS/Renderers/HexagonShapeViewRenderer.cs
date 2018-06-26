@@ -6,6 +6,7 @@ using System.Text;
 using CardinalAppXamarin.Controls;
 using CardinalAppXamarin.iOS.Renderers;
 using CoreGraphics;
+using CoreText;
 using Foundation;
 using UIKit;
 using Xamarin.Forms;
@@ -52,48 +53,28 @@ namespace CardinalAppXamarin.iOS.Renderers
                 context.SetLineWidth(1);
                 strokeWidth = 1f;
             }
-
             var outerRadius = (Math.Min(height, width) - strokeWidth) / 2f;
             var innerRadius = outerRadius * 0.5f;
-
             var pointyTop = true;
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
-
             var txt = Element.Text;
-            //DrawText(context, txt, cx, cy);
-            DrawCenteredTextAtPoint(context, cx, cy, txt, 25);
+            DrawText(context, txt, cx, cy);
         }
 
         protected virtual void DrawText(CGContext context, String text, float cx, float cy)
         {
-            
             float fontSize = 15f;
             context.ScaleCTM(1, -1);
             context.TranslateCTM(0, -Bounds.Height);
-            //context.TranslateCTM(0, cy - fontSize / 2);
-            //context.TranslateCTM(0, fontSize);
-            //context.TranslateCTM(x, 0);
-            //measure size of text first
-            context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
-            context.ShowText(text);
-            var textWidth = (float)context.TextPosition.X - cx;
-            //actually draw text
-            context.SetFillColor(UIColor.Red.CGColor);
+            context.SetFillColor(UIColor.Green.CGColor);
             //context.SetStrokeColor(UIColor.Green.CGColor);
             context.SetTextDrawingMode(CGTextDrawingMode.Fill);
             context.SelectFont("Helvetica", fontSize, CGTextEncoding.MacRoman);
-            //context.ShowText(text);
-            context.ShowTextAtPoint(cx - textWidth / 2, cy, text);
-        }
-
-        protected void DrawCenteredTextAtPoint(CGContext context, float cx, float cy, string text, int textHeight)
-        {
-            context.SelectFont("Helvetica-Bold", textHeight, CGTextEncoding.MacRoman);
-            context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
-            context.ShowTextAtPoint(cx, cy, text, text.Length);
-            context.SetTextDrawingMode(CGTextDrawingMode.Fill);
-            context.SetFillColor(UIColor.Green.CGColor);
-            context.ShowTextAtPoint(cx - (context.TextPosition.X - cx) / 2, cy, text, text.Length);
+            context.ShowTextAtPoint(cx,cy, text);
+            var textWidth = (float)context.TextPosition.X - cx;
+            var textHeight = (float)context.TextPosition.Y - cy;
+            context.TranslateCTM(0 - textWidth / 2, 
+                                 0 - textHeight / 2);
         }
 
         protected virtual void DrawHexagon(CGContext context, float x, float y, float outerRadius, bool pointyTop, bool fill, bool stroke)
