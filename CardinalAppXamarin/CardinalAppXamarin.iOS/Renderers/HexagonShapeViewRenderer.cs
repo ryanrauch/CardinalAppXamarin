@@ -59,6 +59,25 @@ namespace CardinalAppXamarin.iOS.Renderers
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
             var txt = Element.Text;
             DrawText(context, txt, cx, cy);
+            //DrawCenteredText(context, txt, cx, cy);
+        }
+
+        protected virtual void DrawCenteredText(CGContext context, String text, float cx, float cy)
+        {
+            CGPoint cgp = new CGPoint(cx, cy);
+            UIFont uif = UIFont.FromName("Arial", 24);
+            NSParagraphStyle nsps = new NSParagraphStyle()
+            {
+                Alignment = UITextAlignment.Center
+            };
+            //NSAttributedString nsas = new NSAttributedString(str: text,
+            //                                                 font: uif,
+            //                                                 foregroundColor: UIColor.Red,
+            //                                                 paragraphStyle: nsps);
+            NSAttributedString nsas = new NSAttributedString(str: text,
+                                                             font: uif,
+                                                             foregroundColor: UIColor.Red);
+            nsas.DrawString(cgp);
         }
 
         protected virtual void DrawText(CGContext context, String text, float cx, float cy)
@@ -66,10 +85,15 @@ namespace CardinalAppXamarin.iOS.Renderers
             float fontSize = 15f;
             context.ScaleCTM(1, -1);
             context.TranslateCTM(0, -Bounds.Height);
+            context.SelectFont("Helvetica", fontSize, CGTextEncoding.MacRoman);
+
+            //context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
+            //context.ShowTextAtPoint(cx, cy, text);
+            
+
             context.SetFillColor(UIColor.Green.CGColor);
             //context.SetStrokeColor(UIColor.Green.CGColor);
             context.SetTextDrawingMode(CGTextDrawingMode.Fill);
-            context.SelectFont("Helvetica", fontSize, CGTextEncoding.MacRoman);
             context.ShowTextAtPoint(cx,cy, text);
             var textWidth = (float)context.TextPosition.X - cx;
             var textHeight = (float)context.TextPosition.Y - cy;

@@ -121,33 +121,34 @@ namespace CardinalAppXamarin.ViewModels
                 _zoneUsers = value;
                 RaisePropertyChanged(() => ZoneUsers);
                 RaisePropertyChanged(() => ZoneUsersCountText);
+                //RaisePropertyChanged(() => ZoneUsersDisplay);
             }
         }
-        public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsersDisplay
-        {
-            get
-            {
-                if(ZoneUsers != null)
-                {
-                    int zc = ZoneUsers.Count;
-                    if (zc == 0)
-                    {
-                        return new ObservableCollection<UserInfoBriefViewCellModel> { new UserInfoBriefViewCellModel("+") };
-                    }
-                    else if (zc < 5)
-                    {
-                        return new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(zc));
-                    }
-                    else
-                    {
-                        var users = new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(3));
-                        users.Add(new UserInfoBriefViewCellModel("+"));
-                        return users;
-                    }
-                }
-                return ZoneUsers;
-            }
-        }
+        //public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsersDisplay
+        //{
+        //    get
+        //    {
+        //        if(ZoneUsers != null)
+        //        {
+        //            int zc = ZoneUsers.Count;
+        //            if (zc == 0)
+        //            {
+        //                return new ObservableCollection<UserInfoBriefViewCellModel> { new UserInfoBriefViewCellModel("+") };
+        //            }
+        //            else if (zc < 5)
+        //            {
+        //                return new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(zc));
+        //            }
+        //            else
+        //            {
+        //                var users = new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(3));
+        //                users.Add(new UserInfoBriefViewCellModel("+"));
+        //                return users;
+        //            }
+        //        }
+        //        return ZoneUsers;
+        //    }
+        //}
 
         public String ZoneUsersCountText
         {

@@ -91,28 +91,35 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0"
-                                   Grid.Column="0"
+                                   Grid.Column="1"
+                                   Grid.ColumnSpan="5"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    FontSize="{StaticResource BigSize}"
                                    Text="{Binding ZoneUsersCountText}"/>
-                            <!--<Label Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="pictures of friends"/>-->
-                            <!--<controls:StackLayoutList Grid.Row="1"
-                                                      Grid.Column="0"
-                                                      ItemsSource="{BindingZoneUsers}">
-                            </controls:StackLayoutList>-->
                             <controls:HexagonShapeView Grid.Row="1"
-                                                       Grid.Column="0"
+                                                       Grid.Column="1"
                                                        ShapeColor="{StaticResource CardinalSubtitleColor}"
                                                        Text="test"/>
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
+                                                       Text="hex2"/>
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="3"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
+                                                       Text="num3"/>
                             <Label Grid.Row="0"
-                                   Grid.Column="1"
+                                   Grid.Column="6"
                                    Grid.RowSpan="2"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
@@ -129,6 +136,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Row="0"
                                    Grid.RowSpan="2"
