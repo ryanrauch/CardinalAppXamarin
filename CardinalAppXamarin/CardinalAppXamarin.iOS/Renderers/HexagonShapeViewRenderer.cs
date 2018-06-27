@@ -57,9 +57,12 @@ namespace CardinalAppXamarin.iOS.Renderers
             var innerRadius = outerRadius * 0.5f;
             var pointyTop = true;
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
-            var txt = Element.Text;
-            DrawText(context, txt, cx, cy);
-            //DrawCenteredText(context, txt, cx, cy);
+            if (!String.IsNullOrEmpty(Element.Text))
+            {
+                var txt = Element.Text;
+                DrawText(context, txt, cx, cy);
+                //DrawCenteredText(context, txt, cx, cy);
+            }
         }
 
         protected virtual void DrawCenteredText(CGContext context, String text, float cx, float cy)

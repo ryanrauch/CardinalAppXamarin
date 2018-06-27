@@ -220,8 +220,8 @@
             <!--Buttons-->            
             <Style x:Key="ButtonStyle"
                    TargetType="{x:Type Button}">
-                <!--<Setter Property="FontFamily"
-                        Value="{StaticResource MontserratRegular}" />-->
+                <Setter Property="FontFamily" 
+                        Value="{StaticResource HighlandGothicLightFLF}" />
                 <Setter Property="FontAttributes"
                         Value="Bold" />
                 <Setter Property="TextColor"
@@ -230,17 +230,34 @@
                         Value="{StaticResource CardinalPrimaryFontForegroundColor}" />
             </Style>
             <Style x:Key="SecondaryButtonStyle"
-                   TargetType="{x:Type Button}">
-                <Setter Property="FontAttributes"
-                        Value="Bold" />
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="TextColor"
                         Value="{StaticResource CardinalSecondaryBackgroundColor}" />
                 <Setter Property="BackgroundColor"
                         Value="{StaticResource CardinalSecondaryFontForegroundColor}" />
             </Style>
+            <Style x:Key="MoreFriendsButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource FriendButtonStyle}">
+                <Setter Property="TextColor"
+                        Value="{StaticResource CardinalSubtitleColor}" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+            </Style>
+            <Style x:Key="FriendButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}">
+                <Setter Property="FontSize"
+                        Value="{StaticResource LittleSize}"/>
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource CardinalTransparentColor}" />
+                <Setter Property="Margin"
+                        Value="3,3,3,3"/>
+            </Style>
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}" />
-            
+
             <!--ContentPageGrid-Style-->
             <Style x:Key="GridContentPageStyle"
                    TargetType="{x:Type Grid}">
@@ -259,8 +276,6 @@
                 <Setter Property="ColumnSpacing"
                         Value="0"/>
             </Style>
-            
-            
             
             <!--Control Templates-->
             <!--<ControlTemplate x:Key="CardinalHeaderTemplate">

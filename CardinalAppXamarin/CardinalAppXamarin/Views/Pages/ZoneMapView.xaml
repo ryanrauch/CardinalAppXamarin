@@ -104,20 +104,48 @@
                                    Grid.ColumnSpan="5"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource CardinalSubtitleColor}"
                                    FontSize="{StaticResource BigSize}"
                                    Text="{Binding ZoneUsersCountText}"/>
                             <controls:HexagonShapeView Grid.Row="1"
-                                                       Grid.Column="1"
-                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
-                                                       Text="test"/>
+                                                       Grid.Column="2"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="1"
+                                    Style="{StaticResource FriendButtonStyle}"
+                                    Text="Ryan"/>
+                            
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="2"
-                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
-                                                       Text="hex2"/>
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="2"
+                                    Style="{StaticResource FriendButtonStyle}"
+                                    Text="Kaleigh"/>
+                            
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="3"
-                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"
-                                                       Text="num3"/>
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="3"
+                                    Style="{StaticResource FriendButtonStyle}"
+                                    Text="Ivan"/>
+                            
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="4"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="4"
+                                    Style="{StaticResource FriendButtonStyle}"
+                                    Text="Matt"/>
+                            
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="5"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="5"
+                                    Style="{StaticResource MoreFriendsButtonStyle}"
+                                    Text="&#xf067;"/>
                             <Label Grid.Row="0"
                                    Grid.Column="6"
                                    Grid.RowSpan="2"
@@ -127,7 +155,7 @@
                                    FontFamily="{StaticResource FontAwesomeSolid}"
                                    Text="&#xf101;"/>
                         </Grid>
-                        <!-- aggregate statistic data -->
+                        <!-- aggregate statistical data -->
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
