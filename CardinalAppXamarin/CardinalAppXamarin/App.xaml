@@ -237,15 +237,8 @@
                 <Setter Property="BackgroundColor"
                         Value="{StaticResource CardinalSecondaryFontForegroundColor}" />
             </Style>
-            <Style x:Key="MoreFriendsButtonStyle"
-                   TargetType="{x:Type Button}"
-                   BasedOn="{StaticResource FriendButtonStyle}">
-                <Setter Property="TextColor"
-                        Value="{StaticResource CardinalSubtitleColor}" />
-                <Setter Property="FontFamily"
-                        Value="{StaticResource FontAwesomeSolid}" />
-            </Style>
-            <Style x:Key="FriendButtonStyle"
+
+            <Style x:Key="CardinalFriendButtonStyle"
                    TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="FontSize"
@@ -255,6 +248,7 @@
                 <Setter Property="Margin"
                         Value="3,3,3,3"/>
             </Style>
+
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}" />
 
