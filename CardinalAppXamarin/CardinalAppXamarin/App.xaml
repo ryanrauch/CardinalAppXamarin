@@ -269,6 +269,8 @@
                         Value="0"/>
                 <Setter Property="ColumnSpacing"
                         Value="0"/>
+                <Setter Property="Padding"
+                        Value="0"/>
             </Style>
             
             <!--Control Templates-->

@@ -112,6 +112,8 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private int _zoneUsersCount { get; set; }
+
         private ObservableCollection<UserInfoBriefViewCellModel> _zoneUsers { get; set; } = new ObservableCollection<UserInfoBriefViewCellModel>();
         public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsers
         {
@@ -119,11 +121,121 @@ namespace CardinalAppXamarin.ViewModels
             set
             {
                 _zoneUsers = value;
+                _zoneUsersCount = _zoneUsers.Count;
                 RaisePropertyChanged(() => ZoneUsers);
                 RaisePropertyChanged(() => ZoneUsersCountText);
                 //RaisePropertyChanged(() => ZoneUsersDisplay);
             }
         }
+
+        /* Start of hard-bound 5-hexagon buttons */
+        public Boolean HB1Visibility
+        {
+            get { return _zoneUsersCount >= 4; }
+        }
+        public Boolean HB2Visibility
+        {
+            get { return _zoneUsersCount >= 2; }
+        }
+        public Boolean HB3Visibility
+        {
+            get { return _zoneUsersCount > 0; }
+        }
+        public Boolean HB4Visibility
+        {
+            get { return _zoneUsersCount >= 3; }
+        }
+        public Boolean HB5Visibility
+        {
+            get { return _zoneUsersCount == 5; }
+        }
+        public Boolean HBPlusVisibility
+        {
+            get { return _zoneUsersCount > 5; }
+        }
+        public String HB1Text
+        {
+            get
+            {
+                if (HB1Visibility)
+                {
+                    return _zoneUsers[0].Name;
+                }
+                return String.Empty;
+            }
+        }
+        public String HB2Text
+        {
+            get
+            {
+                if (HB2Visibility)
+                {
+                    if(_zoneUsersCount > 4)
+                    {
+                        return _zoneUsers[1].Name;
+                    }
+                    else
+                    {
+                        return _zoneUsers[0].Name;
+                    }
+                }
+                return String.Empty;
+            }
+        }
+        public String HB3Text
+        {
+            get
+            {
+                if (HB3Visibility)
+                {
+                    if (_zoneUsersCount == 1)
+                    {
+                        return _zoneUsers[0].Name;
+                    }
+                    else if(_zoneUsersCount < 4)
+                    {
+                        return _zoneUsers[1].Name;
+                    }
+                    else
+                    {
+                        return _zoneUsers[2].Name;
+                    }
+                }
+                return String.Empty;
+            }
+        }
+        public String HB4Text
+        {
+            get
+            {
+                if (HB4Visibility)
+                {
+                    if (_zoneUsersCount > 4)
+                    {
+                        return _zoneUsers[2].Name;
+                    }
+                    else
+                    {
+                        return _zoneUsers[3].Name;
+                    }
+                }
+                return String.Empty;
+            }
+        }
+        public String HB5Text
+        {
+            get
+            {
+                if (HB5Visibility)
+                {
+                    return _zoneUsers[4].Name;
+                }
+                return String.Empty;
+            }
+        }
+        /* End of hard-bound 5-hexagon buttons */
+
+
         //public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsersDisplay
         //{
         //    get

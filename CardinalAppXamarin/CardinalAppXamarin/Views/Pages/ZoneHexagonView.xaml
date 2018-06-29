@@ -17,6 +17,8 @@
         <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--Start of header section-->
@@ -82,6 +84,48 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout Grid.Row="2"
+                         Margin="0"
+                         Spacing="0"
+                         Orientation="Horizontal">
+                <Button Text="button3"
+                        RotationY="-60"
+                        AnchorX="1"
+                        AnchorY="0.5"/>
+                <Button Text="button4"
+                        RotationY="60"
+                        AnchorX="0"
+                        AnchorY="0.5"/>
+                <Button Text="button5"
+                        RotationY="-60"
+                        AnchorX="1"
+                        AnchorY="0.5"/>
+                <Button Text="button6"
+                        RotationY="60"
+                        AnchorX="0"
+                        AnchorY="0.5"/>
+            </StackLayout>
+            <StackLayout Grid.Row="3"
+                         Margin="0"
+                         Spacing="0"
+                         Orientation="Horizontal">
+                <Button Text="button3"
+                        RotationY="-60"
+                        AnchorX="0"
+                        AnchorY="0.5"/>
+                <Button Text="button4"
+                        RotationY="60"
+                        AnchorX="1"
+                        AnchorY="0.5"/>
+                <Button Text="button5"
+                        RotationY="-60"
+                        AnchorX="0"
+                        AnchorY="0.5"/>
+                <Button Text="button6"
+                        RotationY="60"
+                        AnchorX="1"
+                        AnchorY="0.5"/>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </local:ZoneHexagonViewBase>

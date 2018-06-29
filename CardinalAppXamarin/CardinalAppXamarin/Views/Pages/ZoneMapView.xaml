@@ -138,10 +138,10 @@
                                     Grid.Column="4"
                                     Style="{StaticResource CardinalFriendButtonStyle}"
                                     Text="Matt"/>
-                            
-                            <!--<controls:HexagonShapeView Grid.Row="1"
+
+                            <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="5"
-                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>-->
+                                                       BorderColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="5"
                                     FontFamily="{StaticResource FontAwesomeSolid}"
