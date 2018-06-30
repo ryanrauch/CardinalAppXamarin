@@ -20,7 +20,7 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public String TitleText => "Cardinal";
-        public String SubtitleText => "Friends";
+        public String SubtitleText => "Friends List";
         public bool BackButtonVisible => true;
         public ICommand BackButtonCommand => new Command(() => _navigationService.NavigateToMain());
 
