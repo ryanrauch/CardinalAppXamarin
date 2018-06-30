@@ -34,6 +34,11 @@ namespace CardinalAppXamarin.ViewModels
             AddValidations();
         }
 
+        public String TitleText => "Cardinal";
+        public String SubtitleText => String.Empty;
+        public bool BackButtonVisible => false;
+        public ICommand BackButtonCommand => null;
+
         private bool _persistent;
         public bool Persistent
         {

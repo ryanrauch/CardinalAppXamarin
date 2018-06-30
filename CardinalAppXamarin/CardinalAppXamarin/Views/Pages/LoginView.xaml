@@ -4,91 +4,142 @@
              xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
              xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
+             xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
              xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.Views.Pages.LoginView">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
-            <Entry x:Name="EntryUserName"
+        <Grid Style="{StaticResource GridContentPageStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--Start of header section-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="52"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.RowSpan="3"
+                           Margin="0,5,0,0"
+                           Aspect="AspectFit"
+                           Source="{exs:ImageResource CardinalAppXamarin.Images.cardinalheader207x238.png}"/>
+                <Label Grid.Column="1"
+                       Grid.ColumnSpan="2"
+                       Grid.Row="1"
+                       Margin="10,0,0,0"
+                       Text="{Binding TitleText}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End"
+                       TextColor="{StaticResource CardinalTitleColor}"
+                       FontSize="{StaticResource HugeSize}"/>
+                <Button Grid.Column="1"
+                        Grid.Row="2"
+                        Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                        Margin="10,0,0,0"
+                        Text="&#xf3e5;"
+                        IsVisible="{Binding BackButtonVisible}"
+                        Command="{Binding BackButtonCommand}"/>
+                <Label Grid.Column="2"
+                       Grid.Row="2"
+                       Margin="10,0,0,0"
+                       Text="{Binding SubtitleText}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       TextColor="{StaticResource CardinalSubtitleColor}"
+                       FontSize="{StaticResource ExtraBigSize}"/>
+            </Grid>
+            <!--End of header section-->
+            <StackLayout Grid.Row="1" 
+                         BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
+                <Entry x:Name="EntryUserName"
                    Text="{Binding UserName.Value, Mode=TwoWay}"
                    AutomationId="username"
                    Placeholder="Username">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                    <Entry.Style>
+                        <helpers:OnCustomPlatform x:TypeArguments="Style"
                         iOS="{StaticResource EntryStyle}"
                         Android="{StaticResource EntryStyle}"
                         UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding UserName}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger TargetType="Entry" 
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding UserName}" />
+                        <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" 
                          Binding="{Binding UserName.IsValid}" 
                          Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                            <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
-            
-            <Entry x:Name="EntryPassword"
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Entry x:Name="EntryPassword"
                    Text="{Binding Password.Value, Mode=TwoWay}"
                    Placeholder="Password"
                    AutomationId="password"
                    IsPassword="true">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                    <Entry.Style>
+                        <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
+                        <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding Password.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                            <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
-            
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Remember me?" VerticalTextAlignment="Center"/>
-                <Switch IsToggled="{Binding Persistent}"/>
-            </StackLayout>
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
 
-            <Button x:Name="SignInButton"
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="End">
+                    <Label Text="Remember me?" VerticalTextAlignment="Center"/>
+                    <Switch IsToggled="{Binding Persistent}"/>
+                </StackLayout>
+
+                <Button x:Name="SignInButton"
                     Command="{Binding SignInCommand}"
                     Text="Sign in"
                     AutomationId="signin"
-                    IsEnabled="{Binding IsEnabled}"
-                    Style="{StaticResource ButtonStyle}">
-                <Button.IsVisible>
-                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                    IsEnabled="{Binding IsEnabled}">
+                    <Button.IsVisible>
+                        <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"
                                             iOS="True"
                                             UWP="False"/>
-                </Button.IsVisible>
-            </Button>
+                    </Button.IsVisible>
+                </Button>
 
-            <Button x:Name="ButtonRegister"
+                <Button x:Name="ButtonRegister"
                     Command="{Binding RegisterCommand}"
                     Text="Register"
-                    AutomationId="register"
-                    Style="{StaticResource ButtonStyle}">
-                <Button.IsVisible>
-                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                    AutomationId="register">
+                    <Button.IsVisible>
+                        <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"
                                             iOS="True"
                                             UWP="False"/>
-                </Button.IsVisible>
-            </Button>
-        </StackLayout>
+                    </Button.IsVisible>
+                </Button>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </local:LoginViewBase>

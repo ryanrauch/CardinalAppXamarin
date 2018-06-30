@@ -109,6 +109,10 @@ namespace CardinalAppXamarin.Services
             {
                 var content = new FormUrlEncodedContent(parameters);
                 response = await _client.PostAsync(uri, content);
+                if(!response.IsSuccessStatusCode)
+                {
+                    return await Task.Run(() => JsonConvert.DeserializeObject<TResult>("false", _serializerSettings));
+                }
             }
             else
             {
@@ -120,7 +124,7 @@ namespace CardinalAppXamarin.Services
             //handle special case for login -- assumes TResult is bool
             if (!auth && uri.EndsWith("api/Token"))
             {
-                string token = await response.Content.ReadAsStringAsync();
+                string token = responseData; //await response.Content.ReadAsStringAsync();
                 SetJsonWebToken(token);
                 _initialized = true;
                 responseData = "true";

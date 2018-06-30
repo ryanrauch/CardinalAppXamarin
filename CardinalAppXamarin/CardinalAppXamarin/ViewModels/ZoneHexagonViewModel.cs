@@ -15,17 +15,20 @@ namespace CardinalAppXamarin.ViewModels
     public class ZoneHexagonViewModel : ViewModelBase
     {
         private readonly IZoneService _zoneService;
+        private readonly ILocalCredentialService _localCredentialService;
         private readonly INavigationService _navigationService;
         private readonly IRequestService _requestService;
 
         public ZoneHexagonViewModel(
             IZoneService zoneService,
             INavigationService navigationService,
-            IRequestService requestService)
+            IRequestService requestService,
+            ILocalCredentialService localCredentialService)
         {
             _zoneService = zoneService;
             _requestService = requestService;
             _navigationService = navigationService;
+            _localCredentialService = localCredentialService;
             IsBusy = true;
         }
 
@@ -113,6 +116,8 @@ namespace CardinalAppXamarin.ViewModels
         public ICommand LogOutCommand => new Command(LogOut);
         private void LogOut()
         {
+            //TODO: check that this works?
+            _localCredentialService.DeleteCredentials();
             _navigationService.NavigateToLogin();
         }
         ////////////////////////////////
