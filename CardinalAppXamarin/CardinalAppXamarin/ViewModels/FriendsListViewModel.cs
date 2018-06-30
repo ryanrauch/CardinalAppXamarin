@@ -34,7 +34,7 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public String TitleText => "Cardinal";
-        public String SubtitleText => "My Friends";
+        public String SubtitleText => "Friends List";
         public bool BackButtonVisible => true;
         public ICommand BackButtonCommand => new Command(() => _navigationService.NavigateToMain());
 
@@ -75,9 +75,10 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public ICommand ImportContactsCommand => null;
-        //public ICommand ViewPendingFriendsCommand => null;
-        //public ICommand ViewMutualFriendsCommand => null;
-        //public ICommand ViewInitiatedFriendsCommand => null;
+        public ICommand ViewAllFriendsCommand => null;
+        public ICommand ViewPendingFriendsCommand => null;
+        public ICommand ViewMutualFriendsCommand => null;
+        public ICommand ViewInitiatedFriendsCommand => null;
 
         private UserInfoContract _userSelf { get; set; }
 
@@ -127,6 +128,36 @@ namespace CardinalAppXamarin.ViewModels
                                                                         FriendStatus.Initiated));
                 }
             }
+            Grouped.Clear();
+            GroupedFriendModel pg = new GroupedFriendModel() { LongName = "Pending Friend Requests", ShortName = "P" };
+            foreach (var pv in PendingFriends.OrderBy(m => m.FirstAndLastName))
+            {
+                pg.Add(pv);
+            }
+            GroupedFriendModel mg = new GroupedFriendModel() { LongName = "Mutual Friends", ShortName = "M" };
+            foreach(var mv in MutualFriends.OrderBy(m => m.FirstAndLastName))
+            {
+                mg.Add(mv);
+            }
+            GroupedFriendModel ig = new GroupedFriendModel() { LongName = "Requests Waiting To Be Accepted", ShortName = "R" };
+            foreach (var iv in InitiatedRequestFriends.OrderBy(m => m.FirstAndLastName))
+            {
+                ig.Add(iv);
+            }
+            Grouped.Add(pg);
+            Grouped.Add(mg);
+            Grouped.Add(ig);
+        }
+
+        private ObservableCollection<GroupedFriendModel> _grouped { get; set; } = new ObservableCollection<GroupedFriendModel>();
+        public ObservableCollection<GroupedFriendModel> Grouped
+        {
+            get { return _grouped; }
+            set
+            {
+                _grouped = value;
+                RaisePropertyChanged(() => Grouped);
+            }
         }
 
         public override async Task OnAppearingAsync()
@@ -136,5 +167,11 @@ namespace CardinalAppXamarin.ViewModels
             await SortDataAsync();
             IsBusy = false;
         } 
+    }
+
+    public class GroupedFriendModel : ObservableCollection<FriendViewCellModel>
+    {
+        public string LongName { get; set; }
+        public string ShortName { get; set; }
     }
 }

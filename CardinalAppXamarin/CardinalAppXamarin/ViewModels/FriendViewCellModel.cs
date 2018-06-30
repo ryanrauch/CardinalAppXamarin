@@ -42,6 +42,10 @@ namespace CardinalAppXamarin.ViewModels
 
         // TODO: Create visibility members for buttons from FriendStatus
         //       And derived-text from TimeStamp
+        public bool AcceptPendingVisibility => Status.Equals(FriendStatus.PendingRequest);
+        public bool RequestSentVisibility => Status.Equals(FriendStatus.Initiated);
+        public bool MutualFriendVisibility => Status.Equals(FriendStatus.Mutual);
+        
         public string FirstAndLastName => String.Format("{0} {1}", FirstName, LastName);
         public string FormattedPhoneNumber
         {
