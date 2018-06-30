@@ -61,12 +61,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
                 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
                     <Entry Grid.Column="0"
@@ -80,6 +80,10 @@
                             Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
                             Text="&#xf002;"
                             Command="{Binding SearchCommand}"/>
+                    <Button Grid.Column="2" HorizontalOptions="End"
+                            Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                            Text="&#xf2bb;"
+                            Command="{Binding ImportContactsCommand}"/>
                 </Grid>
 
                 <ListView Grid.Row="1"
@@ -170,16 +174,6 @@
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                 </ListView>
-                
-                <StackLayout Grid.Row="2"
-                             HorizontalOptions="FillAndExpand"
-                             Orientation="Horizontal">
-                    <Button Text="Import Contacts" 
-                            HorizontalOptions="Center"
-                            VerticalOptions="End"
-                            FontSize="{StaticResource LittleSize}"
-                            Command="{Binding ImportContactsCommand}"/>
-                </StackLayout>
             </Grid>
         </Grid>
     </ContentPage.Content>

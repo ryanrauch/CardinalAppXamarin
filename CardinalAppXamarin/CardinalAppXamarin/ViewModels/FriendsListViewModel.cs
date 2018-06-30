@@ -72,28 +72,23 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public ICommand ImportContactsCommand => null;
-        //public ICommand ViewAllFriendsCommand => null;
-        //public ICommand ViewPendingFriendsCommand => null;
-        //public ICommand ViewMutualFriendsCommand => null;
-        //public ICommand ViewInitiatedFriendsCommand => null;
 
         public ICommand RequestSentButtonCommand => new Command<FriendViewCellModel>(async (vm) => await RequestSentButtonTask(vm));
         private async Task RequestSentButtonTask(FriendViewCellModel fvcm)
         {
             await Task.Delay(10);
-            SearchEntry = fvcm.LastName;
         }
+
         public ICommand PendingRequestButtonCommand => new Command<FriendViewCellModel>(async (vm) => await PendingRequestButtonTask(vm));
         private async Task PendingRequestButtonTask(FriendViewCellModel fvcm)
         {
             await Task.Delay(10);
-            SearchEntry = fvcm.LastName;
         }
+
         public ICommand MutualFriendButtonCommand => new Command<FriendViewCellModel>(async (vm) => await MutualFriendButtonTask(vm));
         private async Task MutualFriendButtonTask(FriendViewCellModel fvcm)
         {
             await Task.Delay(10);
-            SearchEntry = fvcm.LastName;
         }
 
         private UserInfoContract _userSelf { get; set; }
