@@ -2,6 +2,7 @@
 <local:FriendsListViewBase xmlns="http://xamarin.com/schemas/2014/forms"
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                           xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
                            xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                            x:Class="CardinalAppXamarin.Views.Pages.FriendsListView">
     <ContentPage.Content>
@@ -59,8 +60,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
-                    <!--<RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>-->
                     <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
                 
@@ -71,7 +70,11 @@
                     </Grid.ColumnDefinitions>
                     <Entry Grid.Column="0"
                            Placeholder="Search"
-                           Text="{Binding SearchEntry}"/>
+                           Text="{Binding SearchEntry, Mode=TwoWay}">
+                        <Entry.Behaviors>
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding SearchCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
                     <Button Grid.Column="1" HorizontalOptions="End"
                             Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
                             Text="&#xf002;"
@@ -85,14 +88,6 @@
                           GroupDisplayBinding="{Binding LongName}"
                           GroupShortNameBinding="{Binding ShortName}"
                           ItemsSource="{Binding Grouped}">
-                    <!--<ListView.Header>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="ListViewHeader"
-                                   HorizontalTextAlignment="Center"
-                                   FontSize="{StaticResource MidMediumSize}"
-                                   TextColor="{StaticResource CardinalPrimaryFontForegroundColor}"/>
-                        </StackLayout>
-                    </ListView.Header>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -170,8 +165,12 @@
                 </ListView>
                 
                 <StackLayout Grid.Row="2"
+                             HorizontalOptions="FillAndExpand"
                              Orientation="Horizontal">
-                    <Button Text="Import Contacts"
+                    <Button Text="Import Contacts" 
+                            HorizontalOptions="Center"
+                            VerticalOptions="End"
+                            FontSize="{StaticResource LittleSize}"
                             Command="{Binding ImportContactsCommand}"/>
                 </StackLayout>
             </Grid>

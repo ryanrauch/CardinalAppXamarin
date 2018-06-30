@@ -38,9 +38,6 @@ namespace CardinalAppXamarin.ViewModels
         public bool BackButtonVisible => true;
         public ICommand BackButtonCommand => new Command(() => _navigationService.NavigateToMain());
 
-        public ICommand SearchCommand => null;
-        public String SearchEntry => String.Empty;
-
         private ObservableCollection<FriendViewCellModel> _mutualFriends { get; set; } = new ObservableCollection<FriendViewCellModel>();
         public ObservableCollection<FriendViewCellModel> MutualFriends
         {
@@ -75,10 +72,10 @@ namespace CardinalAppXamarin.ViewModels
         }
 
         public ICommand ImportContactsCommand => null;
-        public ICommand ViewAllFriendsCommand => null;
-        public ICommand ViewPendingFriendsCommand => null;
-        public ICommand ViewMutualFriendsCommand => null;
-        public ICommand ViewInitiatedFriendsCommand => null;
+        //public ICommand ViewAllFriendsCommand => null;
+        //public ICommand ViewPendingFriendsCommand => null;
+        //public ICommand ViewMutualFriendsCommand => null;
+        //public ICommand ViewInitiatedFriendsCommand => null;
 
         private UserInfoContract _userSelf { get; set; }
 
@@ -139,7 +136,7 @@ namespace CardinalAppXamarin.ViewModels
             {
                 mg.Add(mv);
             }
-            GroupedFriendModel ig = new GroupedFriendModel() { LongName = "Requests Waiting To Be Accepted", ShortName = "R" };
+            GroupedFriendModel ig = new GroupedFriendModel() { LongName = "Waiting for Response", ShortName = "W" };
             foreach (var iv in InitiatedRequestFriends.OrderBy(m => m.FirstAndLastName))
             {
                 ig.Add(iv);
@@ -158,6 +155,78 @@ namespace CardinalAppXamarin.ViewModels
                 _grouped = value;
                 RaisePropertyChanged(() => Grouped);
             }
+        }
+
+        public String SearchEntry { get; set; }
+
+        public ICommand SearchCommand => new Command(FilterGroupsBySearch);
+
+        private void FilterGroupsBySearch()
+        {
+            Grouped.Clear();
+            GroupedFriendModel pg = new GroupedFriendModel() { LongName = "Pending Friend Requests", ShortName = "P" };
+            GroupedFriendModel mg = new GroupedFriendModel() { LongName = "Mutual Friends", ShortName = "M" };
+            GroupedFriendModel ig = new GroupedFriendModel() { LongName = "Waiting for Response", ShortName = "W" };
+            if (String.IsNullOrEmpty(SearchEntry))
+            {
+                foreach (var pv in PendingFriends.OrderBy(m => m.FirstAndLastName))
+                {
+                    pg.Add(pv);
+                }
+                foreach (var mv in MutualFriends.OrderBy(m => m.FirstAndLastName))
+                {
+                    mg.Add(mv);
+                }
+                foreach (var iv in InitiatedRequestFriends.OrderBy(m => m.FirstAndLastName))
+                {
+                    ig.Add(iv);
+                }
+            }
+            else
+            {
+                foreach (var pv in PendingFriends
+                                   .Where(p => p.UserName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.FirstName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.LastName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.PhoneNumber
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase))
+                                   .OrderBy(m => m.FirstAndLastName))
+                {
+                    pg.Add(pv);
+                }
+                foreach (var mv in MutualFriends
+                                   .Where(p => p.UserName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.FirstName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.LastName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.PhoneNumber
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase))
+                                   .OrderBy(m => m.FirstAndLastName))
+                {
+                    mg.Add(mv);
+                }
+                foreach (var iv in InitiatedRequestFriends
+                                   .Where(p => p.UserName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.FirstName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.LastName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.PhoneNumber
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase))
+                                   .OrderBy(m => m.FirstAndLastName))
+                {
+                    ig.Add(iv);
+                }
+            }
+            Grouped.Add(pg);
+            Grouped.Add(mg);
+            Grouped.Add(ig);
         }
 
         public override async Task OnAppearingAsync()
