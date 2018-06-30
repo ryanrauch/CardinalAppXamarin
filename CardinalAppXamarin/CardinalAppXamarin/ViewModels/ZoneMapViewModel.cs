@@ -280,13 +280,13 @@ namespace CardinalAppXamarin.ViewModels
             get { return SubtitleText; }
         }
 
-        public int ZoneAggregateUsers => 532;
-        public int ZoneAggregateFemale => 427;
-        public int ZoneAggregateMale => 105;
-        public float ZoneAggregateFemalePercent => (float)ZoneAggregateFemale / ZoneAggregateUsers;
-        public float ZoneAggregateMalePercent => (float)ZoneAggregateMale / ZoneAggregateUsers;
+        public int ZAUsers => 532;
+        public int ZAFemale => 427;
+        public int ZAMale => 105;
+        public float ZAFemalePercent => (float)ZAFemale / (float)ZAUsers;
+        public float ZAMalePercent => (float)ZAMale / (float)ZAUsers;
 
-        public String ZoneAggregateTitle
+        public String ZATitle
         {
             get
             {
@@ -294,7 +294,7 @@ namespace CardinalAppXamarin.ViewModels
                 {
                     return "Loading...";
                 }
-                int zc = ZoneAggregateUsers;
+                int zc = ZAUsers;
                 if (zc == 0)
                 {
                     return String.Format("{0} is Empty", ZoneDescription);

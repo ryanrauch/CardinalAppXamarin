@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using CardinalAppXamarin.Controls;
+﻿using CardinalAppXamarin.Controls;
 using CardinalAppXamarin.iOS.Renderers;
 using CoreGraphics;
-using CoreText;
-using Foundation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(HexagonShapePercentView), typeof(HexagonShapePercentViewRenderer))]
+[assembly: ExportRenderer(typeof(HexagonPercentView), typeof(HexagonPercentViewRenderer))]
 namespace CardinalAppXamarin.iOS.Renderers
 {
-    public class HexagonShapePercentViewRenderer : VisualElementRenderer<HexagonShapePercentView>
+    public class HexagonPercentViewRenderer : VisualElementRenderer<HexagonPercentView>
     {
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -64,7 +60,6 @@ namespace CardinalAppXamarin.iOS.Renderers
             // draw outer hexagon, with transparent fill
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
 
-
             var fillColor = base.Element.ShapeColor.ToUIColor();
             if (Element.ShapeColor.A > 0)
             {
@@ -75,7 +70,7 @@ namespace CardinalAppXamarin.iOS.Renderers
             strokeWidth = 0;
             context.SetLineWidth(0);
             stroke = false;
-            var pcent = Element.Percent;
+            var pcent = (float)Element.Percent;
             if(pcent < 0)
             {
                 pcent = 0;

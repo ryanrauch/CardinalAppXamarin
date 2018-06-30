@@ -204,24 +204,24 @@
                                    VerticalTextAlignment="Center"
                                    TextColor="{StaticResource CardinalSubtitleColor}"
                                    FontSize="{StaticResource BigSize}"
-                                   Text="{Binding ZoneAggregateTitle}"/>
+                                   Text="{Binding ZATitle}"/>
                             <!-- Female -->
-                            <controls:HexagonShapePercentView Grid.Row="1"
-                                                              Grid.Column="1"
-                                                              Percent="{Binding ZoneAggregateFemalePercent}"
-                                                              BorderColor="{StaticResource CardinalSubtitleColor}"
-                                                              ShapeColor="{StaticResource CardinalFemaleGradientColor}"/>
+                            <!--<controls:HexagonPercent Grid.Row="1"
+                                                     Grid.Column="1"
+                                                     Percent="{Binding ZAFemalePercent}"
+                                                     BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                     ShapeColor="{StaticResource CardinalFemaleGradientColor}"/>-->
 
                             <Label Grid.Row="1"
                                    Grid.Column="1"
                                    FontFamily="{StaticResource FontAwesomeSolid}"
                                    Text="&#xf182;"/>
                             <!-- Male -->
-                            <controls:HexagonShapePercentView Grid.Row="1"
-                                                              Grid.Column="2"
-                                                              Percent="{Binding ZoneAggregateMalePercent}"
-                                                              BorderColor="{StaticResource CardinalSubtitleColor}"
-                                                              ShapeColor="{StaticResource CardinalMaleGradientColor}"/>
+                            <!--<controls:HexagonPercent Grid.Row="1"
+                                                     Grid.Column="2"
+                                                     Percent="{Binding ZAMalePercent}"
+                                                     BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                     ShapeColor="{StaticResource CardinalMaleGradientColor}"/>-->
 
                             <Label Grid.Row="1"
                                    Grid.Column="2"

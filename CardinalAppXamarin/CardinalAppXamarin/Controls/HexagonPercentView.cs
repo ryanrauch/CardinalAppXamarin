@@ -2,25 +2,25 @@
 
 namespace CardinalAppXamarin.Controls
 {
-    public class HexagonShapePercentView : ContentView
+    public class HexagonPercentView : ContentView
     {
         public static readonly BindableProperty ShapeColorProperty =
                             BindableProperty.Create(nameof(ShapeColor),
                                                     typeof(Color),
-                                                    typeof(HexagonShapePercentView),
+                                                    typeof(HexagonPercentView),
                                                     Color.Transparent);
 
         public static readonly BindableProperty BorderColorProperty =
                     BindableProperty.Create(nameof(BorderColor),
                                             typeof(Color),
-                                            typeof(HexagonShapePercentView),
+                                            typeof(HexagonPercentView),
                                             Color.Transparent);
 
         public static readonly BindableProperty PercentProperty =
             BindableProperty.Create(nameof(Percent),
-                                    typeof(float),
-                                    typeof(HexagonShapePercentView),
-                                    1.0);
+                                    typeof(double),
+                                    typeof(HexagonPercentView),
+                                    1.0d);
 
         public Color ShapeColor
         {
