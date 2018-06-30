@@ -248,7 +248,17 @@
                 <Setter Property="Margin"
                         Value="3,3,3,3"/>
             </Style>
-
+            <Style x:Key="CardinalHeaderFontAwesomeButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{StaticResource ButtonStyle}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}"/>
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource CardinalPrimaryBackgroundColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource CardinalPrimaryFontForegroundColor}"/>
+            </Style>
+            
             <Style TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}" />
 

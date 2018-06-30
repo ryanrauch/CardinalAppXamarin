@@ -46,11 +46,9 @@
                        FontSize="{StaticResource HugeSize}"/>
                 <Button Grid.Column="1"
                         Grid.Row="2"
+                        Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
                         Margin="10,0,0,0"
-                        FontFamily="{StaticResource FontAwesomeSolid}"
                         Text="&#xf3e5;"
-                        BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
-                        TextColor="{StaticResource CardinalPrimaryFontForegroundColor}"
                         IsVisible="{Binding BackButtonVisible}"
                         Command="{Binding BackButtonCommand}"/>
                 <Label Grid.Column="2"

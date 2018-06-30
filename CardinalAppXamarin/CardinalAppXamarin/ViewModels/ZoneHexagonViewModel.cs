@@ -1,6 +1,7 @@
 ﻿using CardinalAppXamarin.Services.Interfaces;
 using CardinalAppXamarin.ViewModels.Base;
 using CardinalAppXamarin.Views.Pages;
+using CardinalLibrary.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,12 +16,15 @@ namespace CardinalAppXamarin.ViewModels
     {
         private readonly IZoneService _zoneService;
         private readonly INavigationService _navigationService;
+        private readonly IRequestService _requestService;
 
         public ZoneHexagonViewModel(
             IZoneService zoneService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IRequestService requestService)
         {
             _zoneService = zoneService;
+            _requestService = requestService;
             _navigationService = navigationService;
             IsBusy = true;
         }
@@ -63,6 +67,10 @@ namespace CardinalAppXamarin.ViewModels
             {
                 ZonesList.Add(new ZoneViewModel(zone));
             }
+
+            var profile = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
+            UserProfile = new ProfileViewModel() { UserInfo = profile };
+
             IsBusy = false;
         }
 
@@ -73,5 +81,40 @@ namespace CardinalAppXamarin.ViewModels
                 await _navigationService.NavigatePushAsync<ZoneMapView>(new ZoneMapView(), zvm.ZoneContractInfo);
             }
         }
+
+
+        ///////// Currently logged-in user profile
+        private ProfileViewModel _userProfile { get; set; }
+        public ProfileViewModel UserProfile
+        {
+            get { return _userProfile; }
+            set
+            {
+                _userProfile = value;
+                RaisePropertyChanged(() => UserProfile);
+            }
+        }
+        private bool _profileVisible { get; set; } = false;
+        public bool ProfileVisible
+        {
+            get { return _profileVisible; }
+            set
+            {
+                _profileVisible = value;
+                RaisePropertyChanged(() => ProfileVisible);
+            }
+        }
+        private void ProfileClicked()
+        {
+            ProfileVisible = !ProfileVisible;
+        }
+        public ICommand CurrentUserProfileCommand => new Command(ProfileClicked);
+
+        public ICommand LogOutCommand => new Command(LogOut);
+        private void LogOut()
+        {
+            _navigationService.NavigateToLogin();
+        }
+        ////////////////////////////////
     }
 }
