@@ -59,6 +59,9 @@ namespace CardinalAppXamarin
             
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();
 
+            containerBuilder.RegisterType<FriendRequestService>().As<IFriendRequestService>().SingleInstance();
+            containerBuilder.RegisterType<UserInfoService>().As<IUserInfoService>().SingleInstance();
+
             return containerBuilder.Build();
         }
     }

@@ -121,6 +121,6 @@ namespace CardinalAppXamarin.ViewModels
             _navigationService.NavigateToLogin();
         }
         ////////////////////////////////
-        public ICommand DisplayFriendsListCommand => new Command(()=>_navigationService.NavigateToFriendsList());
+        public ICommand DisplayFriendsListCommand => new Command(() => _navigationService.NavigateToFriendsList());
     }
 }

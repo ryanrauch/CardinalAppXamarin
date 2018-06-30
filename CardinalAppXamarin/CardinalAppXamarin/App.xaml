@@ -65,6 +65,12 @@
                         WinPhone="Assets/Fonts/SourceSansPro-Regular.ttf#Source Sans Pro"/>-->
 
             <!-- Font Sizes -->
+            <OnPlatform x:Key="LittlerSize"
+                        x:TypeArguments="x:Double"
+                        iOS="9"
+                        Android="10"
+                        WinPhone="10"/>
+            
             <OnPlatform x:Key="LittleSize"
                         x:TypeArguments="x:Double"
                         iOS="11"
