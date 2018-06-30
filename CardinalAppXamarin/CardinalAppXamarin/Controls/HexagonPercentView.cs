@@ -16,6 +16,9 @@ namespace CardinalAppXamarin.Controls
                                             typeof(HexagonPercentView),
                                             Color.Transparent);
 
+        /// <summary>
+        /// range of 0.3 - 1.0
+        /// </summary>
         public static readonly BindableProperty PercentProperty =
             BindableProperty.Create(nameof(Percent),
                                     typeof(double),
@@ -32,9 +35,9 @@ namespace CardinalAppXamarin.Controls
             get { return (Color)GetValue(BorderColorProperty); }
             set { SetValue(BorderColorProperty, value); }
         }
-        public float Percent
+        public double Percent
         {
-            get { return (float)GetValue(PercentProperty); }
+            get { return (double)GetValue(PercentProperty); }
             set { SetValue(PercentProperty, value); }
         }
     }

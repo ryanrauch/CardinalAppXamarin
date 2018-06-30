@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
-using Xamarin.Forms.GoogleMaps.Bindings;
 
 namespace CardinalAppXamarin.ViewModels
 {
@@ -18,25 +17,24 @@ namespace CardinalAppXamarin.ViewModels
         private readonly ILayerService _layerService;
         private readonly IGeolocatorService _geolocatorService;
         private readonly INavigationService _navigationService;
-        private readonly IDialogService _dialogService;
+        //private readonly IDialogService _dialogService;
 
         public ZoneMapViewModel(
             ILayerService layerService,
             IGeolocatorService geolocatorService,
-            INavigationService navigationService,
-            IDialogService dialogService)
+            INavigationService navigationService)
+            //IDialogService dialogService)
         {
             _layerService = layerService;
             _geolocatorService = geolocatorService;
             _navigationService = navigationService;
-            _dialogService = dialogService;
+            //_dialogService = dialogService;
             IsBusy = true;
             var cp = _geolocatorService.LastRecordedPosition;
             MapRegion = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.2));
         }
 
         public string TitleText => "Cardinal";
-
         public String SubtitleText
         {
             get
@@ -48,7 +46,6 @@ namespace CardinalAppXamarin.ViewModels
                 return String.Empty;
             }
         }
-
         public bool BackButtonVisible => true;
         public ICommand BackButtonCommand => new Command(() => _navigationService.NavigateToMain());
 
@@ -110,6 +107,7 @@ namespace CardinalAppXamarin.ViewModels
                 RaisePropertyChanged(() => ZoneUsers);
                 RaisePropertyChanged(() => ZoneUsersCountText);
                 RaiseHBProperties();
+                RaiseZAProperties();
             }
         }
 
@@ -243,9 +241,10 @@ namespace CardinalAppXamarin.ViewModels
 
         private async Task SelectFriendButton(int i)
         {
-            await _dialogService.DisplayAlertAsync("index: " + i.ToString(),
-                                                   ZoneUsers[i].Name,
-                                                   "OK");
+            //await _dialogService.DisplayAlertAsync("index: " + i.ToString(),
+            //                                       ZoneUsers[i].Name,
+            //                                       "OK");
+            await Task.Delay(10);
         }
 
         public String ZoneUsersCountText
@@ -275,17 +274,45 @@ namespace CardinalAppXamarin.ViewModels
 
 
         /* Start of Aggregate Data */
-        public String ZoneDescription
+        private void RaiseZAProperties()
         {
-            get { return SubtitleText; }
+            RaisePropertyChanged(() => ZATitle);
+            RaisePropertyChanged(() => ZAFemalePercent);
+            RaisePropertyChanged(() => ZAMalePercent);
         }
-
-        public int ZAUsers => 532;
+        public String ZoneDescription => SubtitleText;
         public int ZAFemale => 427;
         public int ZAMale => 105;
-        public float ZAFemalePercent => (float)ZAFemale / (float)ZAUsers;
-        public float ZAMalePercent => (float)ZAMale / (float)ZAUsers;
+        public int ZATotalUsers => ZAFemale + ZAMale;
+        //private double ZAMaleFemaleMax => Math.Max(ZAMale, ZAFemale);
+        //public double ZAFemalePercent => ZAFemale / ZAMaleFemaleMax;
+        //public double ZAMalePercent => ZAMale / ZAMaleFemaleMax;
+        public double ZAFemalePercent => ZAFemale / (double)ZATotalUsers;
+        public double ZAMalePercent => ZAMale / (double)ZATotalUsers;
 
+        //public String ZATitleDesc
+        //{
+        //    get
+        //    {
+        //        if (IsBusy)
+        //        {
+        //            return "Loading...";
+        //        }
+        //        int zc = ZATotalUsers;
+        //        if (zc == 0)
+        //        {
+        //            return String.Format("{0} is Empty", ZoneDescription);
+        //        }
+        //        else if (zc == 1)
+        //        {
+        //            return String.Format("1 person in {0}", ZoneDescription);
+        //        }
+        //        else
+        //        {
+        //            return String.Format("{0} people in {1}", zc, ZoneDescription);
+        //        }
+        //    }
+        //}
         public String ZATitle
         {
             get
@@ -294,18 +321,18 @@ namespace CardinalAppXamarin.ViewModels
                 {
                     return "Loading...";
                 }
-                int zc = ZAUsers;
+                int zc = ZATotalUsers;
                 if (zc == 0)
                 {
-                    return String.Format("{0} is Empty", ZoneDescription);
+                    return "No people";
                 }
                 else if (zc == 1)
                 {
-                    return String.Format("1 person in {0}", ZoneDescription);
+                    return "1 person";
                 }
                 else
                 {
-                    return String.Format("{0} people in {1}", zc, ZoneDescription);
+                    return String.Format("{0} people", zc);
                 }
             }
         }

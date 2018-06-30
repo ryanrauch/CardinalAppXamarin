@@ -17,8 +17,6 @@
         <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--Start of header section-->
@@ -84,7 +82,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackLayout Grid.Row="2"
+            <!--<StackLayout Grid.Row="2"
                          Margin="0"
                          Spacing="0"
                          Orientation="Horizontal">
@@ -125,7 +123,7 @@
                         RotationY="60"
                         AnchorX="1"
                         AnchorY="0.5"/>
-            </StackLayout>
+            </StackLayout>-->
         </Grid>
     </ContentPage.Content>
 </local:ZoneHexagonViewBase>

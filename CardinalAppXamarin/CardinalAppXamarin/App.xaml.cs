@@ -12,11 +12,7 @@ namespace CardinalAppXamarin
 		public App ()
 		{
 			InitializeComponent();
-#if DEBUG
-            Container = AutoFacContainerBuilder.CreateContainer(true);
-#else
-            Container = AutoFacContainerBuilder.CreateContainer(false);
-#endif
+            Container = AutoFacContainerBuilder.CreateContainer();
             MainPage = new NavigationPage(new InitialView());
             //MainPage = new NavigationPage(new MainMapView());
         }

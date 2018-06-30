@@ -53,6 +53,8 @@ namespace CardinalAppXamarin.iOS.Renderers
                 strokeColor.SetStroke();
                 stroke = true;
                 context.SetLineWidth(1);
+                // dashes 10units long, with 4units of separation
+                context.SetLineDash(0, new nfloat[] { 5, 2 * (nfloat)Math.PI });
                 strokeWidth = 1f;
             }
             var outerRadius = (Math.Min(height, width) - strokeWidth) / 2f;
@@ -70,17 +72,16 @@ namespace CardinalAppXamarin.iOS.Renderers
             strokeWidth = 0;
             context.SetLineWidth(0);
             stroke = false;
-            var pcent = (float)Element.Percent;
-            if(pcent < 0)
+            var pcent = Element.Percent;
+            if(pcent < .3)
             {
-                pcent = 0;
-                return;
+                pcent = .3; //keep enough room for icons to be visible
             }
             if(pcent > 1)
             {
-                pcent = 1;
+                pcent = 1f;
             }
-            var innerRadius = outerRadius * pcent;
+            var innerRadius = outerRadius * (float)pcent;
             // draw inner hexagon, with fill of "ShapeColor" and no border
             DrawHexagon(context, cx, cy, innerRadius, pointyTop, fill, stroke);
         }

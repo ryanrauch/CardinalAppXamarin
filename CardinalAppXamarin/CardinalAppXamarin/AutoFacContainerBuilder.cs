@@ -9,7 +9,7 @@ namespace CardinalAppXamarin
 {
     public static class AutoFacContainerBuilder
     {
-        public static IContainer CreateContainer(bool mock)
+        public static IContainer CreateContainer()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterType<InitialViewModel>().SingleInstance();
@@ -25,7 +25,9 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<ZoneMapViewModel>();
             containerBuilder.RegisterType<ZoneViewModel>();
             containerBuilder.RegisterType<UserInfoBriefViewCellModel>();
-
+            /////////////////
+            bool mock = true;
+            /////////////////
             if(mock)
             {
                 containerBuilder.RegisterType<MockGeolocatorService>().As<IGeolocatorService>().SingleInstance();

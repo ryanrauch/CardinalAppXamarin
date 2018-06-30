@@ -74,7 +74,7 @@
                     <googleMapsBindings:UpdateRegionBehavior Region="{Binding MapRegion}" Animated="{Binding MapAnimated}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
-            <cv:CarouselViewControl Grid.Row="2">
+            <cv:CarouselViewControl Grid.Row="2" Margin="0,10,0,0">
                 <cv:CarouselViewControl.ItemsSource>
                     <x:Array Type="{x:Type View}">
                         <!-- total number of friends/pictures -->
@@ -180,8 +180,8 @@
                         <!-- aggregate statistical data -->
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20"/>
@@ -197,34 +197,42 @@
                                    FontFamily="{StaticResource FontAwesomeSolid}"
                                    TextColor="{StaticResource CardinalSecondaryFontDimmedColor}"
                                    Text="&#xf100;"/>
-                            <Label Grid.Row="0"
+                            <Label Grid.Row="1"
                                    Grid.Column="1"
                                    Grid.ColumnSpan="2"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    TextColor="{StaticResource CardinalSubtitleColor}"
-                                   FontSize="{StaticResource BigSize}"
+                                   FontSize="{StaticResource LargerSize}"
                                    Text="{Binding ZATitle}"/>
                             <!-- Female -->
-                            <!--<controls:HexagonPercent Grid.Row="1"
-                                                     Grid.Column="1"
-                                                     Percent="{Binding ZAFemalePercent}"
-                                                     BorderColor="{StaticResource CardinalSubtitleColor}"
-                                                     ShapeColor="{StaticResource CardinalFemaleGradientColor}"/>-->
+                            <controls:HexagonPercentView Grid.Row="0"
+                                                         Grid.Column="1"
+                                                         Percent="{Binding ZAFemalePercent}"
+                                                         BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                         ShapeColor="{StaticResource CardinalSubtitleColor}"/>
 
-                            <Label Grid.Row="1"
+                            <Label Grid.Row="0"
                                    Grid.Column="1"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="{StaticResource LargerSize}"
+                                   TextColor="{StaticResource CardinalPrimaryBackgroundColor}"
                                    FontFamily="{StaticResource FontAwesomeSolid}"
                                    Text="&#xf182;"/>
                             <!-- Male -->
-                            <!--<controls:HexagonPercent Grid.Row="1"
-                                                     Grid.Column="2"
-                                                     Percent="{Binding ZAMalePercent}"
-                                                     BorderColor="{StaticResource CardinalSubtitleColor}"
-                                                     ShapeColor="{StaticResource CardinalMaleGradientColor}"/>-->
+                            <controls:HexagonPercentView Grid.Row="0"
+                                                         Grid.Column="2"
+                                                         Percent="{Binding ZAMalePercent}"
+                                                         BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                         ShapeColor="{StaticResource CardinalSubtitleColor}"/>
 
-                            <Label Grid.Row="1"
+                            <Label Grid.Row="0"
                                    Grid.Column="2"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="{StaticResource LargerSize}"
+                                   TextColor="{StaticResource CardinalPrimaryBackgroundColor}"
                                    FontFamily="{StaticResource FontAwesomeSolid}"
                                    Text="&#xf183;"/>
                         </Grid>
