@@ -96,7 +96,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"
-                        Text="Friends-List"/>
+                        Text="Friends-List"
+                        Command="{Binding DisplayFriendsListCommand}"/>
             </Grid>
             <!--User-Profile-->
             <Frame Grid.Row="1"

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:CardinalAppXamarin.Converters"
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
              x:Class="CardinalAppXamarin.App">
 	<Application.Resources>
@@ -292,6 +293,9 @@
                 <Setter Property="Padding"
                         Value="0"/>
             </Style>
+
+            <converters:IntEnumConverter x:Key="IntEnum"/>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationError"/>
             
             <!--Control Templates-->
             <!--<ControlTemplate x:Key="CardinalHeaderTemplate">

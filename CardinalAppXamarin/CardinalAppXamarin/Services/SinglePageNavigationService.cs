@@ -38,6 +38,11 @@ namespace CardinalAppXamarin.Services
             return NavigatePushAsync(page);
         }
 
+        public void NavigateToFriendsList()
+        {
+            CurrentApplication.MainPage = new FriendsListView();
+        }
+
         public void NavigateToLogin()
         {
             CurrentApplication.MainPage = new LoginView();

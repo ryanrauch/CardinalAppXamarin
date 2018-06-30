@@ -25,6 +25,8 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<ZoneMapViewModel>();
             containerBuilder.RegisterType<ZoneViewModel>();
             containerBuilder.RegisterType<UserInfoBriefViewCellModel>();
+
+            containerBuilder.RegisterType<FriendsListViewModel>();
             /////////////////
             bool mock = true;
             /////////////////

@@ -64,5 +64,10 @@ namespace CardinalAppXamarin.Services
             await CurrentApplication.MainPage.Navigation.PopAsync();
             //}
         }
+
+        public void NavigateToFriendsList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
