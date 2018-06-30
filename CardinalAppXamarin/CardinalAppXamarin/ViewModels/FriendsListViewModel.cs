@@ -77,6 +77,25 @@ namespace CardinalAppXamarin.ViewModels
         //public ICommand ViewMutualFriendsCommand => null;
         //public ICommand ViewInitiatedFriendsCommand => null;
 
+        public ICommand RequestSentButtonCommand => new Command<FriendViewCellModel>(async (vm) => await RequestSentButtonTask(vm));
+        private async Task RequestSentButtonTask(FriendViewCellModel fvcm)
+        {
+            await Task.Delay(10);
+            SearchEntry = fvcm.LastName;
+        }
+        public ICommand PendingRequestButtonCommand => new Command<FriendViewCellModel>(async (vm) => await PendingRequestButtonTask(vm));
+        private async Task PendingRequestButtonTask(FriendViewCellModel fvcm)
+        {
+            await Task.Delay(10);
+            SearchEntry = fvcm.LastName;
+        }
+        public ICommand MutualFriendButtonCommand => new Command<FriendViewCellModel>(async (vm) => await MutualFriendButtonTask(vm));
+        private async Task MutualFriendButtonTask(FriendViewCellModel fvcm)
+        {
+            await Task.Delay(10);
+            SearchEntry = fvcm.LastName;
+        }
+
         private UserInfoContract _userSelf { get; set; }
 
         private async Task SortDataAsync()
@@ -157,7 +176,16 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public String SearchEntry { get; set; }
+        private String _searchEntry { get; set; }
+        public String SearchEntry
+        {
+            get { return _searchEntry; }
+            set
+            {
+                _searchEntry = value;
+                RaisePropertyChanged(() => SearchEntry);
+            }
+        }
 
         public ICommand SearchCommand => new Command(FilterGroupsBySearch);
 

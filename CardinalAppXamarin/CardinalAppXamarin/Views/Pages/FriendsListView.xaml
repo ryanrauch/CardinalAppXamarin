@@ -4,6 +4,7 @@
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
                            xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
                            xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
+                           x:Name="FriendsListViewContentPage"
                            x:Class="CardinalAppXamarin.Views.Pages.FriendsListView">
     <ContentPage.Content>
         <Grid Style="{StaticResource GridContentPageStyle}">
@@ -130,6 +131,8 @@
                                             Grid.Column="2"
                                             IsVisible="{Binding AcceptPendingVisibility}"
                                             Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                                            Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.PendingRequestButtonCommand}"
+                                            CommandParameter="{Binding .}"
                                             Text="&#xf234;"/>
                                     <Button Grid.Row="0"
                                             Grid.RowSpan="2"
@@ -137,6 +140,8 @@
                                             IsVisible="{Binding RequestSentVisibility}"
                                             Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
                                             TextColor="{StaticResource CardinalSubtitleColor}"
+                                            Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.RequestSentButtonCommand}"
+                                            CommandParameter="{Binding .}"
                                             Text="&#xf4fd;"/>
                                     <Button Grid.Row="0"
                                             Grid.RowSpan="2"
@@ -144,6 +149,8 @@
                                             IsVisible="{Binding MutualFriendVisibility}"
                                             Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
                                             TextColor="{StaticResource CardinalSubtitleColor}"
+                                            Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.MutualFriendButtonCommand}"
+                                            CommandParameter="{Binding .}"
                                             Text="&#xf4fc;"/>
                                 </Grid>
                             </ViewCell>
