@@ -29,8 +29,8 @@ namespace CardinalAppXamarin.ViewModels
             _navigationService = navigationService;
             _dialogService = dialogService;
             _localCredentialService = localCredentialService;
-            _userName = new ValidatableObject<string>();
-            _password = new ValidatableObject<string>();
+            UserName = new ValidatableObject<string>();
+            Password = new ValidatableObject<string>();
             AddValidations();
         }
 
@@ -72,6 +72,17 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private String _loginResultMessage { get; set; } = String.Empty;
+        public String LoginResultMessage
+        {
+            get { return _loginResultMessage; }
+            set
+            {
+                _loginResultMessage = value;
+                RaisePropertyChanged(() => LoginResultMessage);
+            }
+        }
+
         private bool _isValid;
         public bool IsValid
         {
@@ -107,6 +118,7 @@ namespace CardinalAppXamarin.ViewModels
         private async Task SignInAsync()
         {
             IsBusy = true;
+            LoginResultMessage = String.Empty;
             var parameters = new List<KeyValuePair<string, string>>();
             parameters.Add(new KeyValuePair<string, string>("username", UserName.Value));
             parameters.Add(new KeyValuePair<string, string>("password", Password.Value));
@@ -125,7 +137,8 @@ namespace CardinalAppXamarin.ViewModels
             }
             else
             {
-                await _dialogService.DisplayAlertAsync("Log-in Failed", "Invalid Username or Credentials", "OK");
+                //await _dialogService.DisplayAlertAsync("Log-in Failed", "Invalid Username or Credentials", "OK");
+                LoginResultMessage = "Invalid Username or Credentials";
             }
             IsBusy = false;
         }
@@ -165,6 +178,15 @@ namespace CardinalAppXamarin.ViewModels
 
         public override Task OnAppearingAsync()
         {
+            //should clear out username/password values here??
+            //_userName = new ValidatableObject<string>();
+            //_password = new ValidatableObject<string>();
+            //AddValidations();
+            //if (!String.IsNullOrEmpty(UserName.Value))
+            //{
+            //    UserName.Value = _localCredentialService.UserName;
+            //    Password.Value = String.Empty;
+            //}
             return Task.CompletedTask;
         }
     }

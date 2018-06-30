@@ -54,7 +54,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<LayerService>().As<ILayerService>().SingleInstance();
             containerBuilder.RegisterType<DialogService>().As<IDialogService>().SingleInstance();
             containerBuilder.RegisterType<ZoneService>().As<IZoneService>().SingleInstance();
-
+            
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();
 
             return containerBuilder.Build();

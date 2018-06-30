@@ -31,6 +31,22 @@ namespace CardinalAppXamarin.ViewModels
             AddValidations();
         }
 
+        public String TitleText => "Cardinal";
+        public String SubtitleText => "Registration";
+        public bool BackButtonVisible => false;
+        public ICommand BackButtonCommand => null;
+
+        private String _resultMessage { get; set; } = String.Empty;
+        public String ResultMessage
+        {
+            get { return _resultMessage; }
+            set
+            {
+                _resultMessage = value;
+                RaisePropertyChanged(() => ResultMessage);
+            }
+        }
+
         private bool _isEnabled { get; set; }
         public bool IsEnabled
         {
@@ -151,6 +167,7 @@ namespace CardinalAppXamarin.ViewModels
 
         public ICommand RegisterCommand => new Command(async () => await RegisterAsync());
         public ICommand ValidateCommand => new Command(() => Enable());
+        public ICommand CancelRegisterCommand => new Command(() => _navigationService.NavigateToLogin());
 
         private void AddValidations()
         {
@@ -165,14 +182,14 @@ namespace CardinalAppXamarin.ViewModels
 
             DateOfBirth.Value = DateTime.Now.Date;
 
-            _email.Validations.Add(new IsEmailAddressRule<string> { ValidationMessage = "Email address is required." });
+            _email.Validations.Add(new IsEmailAddressRule<string> { ValidationMessage = "Valid email address is required. [name@domain.com]" });
             _password.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password is required." });
             _confirmPassword.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Confirmation of Password is required." });
             _displayName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "User Name is required." });
             _firstName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "First Name is required." });
             _lastName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Last Name is required." });
             _dateOfBirth.Validations.Add(new IsOverRequiredAgeRule { RequiredYears = 18, ValidationMessage = "Date of Birth, at least 18 years ago, is required." });
-            _phoneNumber.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Phone Number is required." });
+            _phoneNumber.Validations.Add(new IsPhoneNumberRule<string> { ValidationMessage = "Ten-digit phone number required. [Only numbers]" });
         }
 
         private void Enable()
@@ -182,6 +199,7 @@ namespace CardinalAppXamarin.ViewModels
 
         private bool Validate()
         {
+            _confirmPassword.Errors.Clear();
             if(!_email.Validate()
                || !_password.Validate()
                || !_confirmPassword.Validate()
@@ -195,6 +213,7 @@ namespace CardinalAppXamarin.ViewModels
             }
             if(!_password.Value.Equals(_confirmPassword.Value))
             {
+                _confirmPassword.Errors.Add("Password must match Confirmation Password.");
                 return false;
             }
             return true;
@@ -212,12 +231,14 @@ namespace CardinalAppXamarin.ViewModels
                 }
                 else
                 {
-                    await _dialogService.DisplayAlertAsync("Registration Failed", "Registration process failed. Please verify information provided.", "OK");
+                    ResultMessage = "Registration process failed. Please verify information provided.";
+                    //await _dialogService.DisplayAlertAsync("Registration Failed", "Registration process failed. Please verify information provided.", "OK");
                 }
             }
             catch(Exception ex)
             {
-                await _dialogService.DisplayAlertAsync(ex.Message, ex.StackTrace, "OK");
+                //await _dialogService.DisplayAlertAsync(ex.Message, ex.StackTrace, "OK");
+                ResultMessage = ex.Message + "\n" + ex.StackTrace;
             }
         }
 

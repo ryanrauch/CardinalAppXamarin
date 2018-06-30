@@ -5,216 +5,302 @@
              xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
              xmlns:converters="clr-namespace:CardinalAppXamarin.Converters"
              xmlns:effects="clr-namespace:CardinalAppXamarin.Effects"
+             xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
              xmlns:helpers="clr-namespace:CardinalAppXamarin.Helpers"
              x:Class="CardinalAppXamarin.Views.Pages.RegisterView">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntEnumConverter x:Key="IntEnum"/>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationError"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <!--look here for how to implement validations
-            https://docs.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/validation
-        -->
-        <StackLayout BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
-            <Entry x:Name="EntryDisplayName"
+        <Grid Style="{StaticResource GridContentPageStyle}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--Start of header section-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="52"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0"
+                           Grid.Row="0"
+                           Grid.RowSpan="3"
+                           Margin="0,5,0,0"
+                           Aspect="AspectFit"
+                           Source="{exs:ImageResource CardinalAppXamarin.Images.cardinalheader207x238.png}"/>
+                <Label Grid.Column="1"
+                       Grid.ColumnSpan="2"
+                       Grid.Row="1"
+                       Margin="10,0,0,0"
+                       Text="{Binding TitleText}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="End"
+                       TextColor="{StaticResource CardinalTitleColor}"
+                       FontSize="{StaticResource HugeSize}"/>
+                <!--<Button Grid.Column="1"
+                        Grid.Row="2"
+                        Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                        Margin="10,0,0,0"
+                        Text="&#xf3e5;"
+                        IsVisible="{Binding BackButtonVisible}"
+                        Command="{Binding BackButtonCommand}"/>-->
+                <Label Grid.Column="1"
+                       Grid.ColumnSpan="2"
+                       Grid.Row="2"
+                       Margin="20,0,0,0"
+                       Text="{Binding SubtitleText}"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Start"
+                       TextColor="{StaticResource CardinalSubtitleColor}"
+                       FontSize="{StaticResource BigSize}"/>
+            </Grid>
+            <!--End of header section-->
+            <ScrollView Grid.Row="1"
+                        Margin="0,10,0,0">
+                <StackLayout BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
+                    <!--look here for how to implement validations
+                    https://docs.microsoft.com/en-us/xamarin/xamarin-forms/enterprise-application-patterns/validation
+                -->
+                    <Entry x:Name="EntryDisplayName"
                    Text="{Binding DisplayName.Value, Mode=TwoWay}"
                    AutomationId="displayname"
-                   Placeholder="User Name">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                   Placeholder="Display Name">
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding DisplayName}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger TargetType="Entry" 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding DisplayName}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" 
                          Binding="{Binding UserName.IsValid}" 
                          Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding DisplayName.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Entry x:Name="EntryFirstName"
+                    <Entry x:Name="EntryFirstName"
                    Text="{Binding FirstName.Value, Mode=TwoWay}"
                    Placeholder="First Name"
                    AutomationId="firstname">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding FirstName}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding FirstName}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding FirstName.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding FirstName.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Entry x:Name="EntryLastName"
+                    <Entry x:Name="EntryLastName"
                    Text="{Binding LastName.Value, Mode=TwoWay}"
                    Placeholder="Last Name"
                    AutomationId="lastname">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding LastName}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding LastName}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding LastName.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding LastName.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Entry x:Name="EntryEmail"
+                    <Entry x:Name="EntryEmail"
                    Text="{Binding Email.Value, Mode=TwoWay}"
                    Placeholder="Email Address"
                    AutomationId="email">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Email}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Email}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding Email.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding Email.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Entry x:Name="EntryPhoneNumber"
+                    <Entry x:Name="EntryPhoneNumber"
                    Text="{Binding PhoneNumber.Value, Mode=TwoWay}"
                    Placeholder="555-123-4567"
                    AutomationId="phonenumber">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding PhoneNumber}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding PhoneNumber}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding PhoneNumber.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
-            
-            
-            <Entry x:Name="EntryPassword"
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding PhoneNumber.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
+
+
+                    <Entry x:Name="EntryPassword"
                    Text="{Binding Password.Value, Mode=TwoWay}"
                    Placeholder="Password"
                    AutomationId="password"
                    IsPassword="true">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding Password}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding Password.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Entry x:Name="EntryConfirmPassword"
+                    <Entry x:Name="EntryConfirmPassword"
                    Text="{Binding ConfirmPassword.Value, Mode=TwoWay}"
                    Placeholder="ConfirmPassword"
                    AutomationId="confirmpassword"
                    IsPassword="true">
-                <Entry.Style>
-                    <helpers:OnCustomPlatform x:TypeArguments="Style"
+                        <Entry.Style>
+                            <helpers:OnCustomPlatform x:TypeArguments="Style"
                                               iOS="{StaticResource EntryStyle}"
                                               Android="{StaticResource EntryStyle}"
                                               UWP="{StaticResource UwpEntryStyle}"/>
-                </Entry.Style>
-                <Entry.Behaviors>
-                    <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding ConfirmPassword}" />
-                    <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
-                </Entry.Behaviors>
-                <Entry.Triggers>
-                    <DataTrigger 
+                        </Entry.Style>
+                        <Entry.Behaviors>
+                            <behaviors:TurnValidOnFocusBehavior ValidityObject="{Binding ConfirmPassword}" />
+                            <behaviors:ValidateOnTextChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger 
                             TargetType="Entry"
                             Binding="{Binding ConfirmPassword.IsValid}"
                             Value="False">
-                        <Setter Property="effects:LineColorEffect.LineColor" 
+                                <Setter Property="effects:LineColorEffect.LineColor" 
                                 Value="{StaticResource CardinalErrorColor}" />
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
-            
-            <Picker ItemsSource="{Binding GenderList}"
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="{Binding ConfirmPassword.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
+
+                    <Picker ItemsSource="{Binding GenderList}"
                     Style="{StaticResource PickerStyle}"
-                    SelectedIndex="{Binding SelectedGender, Converter=IntEnum}"/>
+                    SelectedIndex="{Binding SelectedGender, Converter=IntEnum}">
+                        <Picker.Behaviors>
+                            <behaviors:ValidateOnSelectedIndexChangedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </Picker.Behaviors>
+                    </Picker>
 
-            <DatePicker x:Name="DatePickerDateOfBirth"
+                    <DatePicker x:Name="DatePickerDateOfBirth"
                         Style="{StaticResource DatePickerStyle}"
-                        Date="{Binding DateOfBirth.Value, Mode=TwoWay}"/>
+                        Date="{Binding DateOfBirth.Value, Mode=TwoWay}">
+                        <DatePicker.Behaviors>
+                            <behaviors:ValidateOnDateSelectedBehavior ValidateCommand="{Binding ValidateCommand}"/>
+                        </DatePicker.Behaviors>
+                    </DatePicker>
+                    <Label Text="{Binding DateOfBirth.Errors, Converter={StaticResource FirstValidationError}"
+                       Style="{StaticResource CardinalValidationLabelStyle}" />
 
-            <Button x:Name="ButtonRegister"
+                    <Button x:Name="ButtonRegister"
                     Command="{Binding RegisterCommand}"
                     Text="Register"
                     AutomationId="register"
-                    IsEnabled="{Binding IsEnabled}"
-                    Style="{StaticResource ButtonStyle}">
-                <Button.IsVisible>
-                    <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
+                    IsEnabled="{Binding IsEnabled}">
+                        <Button.IsVisible>
+                            <helpers:OnCustomPlatform x:TypeArguments="x:Boolean"
                                             Android="True"
                                             iOS="True"
                                             UWP="False"/>
-                </Button.IsVisible>
-            </Button>
-        </StackLayout>
+                        </Button.IsVisible>
+                    </Button>
+
+                    <Button x:Name="ButtonCancel"
+                    Command="{Binding CancelRegisterCommand}"
+                    Text="Cancel"
+                    AutomationId="cancel"/>
+
+                    <Label Text="{Binding ResultMessage}"/>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </local:RegisterViewBase>

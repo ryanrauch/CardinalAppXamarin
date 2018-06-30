@@ -8,7 +8,7 @@
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
             <!-- Colors -->
-            <Color x:Key="CardinalErrorColor">#FFA500</Color>
+            <Color x:Key="CardinalErrorColor">#660000</Color>
             <Color x:Key="CardinalTransparentColor">#00FFFFFF</Color>
 
             <Color x:Key="CardinalTitleColor">#000000</Color>
@@ -17,7 +17,7 @@
             <Color x:Key="CardinalPrimaryBackgroundColor">#FFFFFF</Color>
             <Color x:Key="CardinalPrimaryBackgroundColorDimmed">#E2E2E2</Color>
             <Color x:Key="CardinalPrimaryFontForegroundColor">#CC0000</Color>
-            <Color x:Key="CardinalPrimaryFontDimmedColor">#660000</Color>
+            <Color x:Key="CardinalPrimaryFontDimmedColor">#8F8F8F</Color>
 
             <Color x:Key="CardinalSecondaryBackgroundColor">#CC0000</Color>
             <Color x:Key="CardinalSecondaryBackgroundColorDimmed">#660000</Color>
@@ -135,7 +135,17 @@
             <Style x:Key="SecondaryLabelStyle" 
                    TargetType="{x:Type Label}"
                    BasedOn="{StaticResource PrimaryLabelStyle}">
-                <Setter Property="TextColor" Value="{StaticResource CardinalSecondaryFontForegroundColor}"/>
+                <Setter Property="TextColor" 
+                        Value="{StaticResource CardinalSecondaryFontForegroundColor}"/>
+            </Style>
+
+            <Style x:Key="CardinalValidationLabelStyle" 
+                   TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource PrimaryLabelStyle}">
+                <Setter Property="TextColor" 
+                        Value="{StaticResource CardinalErrorColor}"/>
+                <Setter Property="FontSize" 
+                        Value="{StaticResource LittleSize}"/>
             </Style>
 
             <Style x:Key="EntryStyle"
