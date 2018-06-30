@@ -18,19 +18,21 @@ namespace CardinalAppXamarin.ViewModels
         private readonly ILayerService _layerService;
         private readonly IGeolocatorService _geolocatorService;
         private readonly INavigationService _navigationService;
+        private readonly IDialogService _dialogService;
 
         public ZoneMapViewModel(
             ILayerService layerService,
             IGeolocatorService geolocatorService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IDialogService dialogService)
         {
             _layerService = layerService;
             _geolocatorService = geolocatorService;
             _navigationService = navigationService;
+            _dialogService = dialogService;
             IsBusy = true;
             var cp = _geolocatorService.LastRecordedPosition;
             MapRegion = MapSpan.FromCenterAndRadius(cp, Distance.FromKilometers(1.2));
-            //MainMapInitialCameraUpdate = CameraUpdateFactory.NewPositionZoom(cp, 13.0); // zoom can be within: [2,21]
         }
 
         public string TitleText => "Cardinal";
@@ -74,9 +76,6 @@ namespace CardinalAppXamarin.ViewModels
 
         public bool MapAnimated => false;
 
-        //public MoveCameraRequest MoveCameraRequest { get; } = new MoveCameraRequest();
-        //public MoveToRegionRequest MoveToRegionRequest { get; } = new MoveToRegionRequest();
-
         public MapStyle CustomMapStyle => null;// MapStyle.FromJson(Constants.GoogleMapStyleSilverBlueWater);
 
         private MapType _customMapType { get; set; } = MapType.Street;
@@ -90,17 +89,6 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        //private CameraUpdate _mainMapInitialCameraUpdate { get; set; }
-        //public CameraUpdate MainMapInitialCameraUpdate
-        //{
-        //    get { return _mainMapInitialCameraUpdate; }
-        //    set
-        //    {
-        //        _mainMapInitialCameraUpdate = value;
-        //        RaisePropertyChanged(() => MainMapInitialCameraUpdate);
-        //    }
-        //}
-
         private ObservableCollection<Polygon> _polygons { get; set; } = new ObservableCollection<Polygon>();
         public ObservableCollection<Polygon> Polygons
         {
@@ -112,8 +100,6 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        private int _zoneUsersCount { get; set; }
-
         private ObservableCollection<UserInfoBriefViewCellModel> _zoneUsers { get; set; } = new ObservableCollection<UserInfoBriefViewCellModel>();
         public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsers
         {
@@ -121,37 +107,51 @@ namespace CardinalAppXamarin.ViewModels
             set
             {
                 _zoneUsers = value;
-                _zoneUsersCount = _zoneUsers.Count;
                 RaisePropertyChanged(() => ZoneUsers);
                 RaisePropertyChanged(() => ZoneUsersCountText);
-                //RaisePropertyChanged(() => ZoneUsersDisplay);
+                RaiseHBProperties();
             }
         }
 
         /* Start of hard-bound 5-hexagon buttons */
+        private void RaiseHBProperties()
+        {
+            RaisePropertyChanged(() => HB1Visibility);
+            RaisePropertyChanged(() => HB2Visibility);
+            RaisePropertyChanged(() => HB3Visibility);
+            RaisePropertyChanged(() => HB4Visibility);
+            RaisePropertyChanged(() => HB5Visibility);
+            RaisePropertyChanged(() => HBPlusVisibility);
+            RaisePropertyChanged(() => HB1Text);
+            RaisePropertyChanged(() => HB2Text);
+            RaisePropertyChanged(() => HB3Text);
+            RaisePropertyChanged(() => HB4Text);
+            RaisePropertyChanged(() => HB5Text);
+        }
+
         public Boolean HB1Visibility
         {
-            get { return _zoneUsersCount >= 4; }
+            get { return ZoneUsers.Count >= 4; }
         }
         public Boolean HB2Visibility
         {
-            get { return _zoneUsersCount >= 2; }
+            get { return ZoneUsers.Count >= 2; }
         }
         public Boolean HB3Visibility
         {
-            get { return _zoneUsersCount > 0; }
+            get { return ZoneUsers.Count > 0; }
         }
         public Boolean HB4Visibility
         {
-            get { return _zoneUsersCount >= 3; }
+            get { return ZoneUsers.Count >= 3; }
         }
         public Boolean HB5Visibility
         {
-            get { return _zoneUsersCount == 5; }
+            get { return ZoneUsers.Count == 5; }
         }
         public Boolean HBPlusVisibility
         {
-            get { return _zoneUsersCount > 5; }
+            get { return ZoneUsers.Count > 5; }
         }
         public String HB1Text
         {
@@ -159,7 +159,7 @@ namespace CardinalAppXamarin.ViewModels
             {
                 if (HB1Visibility)
                 {
-                    return _zoneUsers[0].Name;
+                    return ZoneUsers[0].Name;
                 }
                 return String.Empty;
             }
@@ -170,13 +170,13 @@ namespace CardinalAppXamarin.ViewModels
             {
                 if (HB2Visibility)
                 {
-                    if(_zoneUsersCount > 4)
+                    if(ZoneUsers.Count > 4)
                     {
-                        return _zoneUsers[1].Name;
+                        return ZoneUsers[1].Name;
                     }
                     else
                     {
-                        return _zoneUsers[0].Name;
+                        return ZoneUsers[0].Name;
                     }
                 }
                 return String.Empty;
@@ -188,17 +188,17 @@ namespace CardinalAppXamarin.ViewModels
             {
                 if (HB3Visibility)
                 {
-                    if (_zoneUsersCount == 1)
+                    if (ZoneUsers.Count == 1)
                     {
-                        return _zoneUsers[0].Name;
+                        return ZoneUsers[0].Name;
                     }
-                    else if(_zoneUsersCount < 4)
+                    else if(ZoneUsers.Count < 4)
                     {
-                        return _zoneUsers[1].Name;
+                        return ZoneUsers[1].Name;
                     }
                     else
                     {
-                        return _zoneUsers[2].Name;
+                        return ZoneUsers[2].Name;
                     }
                 }
                 return String.Empty;
@@ -210,13 +210,13 @@ namespace CardinalAppXamarin.ViewModels
             {
                 if (HB4Visibility)
                 {
-                    if (_zoneUsersCount > 4)
+                    if (ZoneUsers.Count > 4)
                     {
-                        return _zoneUsers[2].Name;
+                        return ZoneUsers[2].Name;
                     }
                     else
                     {
-                        return _zoneUsers[3].Name;
+                        return ZoneUsers[3].Name;
                     }
                 }
                 return String.Empty;
@@ -228,54 +228,40 @@ namespace CardinalAppXamarin.ViewModels
             {
                 if (HB5Visibility)
                 {
-                    return _zoneUsers[4].Name;
+                    return ZoneUsers[4].Name;
                 }
                 return String.Empty;
             }
         }
-        /* End of hard-bound 5-hexagon buttons */
 
+        public ICommand HB1Command => new Command(async () => await SelectFriendButton(0));
+        public ICommand HB2Command => new Command(async () => await SelectFriendButton(1));
+        public ICommand HB3Command => new Command(async () => await SelectFriendButton(2));
+        public ICommand HB4Command => new Command(async () => await SelectFriendButton(3));
+        public ICommand HB5Command => new Command(async () => await SelectFriendButton(4));
+        public ICommand SelectMoreFriendsCommand => new Command(() => _navigationService.NavigateToMain());
 
-        //public ObservableCollection<UserInfoBriefViewCellModel> ZoneUsersDisplay
-        //{
-        //    get
-        //    {
-        //        if(ZoneUsers != null)
-        //        {
-        //            int zc = ZoneUsers.Count;
-        //            if (zc == 0)
-        //            {
-        //                return new ObservableCollection<UserInfoBriefViewCellModel> { new UserInfoBriefViewCellModel("+") };
-        //            }
-        //            else if (zc < 5)
-        //            {
-        //                return new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(zc));
-        //            }
-        //            else
-        //            {
-        //                var users = new ObservableCollection<UserInfoBriefViewCellModel>(ZoneUsers.Take(3));
-        //                users.Add(new UserInfoBriefViewCellModel("+"));
-        //                return users;
-        //            }
-        //        }
-        //        return ZoneUsers;
-        //    }
-        //}
+        private async Task SelectFriendButton(int i)
+        {
+            await _dialogService.DisplayAlertAsync("index: " + i.ToString(),
+                                                   ZoneUsers[i].Name,
+                                                   "OK");
+        }
 
         public String ZoneUsersCountText
         {
             get
             {
-                if(IsBusy)
+                if (IsBusy)
                 {
                     return "Loading...";
                 }
                 int zc = ZoneUsers.Count;
-                if(zc == 0)
+                if (zc == 0)
                 {
                     return "No Friends";
                 }
-                else if(zc == 1)
+                else if (zc == 1)
                 {
                     return "1 Friend";
                 }
@@ -285,6 +271,45 @@ namespace CardinalAppXamarin.ViewModels
                 }
             }
         }
+        /* End of hard-bound 5-hexagon buttons */
+
+
+        /* Start of Aggregate Data */
+        public String ZoneDescription
+        {
+            get { return SubtitleText; }
+        }
+
+        public int ZoneAggregateUsers => 532;
+        public int ZoneAggregateFemale => 427;
+        public int ZoneAggregateMale => 105;
+        public float ZoneAggregateFemalePercent => (float)ZoneAggregateFemale / ZoneAggregateUsers;
+        public float ZoneAggregateMalePercent => (float)ZoneAggregateMale / ZoneAggregateUsers;
+
+        public String ZoneAggregateTitle
+        {
+            get
+            {
+                if (IsBusy)
+                {
+                    return "Loading...";
+                }
+                int zc = ZoneAggregateUsers;
+                if (zc == 0)
+                {
+                    return String.Format("{0} is Empty", ZoneDescription);
+                }
+                else if (zc == 1)
+                {
+                    return String.Format("1 person in {0}", ZoneDescription);
+                }
+                else
+                {
+                    return String.Format("{0} people in {1}", zc, ZoneDescription);
+                }
+            }
+        }
+        /* End of Aggregate Data */
 
         public override void Initialize(object param)
         {
@@ -331,9 +356,6 @@ namespace CardinalAppXamarin.ViewModels
             Bounds b = new Bounds(new Position(minLat - halfLat, minLon - halfLon),
                                   new Position(maxLat + halfLat, maxLon + halfLon));
             MapRegion = MapSpan.FromBounds(b);
-            //MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewPositionZoom(cp, 14.0));
-            //MoveToRegionRequest.MoveToRegion(MapSpan.FromBounds(b));
-            //MoveCameraRequest.MoveCamera(CameraUpdateFactory.NewBounds(b, 0));
         }
 
         private void SetPolygons()

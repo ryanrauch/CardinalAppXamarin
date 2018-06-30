@@ -108,6 +108,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Renderers\FlyoverKitMapRenderer.cs" />
     <Compile Include="Renderers\GradientViewRenderer.cs" />
+    <Compile Include="Renderers\HexagonShapePercentViewRenderer.cs" />
     <Compile Include="Renderers\HexagonShapeViewRenderer.cs" />
     <None Include="Entitlements.plist">
       <SubType>Designer</SubType>

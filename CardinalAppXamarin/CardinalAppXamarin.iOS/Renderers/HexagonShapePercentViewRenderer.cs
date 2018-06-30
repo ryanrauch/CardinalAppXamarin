@@ -12,13 +12,11 @@ using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(HexagonShapeView), typeof(HexagonShapeViewRenderer))]
+[assembly: ExportRenderer(typeof(HexagonShapePercentView), typeof(HexagonShapePercentViewRenderer))]
 namespace CardinalAppXamarin.iOS.Renderers
 {
-    public class HexagonShapeViewRenderer : VisualElementRenderer<HexagonShapeView>
+    public class HexagonShapePercentViewRenderer : VisualElementRenderer<HexagonShapePercentView>
     {
-        //see this page for original renderer
-        //https:----//github.com/vincentgury/XFShapeView/blob/master/src/XFShapeView.iOS/ShapeRenderer.cs
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
@@ -31,7 +29,7 @@ namespace CardinalAppXamarin.iOS.Renderers
                 case nameof(Element.IsVisible):
                 case nameof(Element.ShapeColor):
                 case nameof(Element.BorderColor):
-                //case nameof(Element.Text):
+                case nameof(Element.Percent):
                     SetNeedsDisplay();
                     break;
             }
@@ -43,19 +41,15 @@ namespace CardinalAppXamarin.iOS.Renderers
             var x = (float)(rect.X + Element.Padding.Left);
             var y = (float)(rect.Y + Element.Padding.Top);
             var width = (float)(rect.Width - Element.Padding.HorizontalThickness);
-            var height = (float)(rect.Height -  Element.Padding.VerticalThickness);
-            var cx = (float)(width / 2f +  Element.Padding.Left);
-            var cy = (float)(height / 2f +  Element.Padding.Top);
+            var height = (float)(rect.Height - Element.Padding.VerticalThickness);
+            var cx = (float)(width / 2f + Element.Padding.Left);
+            var cy = (float)(height / 2f + Element.Padding.Top);
 
             var context = UIGraphics.GetCurrentContext();
-            var fillColor = base.Element.ShapeColor.ToUIColor();
             var strokeColor = base.Element.BorderColor.ToUIColor();
             var fill = false;
-            if(Element.ShapeColor.A > 0)
-            {
-                fillColor.SetFill();
-                fill = true;
-            }
+            UIColor transparentColor = UIColor.Clear;
+            transparentColor.SetFill();
             var stroke = false;
             var strokeWidth = 0f;
             if (Element.BorderColor.A > 0)
@@ -66,54 +60,34 @@ namespace CardinalAppXamarin.iOS.Renderers
                 strokeWidth = 1f;
             }
             var outerRadius = (Math.Min(height, width) - strokeWidth) / 2f;
-            //var innerRadius = outerRadius * Element.Percent;
             var pointyTop = true;
+            // draw outer hexagon, with transparent fill
             DrawHexagon(context, cx, cy, outerRadius, pointyTop, fill, stroke);
-            //if (!String.IsNullOrEmpty(Element.Text))
-            //{
-            //    var txt = Element.Text;
-            //    DrawText(context, txt, cx, cy);
-            //    //DrawCenteredText(context, txt, cx, cy);
-            //}
-        }
 
-        protected virtual void DrawCenteredText(CGContext context, String text, float cx, float cy)
-        {
-            CGPoint cgp = new CGPoint(cx, cy);
-            UIFont uif = UIFont.FromName("Arial", 24);
-            NSParagraphStyle nsps = new NSParagraphStyle()
+
+            var fillColor = base.Element.ShapeColor.ToUIColor();
+            if (Element.ShapeColor.A > 0)
             {
-                Alignment = UITextAlignment.Center
-            };
-            //NSAttributedString nsas = new NSAttributedString(str: text,
-            //                                                 font: uif,
-            //                                                 foregroundColor: UIColor.Red,
-            //                                                 paragraphStyle: nsps);
-            NSAttributedString nsas = new NSAttributedString(str: text,
-                                                             font: uif,
-                                                             foregroundColor: UIColor.Red);
-            nsas.DrawString(cgp);
-        }
-
-        protected virtual void DrawText(CGContext context, String text, float cx, float cy)
-        {
-            float fontSize = 15f;
-            context.ScaleCTM(1, -1);
-            context.TranslateCTM(0, -Bounds.Height);
-            context.SelectFont("Helvetica", fontSize, CGTextEncoding.MacRoman);
-
-            //context.SetTextDrawingMode(CGTextDrawingMode.Invisible);
-            //context.ShowTextAtPoint(cx, cy, text);
-            
-
-            context.SetFillColor(UIColor.Green.CGColor);
-            //context.SetStrokeColor(UIColor.Green.CGColor);
-            context.SetTextDrawingMode(CGTextDrawingMode.Fill);
-            context.ShowTextAtPoint(cx,cy, text);
-            var textWidth = (float)context.TextPosition.X - cx;
-            var textHeight = (float)context.TextPosition.Y - cy;
-            context.TranslateCTM(0 - textWidth / 2, 
-                                 0 - textHeight / 2);
+                fillColor.SetFill();
+                fill = true;
+            }
+            strokeColor = fillColor;
+            strokeWidth = 0;
+            context.SetLineWidth(0);
+            stroke = false;
+            var pcent = Element.Percent;
+            if(pcent < 0)
+            {
+                pcent = 0;
+                return;
+            }
+            if(pcent > 1)
+            {
+                pcent = 1;
+            }
+            var innerRadius = outerRadius * pcent;
+            // draw inner hexagon, with fill of "ShapeColor" and no border
+            DrawHexagon(context, cx, cy, innerRadius, pointyTop, fill, stroke);
         }
 
         protected virtual void DrawHexagon(CGContext context, float x, float y, float outerRadius, bool pointyTop, bool fill, bool stroke)
@@ -121,7 +95,7 @@ namespace CardinalAppXamarin.iOS.Renderers
             var points = new List<CGPoint>();
             for (int i = 0; i < 6; ++i)
             {
-                points.Add(new CGPoint(x + outerRadius * (float)Math.Cos((i * 60 - 30) * Math.PI / 180f), 
+                points.Add(new CGPoint(x + outerRadius * (float)Math.Cos((i * 60 - 30) * Math.PI / 180f),
                                        y + outerRadius * (float)Math.Sin((i * 60 - 30) * Math.PI / 180f)));
             }
             DrawPoints(context, points, fill, stroke);

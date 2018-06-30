@@ -63,13 +63,6 @@
                        FontSize="{StaticResource ExtraBigSize}"/>
             </Grid>
             <!--End of header section-->
-            <!--<ContentView Grid.Row="0" ControlTemplate="{StaticResource CardinalHeaderTemplate}"/>-->
-            <!--<views:HeaderView Grid.Row="0"
-                              BindingContext="{Binding HeaderVM}"/>-->
-            <!--<Label Grid.Row="0" 
-                   Text="{Binding HeaderText}"
-                   FontSize="{StaticResource BigSize}"/>-->
-            <!--InitialCameraUpdate="{Binding MainMapInitialCameraUpdate}"-->
             <googleMaps:Map Grid.Row="1"
                             Margin="0,10,0,0"
                             VerticalOptions="FillAndExpand"
@@ -88,7 +81,7 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20"/>
@@ -107,46 +100,73 @@
                                    TextColor="{StaticResource CardinalSubtitleColor}"
                                    FontSize="{StaticResource BigSize}"
                                    Text="{Binding ZoneUsersCountText}"/>
+                            <!--HB1-->
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="1"
+                                                       IsVisible="{Binding HB1Visibility}"
                                                        ShapeColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="1"
                                     Style="{StaticResource CardinalFriendButtonStyle}"
-                                    Text="Ryan"/>
-                            
+                                    Command="{Binding HB1Command}"
+                                    IsVisible="{Binding HB1Visibility}"
+                                    Text="{Binding HB1Text}"/>
+                            <!--HB2-->
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="2"
+                                                       IsVisible="{Binding HB2Visibility}"
                                                        ShapeColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="2"
                                     Style="{StaticResource CardinalFriendButtonStyle}"
-                                    Text="Kaleigh"/>
-                            
+                                    Command="{Binding HB2Command}"
+                                    IsVisible="{Binding HB2Visibility}"
+                                    Text="{Binding HB2Text}"/>
+                            <!--HB3-->
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="3"
+                                                       IsVisible="{Binding HB3Visibility}"
                                                        ShapeColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="3"
                                     Style="{StaticResource CardinalFriendButtonStyle}"
-                                    Text="Ivan"/>
-                            
+                                    Command="{Binding HB3Command}"
+                                    IsVisible="{Binding HB3Visibility}"
+                                    Text="{Binding HB3Text}"/>
+                            <!--HB4-->
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="4"
+                                                       IsVisible="{Binding HB4Visibility}"
                                                        ShapeColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="4"
                                     Style="{StaticResource CardinalFriendButtonStyle}"
-                                    Text="Matt"/>
-
+                                    Command="{Binding HB4Command}"
+                                    IsVisible="{Binding HB4Visibility}"
+                                    Text="{Binding HB4Text}"/>
+                            <!--HB5-->
                             <controls:HexagonShapeView Grid.Row="1"
                                                        Grid.Column="5"
+                                                       IsVisible="{Binding HB5Visibility}"
+                                                       ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                            <Button Grid.Row="1"
+                                    Grid.Column="5"
+                                    Style="{StaticResource CardinalFriendButtonStyle}"
+                                    Command="{Binding HB5Command}"
+                                    IsVisible="{Binding HB5Visibility}"
+                                    Text="{Binding HB5Text}"/>
+                            <!--HBPlus-->
+                            <controls:HexagonShapeView Grid.Row="1"
+                                                       Grid.Column="5"
+                                                       IsVisible="{Binding HBPlusVisibility}"
                                                        BorderColor="{StaticResource CardinalSubtitleColor}"/>
                             <Button Grid.Row="1"
                                     Grid.Column="5"
                                     FontFamily="{StaticResource FontAwesomeSolid}"
                                     TextColor="{StaticResource CardinalSubtitleColor}"
                                     BackgroundColor="{StaticResource CardinalTransparentColor}"
+                                    Command="{Binding SelectMoreFriendsCommand}"
+                                    IsVisible="{Binding HBPlusVisibility}"
                                     Text="&#xf067;"/>
                             <Label Grid.Row="0"
                                    Grid.Column="6"
@@ -161,10 +181,11 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="20"/>
                             </Grid.ColumnDefinitions>
@@ -178,10 +199,34 @@
                                    Text="&#xf100;"/>
                             <Label Grid.Row="0"
                                    Grid.Column="1"
-                                   Text="aggregate data"/>
+                                   Grid.ColumnSpan="2"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   TextColor="{StaticResource CardinalSubtitleColor}"
+                                   FontSize="{StaticResource BigSize}"
+                                   Text="{Binding ZoneAggregateTitle}"/>
+                            <!-- Female -->
+                            <controls:HexagonShapePercentView Grid.Row="1"
+                                                              Grid.Column="1"
+                                                              Percent="{Binding ZoneAggregateFemalePercent}"
+                                                              BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                              ShapeColor="{StaticResource CardinalFemaleGradientColor}"/>
+
                             <Label Grid.Row="1"
                                    Grid.Column="1"
-                                   Text="50% m / 50% f"/>
+                                   FontFamily="{StaticResource FontAwesomeSolid}"
+                                   Text="&#xf182;"/>
+                            <!-- Male -->
+                            <controls:HexagonShapePercentView Grid.Row="1"
+                                                              Grid.Column="2"
+                                                              Percent="{Binding ZoneAggregateMalePercent}"
+                                                              BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                              ShapeColor="{StaticResource CardinalMaleGradientColor}"/>
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
+                                   FontFamily="{StaticResource FontAwesomeSolid}"
+                                   Text="&#xf183;"/>
                         </Grid>
                     </x:Array>
                 </cv:CarouselViewControl.ItemsSource>

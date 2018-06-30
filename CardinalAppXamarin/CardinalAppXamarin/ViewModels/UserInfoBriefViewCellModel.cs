@@ -44,7 +44,8 @@ namespace CardinalAppXamarin.ViewModels
                 {
                     return EmptyMessage;
                 }
-                return _userInfoContract.UserName;
+                return _userInfoContract.FirstName;
+                //return _userInfoContract.UserName;
             }
         }
         public string LastUpdated
