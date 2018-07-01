@@ -232,19 +232,110 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private bool _zoneUsersFrameVisibility { get; set; } = false;
+        public bool ZoneUsersFrameVisibility
+        {
+            get { return _zoneUsersFrameVisibility; }
+            set
+            {
+                _zoneUsersFrameVisibility = value;
+                RaisePropertyChanged(() => ZoneUsersFrameVisibility);
+            }
+        }
+
+        private bool _userFrameVisibility { get; set; } = false;
+        public bool UserFrameVisibility
+        {
+            get { return _userFrameVisibility; }
+            set
+            {
+                _userFrameVisibility = value;
+                RaisePropertyChanged(() => UserFrameVisibility);
+            }
+        }
+
+        private UserInfoBriefViewCellModel _selectedUserFrameViewModel { get; set; }
+        public UserInfoBriefViewCellModel SelectedUserFrameViewModel
+        {
+            get { return _selectedUserFrameViewModel; }
+            set
+            {
+                _selectedUserFrameViewModel = value;
+                RaisePropertyChanged(() => SelectedUserFrameViewModel);
+            }
+        }
+
+        public ICommand UserProfileButtonCommand => new Command<UserInfoBriefViewCellModel>((vm) => UserProfileButtonTask(vm));
+        private void UserProfileButtonTask(UserInfoBriefViewCellModel vcm)
+        {
+            UserFrameVisibility = true;
+            SelectedUserFrameViewModel = vcm;
+        }
+
+        public ICommand UserProfileCloseCommand => new Command(UserProfileCloseTask);
+        private void UserProfileCloseTask()
+        {
+            UserFrameVisibility = false;
+            SelectedUserFrameViewModel = null;
+        }
+
+        public ICommand SelectMoreFriendsCommand => new Command(SelectMoreFriendsTask);
+        private void SelectMoreFriendsTask()
+        {
+            ZoneUsersFrameVisibility = !ZoneUsersFrameVisibility;
+        }
         public ICommand HB1Command => new Command(async () => await SelectFriendButton(0));
         public ICommand HB2Command => new Command(async () => await SelectFriendButton(1));
         public ICommand HB3Command => new Command(async () => await SelectFriendButton(2));
         public ICommand HB4Command => new Command(async () => await SelectFriendButton(3));
         public ICommand HB5Command => new Command(async () => await SelectFriendButton(4));
-        public ICommand SelectMoreFriendsCommand => new Command(() => _navigationService.NavigateToMain());
-
         private async Task SelectFriendButton(int i)
         {
-            //await _dialogService.DisplayAlertAsync("index: " + i.ToString(),
-            //                                       ZoneUsers[i].Name,
-            //                                       "OK");
-            await Task.Delay(10);
+            if (i == 0)
+            {
+                UserProfileButtonTask(ZoneUsers[i]);
+            }
+            if(i == 1)
+            {
+                if(ZoneUsers.Count < 4)
+                {
+                    UserProfileButtonTask(ZoneUsers[0]);
+                }
+                else
+                {
+                    UserProfileButtonTask(ZoneUsers[1]);
+                }
+            }
+            if(i == 2)
+            {
+                if(ZoneUsers.Count == 1)
+                {
+                    UserProfileButtonTask(ZoneUsers[0]);
+                }
+                else if (ZoneUsers.Count < 4)
+                {
+                    UserProfileButtonTask(ZoneUsers[1]);
+                }
+                else
+                {
+                    UserProfileButtonTask(ZoneUsers[2]);
+                }
+            }
+            if(i == 3)
+            {
+                if(ZoneUsers.Count < 4)
+                {
+                    UserProfileButtonTask(ZoneUsers[2]);
+                }
+                else
+                {
+                    UserProfileButtonTask(ZoneUsers[3]);
+                }
+            }
+            if(i == 4)
+            {
+                UserProfileButtonTask(ZoneUsers[4]);
+            }
         }
 
         public String ZoneUsersCountText
@@ -290,29 +381,6 @@ namespace CardinalAppXamarin.ViewModels
         public double ZAFemalePercent => ZAFemale / (double)ZATotalUsers;
         public double ZAMalePercent => ZAMale / (double)ZATotalUsers;
 
-        //public String ZATitleDesc
-        //{
-        //    get
-        //    {
-        //        if (IsBusy)
-        //        {
-        //            return "Loading...";
-        //        }
-        //        int zc = ZATotalUsers;
-        //        if (zc == 0)
-        //        {
-        //            return String.Format("{0} is Empty", ZoneDescription);
-        //        }
-        //        else if (zc == 1)
-        //        {
-        //            return String.Format("1 person in {0}", ZoneDescription);
-        //        }
-        //        else
-        //        {
-        //            return String.Format("{0} people in {1}", zc, ZoneDescription);
-        //        }
-        //    }
-        //}
         public String ZATitle
         {
             get
@@ -357,9 +425,8 @@ namespace CardinalAppXamarin.ViewModels
             SetPolygons();
 
             await _layerService.InitializeData();
-
             var users = _layerService.UsersInsideZone(_zoneContract.ZoneID);
-            if(users != null && users.Count > 0)
+            if (users != null && users.Count > 0)
             {
                 ZoneUsers = new ObservableCollection<UserInfoBriefViewCellModel>(users);
             }

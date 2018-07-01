@@ -5,11 +5,9 @@
           Height="20">
     <StackLayout Orientation="Horizontal" 
                  HorizontalOptions="FillAndExpand">
-        <Label Text="{Binding Name}" 
-               Style="{StaticResource SecondaryLabelStyle}"
+        <Label Text="{Binding Name}"
                HorizontalTextAlignment="Start" />
         <Label Text="{Binding LastUpdated}" 
-               Style="{StaticResource SecondaryLabelStyle}"
                HorizontalTextAlignment="End"/>
     </StackLayout>
 </ViewCell>

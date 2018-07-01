@@ -8,7 +8,7 @@
                        xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
                        xmlns:googleMapsBindings="clr-namespace:Xamarin.Forms.GoogleMaps.Bindings;assembly=Xamarin.Forms.GoogleMaps.Bindings"
                        xmlns:views="clr-namespace:CardinalAppXamarin.Views"
-                       xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                       x:Name="ZoneMapViewContentPage"
                        x:Class="CardinalAppXamarin.Views.Pages.ZoneMapView">
     <ContentPage.Content>
         <Grid Style="{StaticResource GridContentPageStyle}">
@@ -72,6 +72,129 @@
                     <googleMapsBindings:UpdateRegionBehavior Region="{Binding MapRegion}" Animated="{Binding MapAnimated}"/>
                 </googleMaps:Map.Behaviors>
             </googleMaps:Map>
+            <Frame Grid.Row="1"
+                   Margin="10,20,10,10"
+                   Padding="5,5,5,5"
+                   HasShadow="True" 
+                   CornerRadius="10"
+                   Opacity="0.9"
+                   BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}"
+                   IsVisible="{Binding ZoneUsersFrameVisibility}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="1"
+                            Grid.Row="0"
+                            Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                            Command="{Binding SelectMoreFriendsCommand}"
+                            Text="&#xf103;"/>
+                    <!-- f410 is square w/ x-->
+                    <ListView Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              ItemsSource="{Binding ZoneUsers}"
+                              BackgroundColor="Transparent"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand"
+                              RowHeight="35"
+                              HasUnevenRows="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="0,5,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="15"/>
+                                            <RowDefinition Height="10"/>
+                                        </Grid.RowDefinitions>
+                                        <Button Grid.Row="0"
+                                            Grid.Column="0"
+                                            BackgroundColor="{StaticResource CardinalTransparentColor}"
+                                            Text="{Binding FirstAndLastName}"
+                                            FontFamily="Calibri"
+                                            HorizontalOptions="Start"
+                                            TextColor="{StaticResource CardinalSecondaryBackgroundColorDimmed}"
+                                            FontSize="{StaticResource LittleSize}"
+                                            Command="{Binding Source={x:Reference ZoneMapViewContentPage}, Path=BindingContext.UserProfileButtonCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                        <!--<Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding FirstAndLastName}"
+                                           FontFamily="Calibri"
+                                           HorizontalTextAlignment="Start"
+                                           TextColor="{StaticResource CardinalTitleColor}"
+                                           FontSize="{StaticResource LittleSize}"/>-->
+                                        <Label Grid.Row="1"
+                                           Grid.Column="0"
+                                           Text="{Binding UserName}"
+                                           FontFamily="Calibri"
+                                           HorizontalTextAlignment="Start"
+                                           TextColor="{StaticResource CardinalSubtitleColor}"
+                                           FontSize="{StaticResource LittlerSize}"/>
+                                        <Label Grid.Row="0"
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Margin="0,0,30,0"
+                                           Text="{Binding LastUpdated}"
+                                           FontFamily="Calibri"
+                                           HorizontalTextAlignment="End"
+                                           VerticalTextAlignment="Center"
+                                           TextColor="{StaticResource CardinalSubtitleColor}"
+                                           FontSize="{StaticResource LittlerSize}"/>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Frame>
+            <Frame Grid.Row="1"
+                   IsVisible="{Binding UserFrameVisibility}"
+                   HasShadow="True"
+                   Padding="5,5,5,5"
+                   CornerRadius="10"
+                   Margin="50,90,50,90">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <controls:HexagonShapeView Grid.Column="1"
+                                               Grid.Row="0"
+                                               Grid.RowSpan="2"
+                                               IsVisible="True"
+                                               BorderColor="{StaticResource CardinalPrimaryFontForegroundColor}"
+                                               ShapeColor="{StaticResource CardinalPrimaryFontForegroundColor}"/>
+                    <Label Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="1"
+                           Text="{Binding SelectedUserFrameViewModel.FirstAndLastName}"/>
+                    <Label Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="2"
+                           Text="{Binding SelectedUserFrameViewModel.UserName}"/>
+                    <Button Grid.Column="2"
+                            Grid.Row="0"
+                            Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                            Text="&#xf103;"
+                            Command="{Binding UserProfileCloseCommand}"/>
+                </Grid>
+            </Frame>
             <cv:CarouselViewControl Grid.Row="2" Margin="0,10,0,0">
                 <cv:CarouselViewControl.ItemsSource>
                     <x:Array Type="{x:Type View}">

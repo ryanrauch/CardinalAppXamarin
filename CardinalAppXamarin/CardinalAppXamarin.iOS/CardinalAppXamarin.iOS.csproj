@@ -72,6 +72,8 @@
     <CodesignProvision>
     </CodesignProvision>
     <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchUseLlvm>false</MtouchUseLlvm>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>

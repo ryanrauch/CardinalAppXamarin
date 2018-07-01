@@ -35,7 +35,9 @@ namespace CardinalAppXamarin.ViewModels
                 RaisePropertyChanged(() => EmptyMessage);
             }
         }
-
+        public string UserName => _userInfoContract.UserName;
+        public string FirstAndLastName => String.Format("{0} {1}", _userInfoContract.FirstName,
+                                                                   _userInfoContract.LastName);
         public string Name
         {
             get

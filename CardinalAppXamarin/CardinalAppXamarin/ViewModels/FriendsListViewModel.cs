@@ -255,6 +255,7 @@ namespace CardinalAppXamarin.ViewModels
         {
             _userSelf = await _requestService.GetAsync<UserInfoContract>("api/UserInfoSelf");
 
+            ContactSearchRequestFriends.Clear();
             MutualFriends.Clear();
             PendingFriends.Clear();
             InitiatedRequestFriends.Clear();
@@ -301,9 +302,12 @@ namespace CardinalAppXamarin.ViewModels
             }
             Grouped.Clear();
             GroupedFriendModel csg = new GroupedFriendModel() { LongName = "Your Contacts", ShortName = "C" };
-            foreach (var mv in ContactSearchRequestFriends.OrderBy(m => m.FirstAndLastName))
+            if (_includeImportedContacts)
             {
-                csg.Add(mv);
+                foreach (var mv in ContactSearchRequestFriends.OrderBy(m => m.FirstAndLastName))
+                {
+                    csg.Add(mv);
+                }
             }
             GroupedFriendModel pg = new GroupedFriendModel() { LongName = "Pending Friend Requests", ShortName = "P" };
             foreach (var pv in PendingFriends.OrderBy(m => m.FirstAndLastName))
@@ -320,7 +324,10 @@ namespace CardinalAppXamarin.ViewModels
             {
                 ig.Add(iv);
             }
-            Grouped.Add(csg);
+            if (_includeImportedContacts)
+            {
+                Grouped.Add(csg);
+            }
             Grouped.Add(pg);
             Grouped.Add(mg);
             Grouped.Add(ig);

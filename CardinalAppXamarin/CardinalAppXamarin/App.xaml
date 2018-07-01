@@ -263,7 +263,7 @@
                    TargetType="{x:Type Button}"
                    BasedOn="{StaticResource ButtonStyle}">
                 <Setter Property="FontSize"
-                        Value="{StaticResource LittleSize}"/>
+                        Value="{StaticResource LittlerSize}"/>
                 <Setter Property="BackgroundColor"
                         Value="{StaticResource CardinalTransparentColor}" />
                 <Setter Property="Margin"
