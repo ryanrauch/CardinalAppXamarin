@@ -169,6 +169,14 @@
                                             Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.MutualFriendButtonCommand}"
                                             CommandParameter="{Binding .}"
                                             Text="&#xf4fc;"/>
+                                    <Button Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="2"
+                                            IsVisible="{Binding ContactSearchVisibility}"
+                                            Style="{StaticResource CardinalHeaderFontAwesomeButtonStyle}"
+                                            Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.ContactSearchButtonCommand}"
+                                            CommandParameter="{Binding .}"
+                                            Text="&#xf2b9;"/>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
