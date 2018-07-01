@@ -11,6 +11,7 @@ namespace CardinalAppXamarin.Services.Interfaces
         Task<List<FriendRequestContract>> GetAllFriendRequestsAsync();
         Task<FriendRequestContract> GetFriendRequestAsync(string target, string initiator);
         Task PostFriendRequestAsync(FriendRequestContract contract);
+        Task DeleteFriendRequestAsync(string target);
         Task InitializeDataAsync();
     }
 }

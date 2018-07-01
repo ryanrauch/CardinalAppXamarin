@@ -44,6 +44,8 @@
 	<string>This app needs access to location when open and in the background.</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Needs Calendar Permission</string>
+  <key>NSContactsUsageDescription</key>
+  <string>This app needs to access your contacts to find your friends.</string>
 	<key>XSAppIconAssets</key>
 	<string>Media.xcassets/AppIcons.appiconset</string>
   <key>UIAppFonts</key>

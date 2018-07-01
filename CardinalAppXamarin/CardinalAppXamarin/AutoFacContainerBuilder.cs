@@ -58,6 +58,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<ZoneService>().As<IZoneService>().SingleInstance();
             
             containerBuilder.RegisterInstance(DependencyService.Get<IAppVersionService>()).AsImplementedInterfaces().SingleInstance();
+            containerBuilder.RegisterInstance(DependencyService.Get<IPhoneContactService>()).AsImplementedInterfaces().SingleInstance();
 
             containerBuilder.RegisterType<FriendRequestService>().As<IFriendRequestService>().SingleInstance();
             containerBuilder.RegisterType<UserInfoService>().As<IUserInfoService>().SingleInstance();

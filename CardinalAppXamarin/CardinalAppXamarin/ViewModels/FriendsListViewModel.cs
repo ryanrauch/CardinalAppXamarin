@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using System.Linq;
 using CardinalLibrary.DataContracts;
 using CardinalLibrary;
+using CardinalAppXamarin.Models;
 
 namespace CardinalAppXamarin.ViewModels
 {
@@ -19,17 +20,26 @@ namespace CardinalAppXamarin.ViewModels
         private readonly IFriendRequestService _friendRequestService;
         private readonly IRequestService _requestService;
         private readonly IUserInfoService _userInfoService;
+        //private readonly ILayerService _layerService;
+        //private readonly IZoneService _zoneService;
+        private readonly IPhoneContactService _phoneContactService;
 
         public FriendsListViewModel(
             INavigationService navigationService,
             IFriendRequestService friendRequestService,
             IRequestService requestService,
-            IUserInfoService userInfoService)
+            //ILayerService layerService,
+            //IZoneService zoneService,
+            IUserInfoService userInfoService,
+            IPhoneContactService phoneContactService)
         {
             _navigationService = navigationService;
             _friendRequestService = friendRequestService;
             _requestService = requestService;
             _userInfoService = userInfoService;
+            //_layerService = layerService;
+            //_zoneService = zoneService;
+            _phoneContactService = phoneContactService;
             IsBusy = true;
         }
 
@@ -71,24 +81,139 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
-        public ICommand ImportContactsCommand => null;
+        public ICommand ImportContactsCommand => new Command(async () => await ImportContactsTask());
+        private async Task ImportContactsTask()
+        {
+            var contacts = await _phoneContactService.GetAllContactsAsync();
+            foreach(var c in contacts)
+            {
+                if(String.IsNullOrEmpty(c.PhoneNumber))
+                {
+                    continue;
+                }
+                string formattedPhone = string.Empty;
+                foreach(char pc in c.PhoneNumber)
+                {
+                    if(Char.IsDigit(pc))
+                    {
+                        formattedPhone += pc;
+                    }
+                }
+                if (formattedPhone.Length != 10)
+                {
+                    continue;
+                }
+                var res = await _requestService.GetAsync<PhoneContactSearchContract>("api/PhoneContactSearch/" + formattedPhone);
+                if(res.Found 
+                    && !String.IsNullOrEmpty(res.UserName)
+                    && !String.IsNullOrEmpty(res.UserId))
+                {
+                    c.FoundUserId = res.UserId;
+                    c.FoundUserName = res.UserName;
+                    c.PhoneNumber = formattedPhone;
+                }
+            }
+            var displayable = contacts.Where(c => !String.IsNullOrEmpty(c.FoundUserName));
+        }
+
+
+        public ICommand ContactSearchButtonCommand => new Command<FriendViewCellModel>(async (vm) => await ContactSearchButtonTask(vm));
+        private async Task ContactSearchButtonTask(FriendViewCellModel fvcm)
+        {
+            await _friendRequestService.DeleteFriendRequestAsync(fvcm.UserId);
+            MutualFriends.Remove(fvcm);
+            fvcm.Status = FriendStatus.PendingRequest;
+            PendingFriends.Add(fvcm);
+            FilterGroupsBySearch();
+        }
 
         public ICommand RequestSentButtonCommand => new Command<FriendViewCellModel>(async (vm) => await RequestSentButtonTask(vm));
         private async Task RequestSentButtonTask(FriendViewCellModel fvcm)
         {
-            await Task.Delay(10);
+            await _friendRequestService.DeleteFriendRequestAsync(fvcm.UserId);
+            InitiatedRequestFriends.Remove(fvcm);
+            FilterGroupsBySearch();
         }
 
         public ICommand PendingRequestButtonCommand => new Command<FriendViewCellModel>(async (vm) => await PendingRequestButtonTask(vm));
         private async Task PendingRequestButtonTask(FriendViewCellModel fvcm)
         {
             await Task.Delay(10);
+            var contract = new FriendRequestContract()
+            {
+                InitiatorId = _userSelf.Id,
+                TargetId = fvcm.UserId,
+                TimeStamp = DateTime.Now,
+                Type = FriendRequestType.Normal
+            };
+            await _friendRequestService.PostFriendRequestAsync(contract);
+            PendingFriends.Remove(fvcm);
+            fvcm.Status = FriendStatus.Mutual;
+            MutualFriends.Add(fvcm);
+            FilterGroupsBySearch();
         }
 
         public ICommand MutualFriendButtonCommand => new Command<FriendViewCellModel>(async (vm) => await MutualFriendButtonTask(vm));
         private async Task MutualFriendButtonTask(FriendViewCellModel fvcm)
         {
-            await Task.Delay(10);
+            await _friendRequestService.DeleteFriendRequestAsync(fvcm.UserId);
+            MutualFriends.Remove(fvcm);
+            fvcm.Status = FriendStatus.PendingRequest;
+            PendingFriends.Add(fvcm);
+            FilterGroupsBySearch();
+        }
+
+        //public ICommand UserProfileButtonCommand => new Command<FriendViewCellModel>(async (vm) => await UserProfileButtonTask(vm));
+        //private async Task UserProfileButtonTask(FriendViewCellModel fvcm)
+        public ICommand UserProfileButtonCommand => new Command<FriendViewCellModel>((vm) => UserProfileButtonTask(vm));
+        private void UserProfileButtonTask(FriendViewCellModel fvcm)
+        {
+            UserFrameVisibility = true;
+            // TODO: had issues trying to resolve the zone that a current
+            //       user was in. need to refactor the zone-resolution services
+            //if (fvcm != null)
+            //{
+            //    string zid = _layerService.FindZoneContainingUser(fvcm.UserId);
+            //    ZoneContract zc = null;
+            //    if (!String.IsNullOrEmpty(zid))
+            //    {
+            //        zc = await _zoneService.GetZoneContractAsync(zid);
+            //    }
+            //    if (zc != null)
+            //    {
+            //        fvcm.ZoneDescription = zc.Description;
+            //    }
+            //}
+            SelectedFriendViewModel = fvcm;
+        }
+
+        public ICommand UserProfileViewCloseCommand => new Command(UserProfileViewCloseTask);
+        private void UserProfileViewCloseTask()
+        {
+            UserFrameVisibility = false;
+            SelectedFriendViewModel = null;
+        }
+
+        private FriendViewCellModel _selectedFriendViewModel { get; set; } = null;
+        public FriendViewCellModel SelectedFriendViewModel
+        {
+            get { return _selectedFriendViewModel; }
+            set
+            {
+                _selectedFriendViewModel = value;
+                RaisePropertyChanged(() => SelectedFriendViewModel);
+            }
+        }
+
+        private bool _userFrameVisibility { get; set; } = false;
+        public bool UserFrameVisibility
+        {
+            get { return _userFrameVisibility; }
+            set
+            {
+                _userFrameVisibility = value;
+                RaisePropertyChanged(() => UserFrameVisibility);
+            }
         }
 
         private UserInfoContract _userSelf { get; set; }
@@ -102,8 +227,10 @@ namespace CardinalAppXamarin.ViewModels
             InitiatedRequestFriends.Clear();
 
             var entire = await _friendRequestService.GetAllFriendRequestsAsync();
-            var initiated = entire.Where(f => f.InitiatorId.Equals(_userSelf.Id)).ToList();
-            var targeted = entire.Where(f => f.TargetId.Equals(_userSelf.Id)).ToList();
+            var initiated = entire.Where(f => f.InitiatorId.Equals(_userSelf.Id)
+                                           && !f.TargetId.Equals(_userSelf.Id)).ToList();
+            var targeted = entire.Where(f => f.TargetId.Equals(_userSelf.Id)
+                                          && !f.InitiatorId.Equals(_userSelf.Id)).ToList();
             // first scan through inbound requests,
             // if there is also an initiated request, becomes mutual,
             // otherwise, it is a pending request
@@ -257,13 +384,9 @@ namespace CardinalAppXamarin.ViewModels
             await _friendRequestService.InitializeDataAsync();
             await _userInfoService.InitializeDataAsync();
             await SortDataAsync();
+            //await _zoneService.InitializeData();
+            //await _layerService.InitializeData();
             IsBusy = false;
         } 
-    }
-
-    public class GroupedFriendModel : ObservableCollection<FriendViewCellModel>
-    {
-        public string LongName { get; set; }
-        public string ShortName { get; set; }
     }
 }

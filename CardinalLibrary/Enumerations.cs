@@ -29,7 +29,8 @@ namespace CardinalLibrary
         Mutual = 2,
         PendingRequest = 3,
         Available = 4,
-        Blocked = 5
+        FoundInContactSearch = 5,
+        Blocked = 6
     };
     public enum UserNotificationType
     {

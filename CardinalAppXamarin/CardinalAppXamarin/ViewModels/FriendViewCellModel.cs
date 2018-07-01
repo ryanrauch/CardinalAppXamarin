@@ -42,11 +42,14 @@ namespace CardinalAppXamarin.ViewModels
 
         // TODO: Create visibility members for buttons from FriendStatus
         //       And derived-text from TimeStamp
+        public bool ContactSearchVisibility => Status.Equals(FriendStatus.FoundInContactSearch);
         public bool AcceptPendingVisibility => Status.Equals(FriendStatus.PendingRequest);
         public bool RequestSentVisibility => Status.Equals(FriendStatus.Initiated);
         public bool MutualFriendVisibility => Status.Equals(FriendStatus.Mutual);
         
         public string FirstAndLastName => String.Format("{0} {1}", FirstName, LastName);
+        public string FriendsForXDays => String.Format("Friends for {0} days.", (int)(DateTime.Now - TimeStamp).TotalDays);
+        public string ZoneDescription { get; set; }
         public string FormattedPhoneNumber
         {
             get

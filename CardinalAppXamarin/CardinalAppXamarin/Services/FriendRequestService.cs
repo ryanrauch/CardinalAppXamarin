@@ -64,5 +64,10 @@ namespace CardinalAppXamarin.Services
         {
             await _requestService.PostAsync("api/FriendRequest", contract);
         }
+
+        public async Task DeleteFriendRequestAsync(string target)
+        {
+            await _requestService.DeleteAsync<bool>("api/FriendRequest/" + target);
+        }
     }
 }

@@ -132,9 +132,9 @@ namespace CardinalAppXamarin.Services
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
 
-        public Task<TResult> PutAsync<TResult>(string uri, TResult data)
+        public async Task<TResult> PutAsync<TResult>(string uri, TResult data)
         {
-            return PutAsync<TResult, TResult>(uri, data);
+            return await PutAsync<TResult, TResult>(uri, data);
         }
 
         public async Task<TResult> PutAsync<TRequest, TResult>(string uri, TRequest data)
@@ -150,6 +150,21 @@ namespace CardinalAppXamarin.Services
             string responseData = await response.Content.ReadAsStringAsync();
             return await Task.Run(() => JsonConvert.DeserializeObject<TResult>(responseData, _serializerSettings));
         }
+
+        public async Task<TResult> DeleteAsync<TResult>(string uri)
+        {
+            CheckInitialization();
+            if (!String.IsNullOrEmpty(_endPoint))
+            {
+                uri = _endPoint + uri;
+            }
+            HttpResponseMessage response = await _client.DeleteAsync(uri);
+            await HandleResponse(response);
+            string serialized = await response.Content.ReadAsStringAsync();
+            TResult result = await Task.Run(() => JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+            return result;
+        }
+
 
         private async Task HandleResponse(HttpResponseMessage response)
         {

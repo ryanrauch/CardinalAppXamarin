@@ -3,6 +3,7 @@
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
                            xmlns:behaviors="clr-namespace:CardinalAppXamarin.Behaviors"
+                           xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
                            xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                            x:Name="FriendsListViewContentPage"
                            x:Class="CardinalAppXamarin.Views.Pages.FriendsListView">
@@ -61,6 +62,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
                 <Grid Grid.Row="0">
@@ -87,6 +89,7 @@
                 </Grid>
 
                 <ListView Grid.Row="1"
+                          Grid.RowSpan="2"
                           HasUnevenRows="False"
                           RowHeight="35"
                           IsGroupingEnabled="True"
@@ -106,13 +109,23 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="20"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0"
+                                    <Button Grid.Row="0"
+                                            Grid.Column="0"
+                                            BackgroundColor="{StaticResource CardinalTransparentColor}"
+                                            Text="{Binding FirstAndLastName}"
+                                            FontFamily="Calibri"
+                                            HorizontalOptions="Start"
+                                            TextColor="{StaticResource CardinalSecondaryBackgroundColorDimmed}"
+                                            FontSize="{StaticResource LittleSize}"
+                                            Command="{Binding Source={x:Reference FriendsListViewContentPage}, Path=BindingContext.UserProfileButtonCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    <!--<Label Grid.Row="0"
                                            Grid.Column="0"
                                            Text="{Binding FirstAndLastName}"
                                            FontFamily="Calibri"
                                            HorizontalTextAlignment="Start"
                                            TextColor="{StaticResource CardinalTitleColor}"
-                                           FontSize="{StaticResource LittleSize}"/>
+                                           FontSize="{StaticResource LittleSize}"/>-->
                                     <Label Grid.Row="1"
                                            Grid.Column="0"
                                            Text="{Binding UserName}"
@@ -129,7 +142,7 @@
                                            HorizontalTextAlignment="End"
                                            VerticalTextAlignment="Center"
                                            TextColor="{StaticResource CardinalSubtitleColor}"
-                                           FontSize="{StaticResource LittleSize}"/>
+                                           FontSize="{StaticResource LittlerSize}"/>
                                     <Button Grid.Row="0"
                                             Grid.RowSpan="2"
                                             Grid.Column="2"
@@ -174,6 +187,59 @@
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>
                 </ListView>
+                <Frame Grid.Row="1"
+                       Margin="30,30,30,30"
+                       Opacity="1.0"
+                       CornerRadius="10"
+                       HasShadow="True"
+                       IsVisible="{Binding UserFrameVisibility}"
+                       HorizontalOptions="Start"
+                       BackgroundColor="{StaticResource CardinalPrimaryBackgroundColor}">
+                    <Grid HeightRequest="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="25"/>
+                            <!--<RowDefinition Height="*"/>-->
+                            <RowDefinition Height="25"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0"
+                               Grid.Row="0"
+                               FontSize="{StaticResource LittleSize}"
+                               Text="{Binding SelectedFriendViewModel.FirstAndLastName}"/>
+                        <Label Grid.Column="0"
+                               Grid.Row="1"
+                               FontSize="{StaticResource LittleSize}"
+                               TextColor="{StaticResource CardinalTitleColor}"
+                               Text="{Binding SelectedFriendViewModel.UserName}"/>
+                        <Label Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="2"
+                               FontSize="{StaticResource LittlerSize}"
+                               TextColor="{StaticResource CardinalTitleColor}"
+                               Text="{Binding SelectedFriendViewModel.FriendsForXDays}"/>
+                        <!--<Label Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="3"
+                               Text="{Binding SelectedFriendViewModel.ZoneDescription}"/>-->
+                        <controls:HexagonShapeView Grid.Column="1"
+                                                   Grid.Row="0"
+                                                   Grid.RowSpan="2"
+                                                   IsVisible="True"
+                                                   BorderColor="{StaticResource CardinalSubtitleColor}"
+                                                   ShapeColor="{StaticResource CardinalSubtitleColor}"/>
+                        <Button Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="3"
+                                Text="Close"
+                                HorizontalOptions="Center"
+                                Command="{Binding UserProfileViewCloseCommand}"/>
+                    </Grid>
+                </Frame>
             </Grid>
         </Grid>
     </ContentPage.Content>
