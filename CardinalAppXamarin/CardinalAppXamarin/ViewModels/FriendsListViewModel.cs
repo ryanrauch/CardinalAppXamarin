@@ -81,10 +81,22 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private ObservableCollection<FriendViewCellModel> _contactSearchRequestFriends { get; set; } = new ObservableCollection<FriendViewCellModel>();
+        public ObservableCollection<FriendViewCellModel> ContactSearchRequestFriends
+        {
+            get { return _contactSearchRequestFriends; }
+            set
+            {
+                _contactSearchRequestFriends = value;
+                RaisePropertyChanged(() => ContactSearchRequestFriends);
+            }
+        }
+
         public ICommand ImportContactsCommand => new Command(async () => await ImportContactsTask());
         private async Task ImportContactsTask()
         {
             var contacts = await _phoneContactService.GetAllContactsAsync();
+            ContactSearchRequestFriends.Clear();
             foreach(var c in contacts)
             {
                 if(String.IsNullOrEmpty(c.PhoneNumber))
@@ -106,22 +118,42 @@ namespace CardinalAppXamarin.ViewModels
                 var res = await _requestService.GetAsync<PhoneContactSearchContract>("api/PhoneContactSearch/" + formattedPhone);
                 if(res.Found 
                     && !String.IsNullOrEmpty(res.UserName)
-                    && !String.IsNullOrEmpty(res.UserId))
+                    && !String.IsNullOrEmpty(res.UserId)
+                    && !ContactSearchRequestFriends.Any(cs=>cs.UserId.Equals(res.UserId))
+                    && !MutualFriends.Any(cs=>cs.UserId.Equals(res.UserId))
+                    && !PendingFriends.Any(cs=>cs.UserId.Equals(res.UserId))
+                    && !InitiatedRequestFriends.Any(cs=>cs.UserId.Equals(res.UserId)))
                 {
-                    c.FoundUserId = res.UserId;
-                    c.FoundUserName = res.UserName;
-                    c.PhoneNumber = formattedPhone;
+                    var uic = new UserInfoContract()
+                    {
+                        Id = res.UserId,
+                        UserName = res.UserName,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        PhoneNumber = formattedPhone
+                    };
+                    var fvcm = new FriendViewCellModel(uic,
+                                                       DateTime.Now,
+                                                       FriendRequestType.Normal,
+                                                       FriendStatus.FoundInContactSearch);
+                    ContactSearchRequestFriends.Add(fvcm);
                 }
             }
-            var displayable = contacts.Where(c => !String.IsNullOrEmpty(c.FoundUserName));
         }
 
 
         public ICommand ContactSearchButtonCommand => new Command<FriendViewCellModel>(async (vm) => await ContactSearchButtonTask(vm));
         private async Task ContactSearchButtonTask(FriendViewCellModel fvcm)
         {
-            await _friendRequestService.DeleteFriendRequestAsync(fvcm.UserId);
-            MutualFriends.Remove(fvcm);
+            var frc = new FriendRequestContract()
+            {
+                InitiatorId = _userSelf.Id,
+                TargetId = fvcm.UserId,
+                TimeStamp = DateTime.Now,
+                Type = FriendRequestType.Normal
+            };
+            await _friendRequestService.PostFriendRequestAsync(frc);
+            ContactSearchRequestFriends.Remove(fvcm);
             fvcm.Status = FriendStatus.PendingRequest;
             PendingFriends.Add(fvcm);
             FilterGroupsBySearch();
@@ -267,6 +299,11 @@ namespace CardinalAppXamarin.ViewModels
                 }
             }
             Grouped.Clear();
+            GroupedFriendModel csg = new GroupedFriendModel() { LongName = "Your Contacts", ShortName = "C" };
+            foreach (var mv in ContactSearchRequestFriends.OrderBy(m => m.FirstAndLastName))
+            {
+                csg.Add(mv);
+            }
             GroupedFriendModel pg = new GroupedFriendModel() { LongName = "Pending Friend Requests", ShortName = "P" };
             foreach (var pv in PendingFriends.OrderBy(m => m.FirstAndLastName))
             {
@@ -282,6 +319,7 @@ namespace CardinalAppXamarin.ViewModels
             {
                 ig.Add(iv);
             }
+            Grouped.Add(csg);
             Grouped.Add(pg);
             Grouped.Add(mg);
             Grouped.Add(ig);
@@ -314,11 +352,16 @@ namespace CardinalAppXamarin.ViewModels
         private void FilterGroupsBySearch()
         {
             Grouped.Clear();
+            GroupedFriendModel csg = new GroupedFriendModel() { LongName = "Your Contacts", ShortName = "C" };
             GroupedFriendModel pg = new GroupedFriendModel() { LongName = "Pending Friend Requests", ShortName = "P" };
             GroupedFriendModel mg = new GroupedFriendModel() { LongName = "Mutual Friends", ShortName = "M" };
             GroupedFriendModel ig = new GroupedFriendModel() { LongName = "Waiting for Response", ShortName = "W" };
             if (String.IsNullOrEmpty(SearchEntry))
             {
+                foreach (var mv in ContactSearchRequestFriends.OrderBy(m => m.FirstAndLastName))
+                {
+                    csg.Add(mv);
+                }
                 foreach (var pv in PendingFriends.OrderBy(m => m.FirstAndLastName))
                 {
                     pg.Add(pv);
@@ -334,6 +377,19 @@ namespace CardinalAppXamarin.ViewModels
             }
             else
             {
+                foreach (var mv in ContactSearchRequestFriends
+                                   .Where(p => p.UserName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.FirstName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.LastName
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
+                                            || p.PhoneNumber
+                                                .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase))
+                                   .OrderBy(m => m.FirstAndLastName))
+                {
+                    csg.Add(mv);
+                }
                 foreach (var pv in PendingFriends
                                    .Where(p => p.UserName
                                                 .StartsWith(SearchEntry, StringComparison.OrdinalIgnoreCase)
@@ -374,6 +430,7 @@ namespace CardinalAppXamarin.ViewModels
                     ig.Add(iv);
                 }
             }
+            Grouped.Add(csg);
             Grouped.Add(pg);
             Grouped.Add(mg);
             Grouped.Add(ig);
