@@ -105,6 +105,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DependencyService\AppVersionProvider.cs" />
+    <Compile Include="DependencyService\KeychainLocalCredentialService.cs" />
     <Compile Include="DependencyService\PhoneContactService.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
