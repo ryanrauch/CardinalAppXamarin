@@ -30,6 +30,7 @@
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 PointyTop="True"
+                                OriginTopLeft="True"
                                 ColumnSpacing="10"
                                 RowSpacing="10"
                                 ItemsSource="{Binding Models}"

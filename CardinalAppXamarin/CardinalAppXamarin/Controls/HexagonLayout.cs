@@ -12,15 +12,15 @@ namespace CardinalAppXamarin.Controls
     {
         Dictionary<Size, LayoutData> layoutDataCache = new Dictionary<Size, LayoutData>();
 
-        public static readonly BindableProperty RadiusProperty = BindableProperty.Create(
-                "Radius",
-                typeof(double),
-                typeof(HexagonLayout),
-                10.0,
-                propertyChanged: (bindable, oldvalue, newvalue) =>
-                {
-                    ((HexagonLayout)bindable).InvalidateLayout();
-                });
+        public static readonly BindableProperty RadiusProperty = 
+            BindableProperty.Create("Radius",
+                                    typeof(double),
+                                    typeof(HexagonLayout),
+                                    40.0,
+                                    propertyChanged: (bindable, oldvalue, newvalue) =>
+                                    {
+                                        ((HexagonLayout)bindable).InvalidateLayout();
+                                    });
 
         public double Radius
         {
@@ -28,20 +28,36 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(RadiusProperty, value); }
         }
 
-        public static readonly BindableProperty PointyTopProperty = BindableProperty.Create(
-                "PointyTop",
-                typeof(bool),
-                typeof(HexagonLayout),
-                true,
-                propertyChanged: (bindable, oldvalue, newvalue) =>
-                {
-                    ((HexagonLayout)bindable).InvalidateLayout();
-                });
+        public static readonly BindableProperty PointyTopProperty = 
+            BindableProperty.Create("PointyTop",
+                                    typeof(bool),
+                                    typeof(HexagonLayout),
+                                    true,
+                                    propertyChanged: (bindable, oldvalue, newvalue) =>
+                                    {
+                                        ((HexagonLayout)bindable).InvalidateLayout();
+                                    });
 
         public bool PointyTop
         {
             get { return (bool)GetValue(PointyTopProperty); }
             set { SetValue(PointyTopProperty, value); }
+        }
+
+        public static readonly BindableProperty OriginTopLeftProperty = 
+            BindableProperty.Create("OriginTopLeft",
+                                    typeof(bool),
+                                    typeof(HexagonLayout),
+                                    true,
+                                    propertyChanged: (bindable, oldvalue, newvalue) =>
+                                    {
+                                        ((HexagonLayout)bindable).InvalidateLayout();
+                                    });
+
+        public bool OriginTopLeft
+        {
+            get { return (bool)GetValue(OriginTopLeftProperty); }
+            set { SetValue(OriginTopLeftProperty, value); }
         }
 
         public static readonly BindableProperty ColumnSpacingProperty = BindableProperty.Create(
@@ -76,20 +92,15 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(RowSpacingProperty, value); }
         }
 
-        //public static readonly BindableProperty ItemsSourceProperty =
-        //    BindableProperty.Create(nameof(ItemsSource),
-        //                            typeof(IList),
-        //                            typeof(HexagonLayout),
-        //                            propertyChanged: OnItemsSourceChanged);
         public static readonly BindableProperty ItemsSourceProperty =
-    BindableProperty.Create(
-        nameof(ItemsSource),
-        typeof(IEnumerable),
-        typeof(HexagonLayout),
-        null,
-        defaultBindingMode: BindingMode.OneWay,
-        propertyChanged: ItemsChanged
-    );
+            BindableProperty.Create(
+                nameof(ItemsSource),
+                typeof(IEnumerable),
+                typeof(HexagonLayout),
+                null,
+                defaultBindingMode: BindingMode.OneWay,
+                propertyChanged: ItemsChanged
+            );
 
         public IList ItemsSource
         {
@@ -97,11 +108,6 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        //public static readonly BindableProperty ItemTemplateProperty =
-        //    BindableProperty.Create(nameof(ItemTemplate),
-        //                            typeof(DataTemplate),
-        //                            typeof(HexagonLayout),
-        //                            propertyChanged: OnItemTemplateChanged);
         public static readonly BindableProperty ItemTemplateProperty =
             BindableProperty.Create(
                 nameof(ItemTemplate),
@@ -123,14 +129,6 @@ namespace CardinalAppXamarin.Controls
             get { return (DataTemplate)GetValue(ItemTemplateProperty); }
             set { SetValue(ItemTemplateProperty, value); }
         }
-
-        //private static void OnItemTemplateChanged(BindableObject pObj, object pOldVal, object pNewVal)
-        //{
-        //    var layout = pObj as HexagonLayout;
-
-        //    if (layout != null && layout.ItemsSource != null)
-        //        layout.BuildLayout();
-        //}
 
         private static void OnItemsSourceChanged(BindableObject pObj, object pOldVal, object pNewVal)
         {
@@ -280,7 +278,7 @@ namespace CardinalAppXamarin.Controls
                 return new SizeRequest(new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1) + (layoutData.CellSize.Width / 2),
                                                 layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1) + (layoutData.CellSize.Height / 2)));
             }
-            Size totalSize = new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1) + HexagonWidth/2,
+            Size totalSize = new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1) + HexagonWidth / 2,
                                       layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1));
             return new SizeRequest(totalSize);
         }
@@ -306,7 +304,14 @@ namespace CardinalAppXamarin.Controls
             {
                 //Start off with first element placed at 0.5w-1.5w x 0.5h-1.5h
                 xChild += halfWidth + ColumnSpacing/2;
-                yChild += halfHeight;
+                if (OriginTopLeft)
+                {
+                    yChild += halfHeight;
+                }
+                else
+                {
+                    yChild = height - HexagonHeight;
+                }
             }
             else
             {
@@ -323,10 +328,7 @@ namespace CardinalAppXamarin.Controls
                 {
                     continue;
                 }
-                double yTemp = yChild;
-                //yChild = height - yChild;
                 LayoutChildIntoBoundingRegion(child, new Rectangle(new Point(xChild, yChild), layoutData.CellSize));
-                yChild = yTemp;
                 if (PointyTop)
                 {
                     if (++column == layoutData.Columns)
@@ -343,7 +345,14 @@ namespace CardinalAppXamarin.Controls
                         {
                             xChild = x;
                         }
-                        yChild += RowSpacing + layoutData.CellSize.Height - quarterHeight;
+                        if (OriginTopLeft)
+                        {
+                            yChild += RowSpacing + layoutData.CellSize.Height - quarterHeight;
+                        }
+                        else
+                        {
+                            yChild -= (RowSpacing + layoutData.CellSize.Height - quarterHeight);
+                        }
                     }
                     else
                     {
@@ -358,7 +367,14 @@ namespace CardinalAppXamarin.Controls
                         column = 0;
                         row++;
                         xChild = x + halfWidth + quarterWidth;
-                        yChild += RowSpacing + layoutData.CellSize.Height;
+                        if (OriginTopLeft)
+                        {
+                            yChild += RowSpacing + layoutData.CellSize.Height;
+                        }
+                        else
+                        {
+                            yChild -= RowSpacing + layoutData.CellSize.Height;
+                        }
                     }
                     else
                     {
@@ -369,13 +385,27 @@ namespace CardinalAppXamarin.Controls
                             //if added .5h, remove it for even columns to shift back down
                             if (column > 0)
                             {
-                                yChild -= halfHeight;
+                                if (OriginTopLeft)
+                                {
+                                    yChild -= halfHeight;
+                                }
+                                else
+                                {
+                                    yChild += halfHeight;
+                                }
                             }
                         }
                         else
                         {
                             //shift odd-columns up by .5h
-                            yChild += halfHeight;
+                            if (OriginTopLeft)
+                            {
+                                yChild += halfHeight;
+                            }
+                            else
+                            {
+                                yChild -= halfHeight;
+                            }
                         }
                     }
                 }
