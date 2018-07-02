@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,6 +73,61 @@ namespace CardinalAppXamarin.Controls
         {
             get { return (double)GetValue(RowSpacingProperty); }
             set { SetValue(RowSpacingProperty, value); }
+        }
+
+        public static readonly BindableProperty ItemsSourceProperty =
+            BindableProperty.Create(nameof(ItemsSource),
+                                    typeof(IList),
+                                    typeof(HexagonLayout),
+                                    propertyChanged: OnItemsSourceChanged);
+
+        public IList ItemsSource
+        {
+            get { return (IList)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        public static readonly BindableProperty ItemTemplateProperty =
+            BindableProperty.Create(nameof(ItemTemplate),
+                                    typeof(DataTemplate),
+                                    typeof(HexagonLayout),
+                                    propertyChanged: OnItemTemplateChanged);
+
+        public DataTemplate ItemTemplate
+        {
+            get { return (DataTemplate)GetValue(ItemTemplateProperty); }
+            set { SetValue(ItemTemplateProperty, value); }
+        }
+
+        private static void OnItemTemplateChanged(BindableObject pObj, object pOldVal, object pNewVal)
+        {
+            var layout = pObj as HexagonLayout;
+
+            if (layout != null && layout.ItemsSource != null)
+                layout.BuildLayout();
+        }
+
+        private static void OnItemsSourceChanged(BindableObject pObj, object pOldVal, object pNewVal)
+        {
+            var layout = pObj as HexagonLayout;
+
+            if (layout != null && layout.ItemTemplate != null)
+                layout.BuildLayout();
+        }
+
+        private void BuildLayout()
+        {
+            Children.Clear();
+            if (ItemsSource == null)
+            {
+                return;
+            }
+            foreach (var item in ItemsSource)
+            {
+                var view = (View)ItemTemplate.CreateContent();
+                view.BindingContext = item;
+                Children.Add(view);
+            }
         }
 
         private double HexagonHeight
@@ -155,7 +211,8 @@ namespace CardinalAppXamarin.Controls
                 }
                 else
                 {
-                    columns = (int)((width + ColumnSpacing) / (maxChildSize.Width + ColumnSpacing));
+                    //columns = (int)((width + ColumnSpacing) / (maxChildSize.Width + ColumnSpacing));
+                    columns = (int)((width - (maxChildSize.Width / 2)) / (maxChildSize.Width + ColumnSpacing));
                     columns = Math.Max(1, columns);
                     rows = (visibleChildCount + columns - 1) / columns;
                 }
@@ -193,8 +250,12 @@ namespace CardinalAppXamarin.Controls
             {
                 return new SizeRequest();
             }
-
-            Size totalSize = new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1),
+            if(PointyTop)
+            {
+                return new SizeRequest(new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1) + (layoutData.CellSize.Width / 2),
+                                                layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1) + (layoutData.CellSize.Height / 2)));
+            }
+            Size totalSize = new Size(layoutData.CellSize.Width * layoutData.Columns + ColumnSpacing * (layoutData.Columns - 1) + HexagonWidth/2,
                                       layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1));
             return new SizeRequest(totalSize);
         }
@@ -219,7 +280,7 @@ namespace CardinalAppXamarin.Controls
             if (PointyTop)
             {
                 //Start off with first element placed at 0.5w-1.5w x 0.5h-1.5h
-                xChild += halfWidth;
+                xChild += halfWidth + ColumnSpacing/2;
                 yChild += halfHeight;
             }
             else
@@ -248,7 +309,7 @@ namespace CardinalAppXamarin.Controls
                         if (even)
                         {
                             //Shift even rows to the right by .5
-                            xChild = x + halfHeight;
+                            xChild = x + halfWidth + ColumnSpacing/2;
                         }
                         else
                         {

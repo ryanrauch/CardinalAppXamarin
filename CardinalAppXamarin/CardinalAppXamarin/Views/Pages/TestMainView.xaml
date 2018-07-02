@@ -5,7 +5,7 @@
                         xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
                         x:Class="CardinalAppXamarin.Views.Pages.TestMainView">
     <ContentPage.Content>
-        <Grid>
+        <Grid Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -16,9 +16,9 @@
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 PointyTop="True"
-                                ColumnSpacing="5"
-                                RowSpacing="5"
-                                Radius="50">
+                                ColumnSpacing="10"
+                                RowSpacing="10"
+                                Radius="40">
             </controls:HexagonLayout>
         </Grid>
     </ContentPage.Content>

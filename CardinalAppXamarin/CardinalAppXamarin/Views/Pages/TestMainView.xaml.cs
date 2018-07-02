@@ -21,11 +21,11 @@ namespace CardinalAppXamarin.Views.Pages
             base.OnAppearing();
 
             Random r = new Random();
-            for (int i = 0; i < 15; ++i)
+            for (int i = 0; i < 11; ++i)
             {
                 Controls.HexagonButtonView bv = new Controls.HexagonButtonView()
                 {
-                    Radius=50.0d,
+                    Radius=40.0d,
                     PointyTop = true,
                     Text = "finally",
                     FontSize = 12,

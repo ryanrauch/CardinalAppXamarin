@@ -44,7 +44,14 @@ namespace CardinalAppXamarin.iOS.Renderers
             if(Control == null)
             {
                 //var hexView = new UIView();
-               // SetNativeControl(hexView);
+                //hexView.ClipsToBounds = false;
+                //hexView.UserInteractionEnabled = true;
+                //SetNativeControl(hexView);
+            }
+            if(Control != null)
+            {
+                Control.ClipsToBounds = false;
+               
             }
             //if (e.OldElement != null)
             //{
@@ -98,13 +105,13 @@ namespace CardinalAppXamarin.iOS.Renderers
             {
                 path.AddLineToPoint(new CGPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y));
             }
-
             path.CloseSubpath();
             context.AddPath(path);
+            
             context.SetFillColor(Element.BackgroundColor.ToCGColor());
-            context.DrawPath(CGPathDrawingMode.Fill);
             //context.SaveState();
-            //context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
+            context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
+            context.DrawPath(CGPathDrawingMode.Fill);
             //context.BeginTransparencyLayer();
             //path.AddClip();
             //context.DrawLinearGradient(gradient, points[0], points[1], CGGradientDrawingOptions.DrawsAfterEndLocation);
