@@ -11,7 +11,6 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <controls:HexagonLayout x:Name="MainHexagonLayout" 
                                 Grid.Column="0"
@@ -19,15 +18,7 @@
                                 PointyTop="True"
                                 ColumnSpacing="5"
                                 RowSpacing="5"
-                                Radius="25">
-            </controls:HexagonLayout>
-            <controls:HexagonLayout x:Name="MainHexagonLayout2" 
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                PointyTop="True"
-                                ColumnSpacing="5"
-                                RowSpacing="5"
-                                Radius="25">
+                                Radius="50">
             </controls:HexagonLayout>
         </Grid>
     </ContentPage.Content>

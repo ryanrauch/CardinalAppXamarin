@@ -43,8 +43,8 @@ namespace CardinalAppXamarin.iOS.Renderers
             base.OnElementChanged(e);
             if(Control == null)
             {
-                var hexView = new UIView();
-                SetNativeControl(hexView);
+                //var hexView = new UIView();
+               // SetNativeControl(hexView);
             }
             //if (e.OldElement != null)
             //{
@@ -64,10 +64,14 @@ namespace CardinalAppXamarin.iOS.Renderers
             {
                 return;
             }
+
+            var cx = rect.Width / 2f;
+            var cy = rect.Height / 2f;
+
             var colorSpace = CGColorSpace.CreateDeviceRGB();
             var context = UIGraphics.GetCurrentContext();
 
-            var gradientColors = new CGColor[] { UIColor.LightGray.CGColor, UIColor.Red.CGColor };
+            var gradientColors = new CGColor[] { UIColor.LightGray.CGColor, Element.BackgroundColor.ToCGColor() };
             var gradientLocations = new nfloat[] { 0f, 1f };
             var gradient = new CGGradient(colorSpace, gradientColors, gradientLocations);
 
@@ -78,70 +82,45 @@ namespace CardinalAppXamarin.iOS.Renderers
                 ShadowBlurRadius = 5
             };
 
-            // Draw the hexagon
+            // Draw the hexagon (POINTY-TOP ONLY)
             var radius = Element.Radius;
             var points = new List<CGPoint>();
             for (int i = 0; i < 6; ++i)
             {
-                if (Element.PointyTop)
-                {
-                    points.Add(new CGPoint(radius * (float)Math.Cos((i * 60 - 30) * Math.PI / 180f),
-                                           radius * (float)Math.Sin((i * 60 - 30) * Math.PI / 180f)));
-                }
-                else
-                {
-                    points.Add(new CGPoint(radius * (float)Math.Cos(i * 60 * Math.PI / 180f),
-                                           radius * (float)Math.Sin(i * 60 * Math.PI / 180f)));
-                }
+                points.Add(new CGPoint(cx + radius * Math.Cos((i * 60 - 30) * Math.PI / 180f),
+                                       cy + radius * Math.Sin((i * 60 - 30) * Math.PI / 180f)));
             }
-            // Midpoint might change for flat-tops
+            
             var midPoint = new CGPoint(0.5 * (points[0].X + points[1].X), 0.5 * (points[0].Y + points[1].Y));
-            var path = new UIBezierPath(); //new CGPath();
-            //path.MoveTo(midPoint);
-            //for (var i = 0; i < points.Count; ++i)
-            //{
-            //    path.AddLineTo(new CGPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y));
-            //}
-            if (Element.PointyTop)
+            var path = new CGPath();
+            path.MoveToPoint(midPoint);
+            for (var i = 0; i < points.Count; ++i)
             {
-                path.MoveTo(new CGPoint(radius * (float)Math.Cos(0),
-                                        radius * (float)Math.Sin(0)));
-                for (int i = 0; i < 5; ++i)
-                {
-                    path.AddLineTo(new CGPoint(radius * (float)Math.Cos((i * 60 - 30) * Math.PI / 180f),
-                                               radius * (float)Math.Sin((i * 60 - 30) * Math.PI / 180f)));
-                }
+                path.AddLineToPoint(new CGPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y));
             }
-            path.ClosePath();
-            UIColor.Green.SetFill();
-            path.Fill();
-            context.SaveState();
-            context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Black.CGColor);
-            context.BeginTransparencyLayer();
-            path.AddClip();
-            context.DrawLinearGradient(gradient, points[0], points[1], CGGradientDrawingOptions.None);
-            context.EndTransparencyLayer();
-            context.RestoreState();
+
+            path.CloseSubpath();
+            context.AddPath(path);
+            context.SetFillColor(Element.BackgroundColor.ToCGColor());
+            context.DrawPath(CGPathDrawingMode.Fill);
+            //context.SaveState();
+            //context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
+            //context.BeginTransparencyLayer();
+            //path.AddClip();
+            //context.DrawLinearGradient(gradient, points[0], points[1], CGGradientDrawingOptions.DrawsAfterEndLocation);
+            //context.EndTransparencyLayer();
+            //context.RestoreState();
 
             // Draw Text
-            var textRect = new CGRect(midPoint, new CGSize(radius / 4, radius / 4));
-            var textContent = Element.Text;
-            //UIColor.Green.SetFill();
-            var textStyle = new NSMutableParagraphStyle();
-            textStyle.Alignment = UITextAlignment.Center;
-            var textFontAttributes = new UIStringAttributes
+            UILabel label = new UILabel(rect)
             {
-                Font = UIFont.SystemFontOfSize(12f),
-                ForegroundColor = UIColor.Blue,
-                ParagraphStyle = textStyle
+                Text = Element.Text,
+                TextAlignment = UITextAlignment.Center,
+                TextColor = Element.TextColor.ToUIColor(),
+                Font = UIFont.FromName("highlandgothiclightflf", Element.FontSize)
+                //Font = UIFont.SystemFontOfSize(12f)
             };
-            var textHeight = new NSString(textContent).GetBoundingRect(new CGSize(textRect.Width, textRect.Height), NSStringDrawingOptions.UsesLineFragmentOrigin, textFontAttributes, null).Height;
-            context.SaveState();
-            context.ClipToRect(textRect);
-            //new NSString(textContent).DrawString(new CGRect(textRect.GetMinX(), textRect.GetMinY(), (textRect.Height - textHeight) / 2f, textRect.Width, textHeight))
-            //new NSString(textContent).DrawString(midPoint, UIFont.SystemFontOfSize(12));
-            new NSString(textContent).DrawString(midPoint, textFontAttributes);
-            context.RestoreState();
+            NativeView.AddSubview(label);
         }
 
         //protected virtual void DrawPoints(CGContext context, List<CGPoint> points, bool fill, bool stroke, float radius)

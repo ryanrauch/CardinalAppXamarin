@@ -12,7 +12,6 @@ namespace CardinalAppXamarin.Controls
                 typeof(double),
                 typeof(HexagonButtonView),
                 10.0);
-
         public double Radius
         {
             get { return (double)GetValue(RadiusProperty); }
@@ -24,7 +23,6 @@ namespace CardinalAppXamarin.Controls
                 typeof(bool),
                 typeof(HexagonButtonView),
                 true);
-
         public bool PointyTop
         {
             get { return (bool)GetValue(PointyTopProperty); }
@@ -41,6 +39,28 @@ namespace CardinalAppXamarin.Controls
         {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
+        }
+
+        public static readonly BindableProperty TextColorProperty =
+                            BindableProperty.Create(nameof(TextColor),
+                                                    typeof(Color),
+                                                    typeof(HexagonButtonView),
+                                                    Color.Black);
+        public Color TextColor
+        {
+            get { return (Color)GetValue(TextColorProperty); }
+            set { SetValue(TextColorProperty, value); }
+        }
+
+        public static readonly BindableProperty FontSizeProperty =
+                    BindableProperty.Create(nameof(FontSize),
+                                            typeof(float),
+                                            typeof(HexagonButtonView),
+                                            12f);
+        public float FontSize
+        {
+            get { return (float)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
         }
     }
 }
