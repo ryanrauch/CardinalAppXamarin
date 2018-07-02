@@ -12,16 +12,53 @@ namespace CardinalAppXamarin.ViewModels
     {
         public HexagonButtonViewModel()
         {
-            //Random r = new Random();
-            //HexText = r.Next(999999).ToString();
         }
 
-        public double HexRadius => 40d;
-        public bool HexPointyTop => true;
-        public Color HexTextColor => Color.White;
-        public Color HexBackgroundColor => Color.Crimson;
+        private double _hexRadius { get; set; } = 40d;
+        public double HexRadius
+        {
+            get { return _hexRadius; }
+            set
+            {
+                _hexRadius = value;
+                RaisePropertyChanged(() => HexRadius);
+            }
+        }
 
-        private string _hexText { get; set; }
+        private bool _hexPointyTop { get; set; } = true;
+        public bool HexPointyTop
+        {
+            get { return _hexPointyTop; }
+            set
+            {
+                _hexPointyTop = value;
+                RaisePropertyChanged(() => HexPointyTop);
+            }
+        }
+
+        private Color _hexTextColor { get; set; } = Color.White;
+        public Color HexTextColor
+        {
+            get { return _hexTextColor; }
+            set
+            {
+                _hexTextColor = value;
+                RaisePropertyChanged(() => HexTextColor);
+            }
+        }
+
+        private Color _hexBackgroundColor { get; set; } = Color.Crimson;
+        public Color HexBackgroundColor
+        {
+            get { return _hexBackgroundColor; }
+            set
+            {
+                _hexBackgroundColor = value;
+                RaisePropertyChanged(() => HexBackgroundColor);
+            }
+        }
+
+        private string _hexText { get; set; } = String.Empty;
         public string HexText
         {
             get { return _hexText; }
@@ -29,6 +66,17 @@ namespace CardinalAppXamarin.ViewModels
             {
                 _hexText = value;
                 RaisePropertyChanged(() => HexText);
+            }
+        }
+
+        private string _hexFAText { get; set; } = String.Empty;
+        public string HexFAText
+        {
+            get { return _hexFAText; }
+            set
+            {
+                _hexFAText = value;
+                RaisePropertyChanged(() => HexFAText);
             }
         }
 

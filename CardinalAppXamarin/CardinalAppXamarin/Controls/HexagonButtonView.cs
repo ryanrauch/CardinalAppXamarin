@@ -74,5 +74,39 @@ namespace CardinalAppXamarin.Controls
             get { return (string)GetValue(FontFamilyProperty); }
             set { SetValue(FontFamilyProperty, value); }
         }
+
+        public static readonly BindableProperty FATextProperty = BindableProperty.Create(
+                nameof(FAText),
+                typeof(string),
+                typeof(HexagonButtonView),
+                string.Empty);
+
+        public string FAText
+        {
+            get { return (string)GetValue(FATextProperty); }
+            set { SetValue(FATextProperty, value); }
+        }
+
+        public static readonly BindableProperty FAFontFamilyProperty =
+                BindableProperty.Create(nameof(FAFontFamily),
+                                        typeof(string),
+                                        typeof(HexagonButtonView),
+                                        "FontAwesome5FreeSolid");
+        public string FAFontFamily
+        {
+            get { return (string)GetValue(FAFontFamilyProperty); }
+            set { SetValue(FAFontFamilyProperty, value); }
+        }
+
+        public static readonly BindableProperty FAFontSizeProperty =
+            BindableProperty.Create(nameof(FAFontSize),
+                                    typeof(float),
+                                    typeof(HexagonButtonView),
+                                    24f);
+        public float FAFontSize
+        {
+            get { return (float)GetValue(FAFontSizeProperty); }
+            set { SetValue(FAFontSizeProperty, value); }
+        }
     }
 }

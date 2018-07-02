@@ -88,7 +88,7 @@ namespace CardinalAppXamarin.iOS.Renderers
 
             var shadow = new NSShadow()
             {
-                ShadowColor = UIColor.Black,
+                ShadowColor = UIColor.Gray,
                 ShadowOffset = new CGSize(3, 3),
                 ShadowBlurRadius = 5
             };
@@ -111,7 +111,6 @@ namespace CardinalAppXamarin.iOS.Renderers
             }
             path.CloseSubpath();
             context.AddPath(path);
-            
             context.SetFillColor(Element.BackgroundColor.ToCGColor());
             //context.SaveState();
             context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
@@ -123,15 +122,42 @@ namespace CardinalAppXamarin.iOS.Renderers
             //context.RestoreState();
 
             // Draw Text
-            UILabel label = new UILabel(rect)
+            if(!String.IsNullOrEmpty(Element.FAText))
             {
-                Text = Element.Text,
-                TextAlignment = UITextAlignment.Center,
-                TextColor = Element.TextColor.ToUIColor(),
-                Font = UIFont.FromName(Element.FontFamily, Element.FontSize)
-                //Font = UIFont.SystemFontOfSize(12f)
-            };
-            NativeView.AddSubview(label);
+                double eigthHeight = rect.Height / 8;
+                double quarterHeight = rect.Height / 4;
+                double threeEights = eigthHeight * 3;
+                CGRect faRect = new CGRect(rect.X, rect.Y + eigthHeight, rect.Width, threeEights);
+                UILabel faLabel = new UILabel(faRect)
+                {
+                    Text = Element.FAText,
+                    TextAlignment = UITextAlignment.Center,
+                    TextColor = Element.TextColor.ToUIColor(),
+                    Font = UIFont.FromName(Element.FAFontFamily, Element.FAFontSize)
+                };
+                CGRect labelRect = new CGRect(rect.X, rect.Height / 2, rect.Width, quarterHeight);
+                UILabel label = new UILabel(labelRect)
+                {
+                    Text = Element.Text,
+                    TextAlignment = UITextAlignment.Center,
+                    TextColor = Element.TextColor.ToUIColor(),
+                    Font = UIFont.FromName(Element.FontFamily, 
+                                           Element.FontSize)
+                };
+                NativeView.AddSubviews(new UIView[] { faLabel, label });
+            }
+            else
+            {
+                UILabel label = new UILabel(rect)
+                {
+                    Text = Element.Text,
+                    TextAlignment = UITextAlignment.Center,
+                    TextColor = Element.TextColor.ToUIColor(),
+                    Font = UIFont.FromName(Element.FontFamily, 
+                                           Element.FontSize)
+                };
+                NativeView.AddSubview(label);
+            }
         }
 
         //protected virtual void DrawPoints(CGContext context, List<CGPoint> points, bool fill, bool stroke, float radius)

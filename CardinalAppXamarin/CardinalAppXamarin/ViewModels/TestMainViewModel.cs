@@ -45,9 +45,16 @@ namespace CardinalAppXamarin.ViewModels
             Models = new ObservableCollection<HexagonButtonViewModel>();
             for(int i = 0; i < 15; ++i)
             {
+                Char fa = (Char)r.Next(0xf13d,0xf410);
                 Models.Add(new HexagonButtonViewModel()
                 {
-                    HexText = r.Next(999999).ToString()
+                    HexText = i.ToString() + " " + r.Next(999999).ToString(),
+                    HexBackgroundColor = Color.Crimson,
+                    HexPointyTop = true,
+                    HexRadius = 40d,
+                    HexTextColor = Color.White,
+                    //HexFAText = fa.ToString()
+                    HexFAText = "\uf279"
                 });
             }
             return Task.CompletedTask;

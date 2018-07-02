@@ -323,7 +323,10 @@ namespace CardinalAppXamarin.Controls
                 {
                     continue;
                 }
+                double yTemp = yChild;
+                //yChild = height - yChild;
                 LayoutChildIntoBoundingRegion(child, new Rectangle(new Point(xChild, yChild), layoutData.CellSize));
+                yChild = yTemp;
                 if (PointyTop)
                 {
                     if (++column == layoutData.Columns)

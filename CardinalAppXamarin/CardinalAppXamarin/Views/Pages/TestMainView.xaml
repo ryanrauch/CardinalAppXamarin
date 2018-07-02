@@ -41,7 +41,10 @@
                                                         PointyTop="{Binding HexPointyTop}"
                                                         BackgroundColor="{Binding HexBackgroundColor}"
                                                         Text="{Binding HexText}"
-                                                        TextColor="{Binding HexTextColor}">
+                                                        TextColor="{Binding HexTextColor}"
+                                                        FAText="{Binding HexFAText}"
+                                                        FAFontSize="24"
+                                                        FAFontFamily="{StaticResource FontAwesomeSolid}">
                                 <controls:HexagonButtonView.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={x:Reference TestMainViewContentPage}, Path=BindingContext.TapCommand}"
                                                           CommandParameter="{Binding .}"/>
