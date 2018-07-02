@@ -8,7 +8,7 @@ namespace CardinalAppXamarin
     public class Constants
     {
         public static readonly TimeSpan CardinalStaleDataTimeSpan = TimeSpan.FromMinutes(15);
-
+        public const uint ClickFadeDuration = 250;
         public const string CardinalRedARGB = "FFCC0000";
         public const string CardinalRed50ARGB = "80CC0000";
 

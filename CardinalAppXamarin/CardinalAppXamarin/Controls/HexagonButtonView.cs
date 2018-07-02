@@ -63,5 +63,16 @@ namespace CardinalAppXamarin.Controls
             get { return (float)GetValue(FontSizeProperty); }
             set { SetValue(FontSizeProperty, value); }
         }
+
+        public static readonly BindableProperty FontFamilyProperty =
+            BindableProperty.Create(nameof(FontFamily),
+                                    typeof(string),
+                                    typeof(HexagonButtonView),
+                                    "highlandgothiclightflf");
+        public string FontFamily
+        {
+            get { return (string)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
     }
 }

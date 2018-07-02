@@ -16,24 +16,24 @@ namespace CardinalAppXamarin.Views.Pages
 			InitializeComponent ();        
 		}
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
 
-            Random r = new Random();
-            for (int i = 0; i < 11; ++i)
-            {
-                Controls.HexagonButtonView bv = new Controls.HexagonButtonView()
-                {
-                    Radius=40.0d,
-                    PointyTop = true,
-                    Text = "finally",
-                    FontSize = 12,
-                    BackgroundColor = Color.FromRgba(r.Next(0, 256), r.Next(0, 256), r.Next(0, 256), 128),
-                    TextColor = Color.FromRgba(r.Next(0, 256), r.Next(0, 256), r.Next(0, 256), 256)
-                };
-                MainHexagonLayout.Children.Add(bv);
-            }
-        }
+        //    Random r = new Random();
+        //    for (int i = 0; i < 11; ++i)
+        //    {
+        //        Controls.HexagonButtonView bv = new Controls.HexagonButtonView()
+        //        {
+        //            Radius = 40.0d,
+        //            PointyTop = true,
+        //            Text = "finally",
+        //            FontSize = 12,
+        //            BackgroundColor = Color.FromRgba(r.Next(0, 256), r.Next(0, 256), r.Next(0, 256), 128),
+        //            TextColor = Color.FromRgba(r.Next(0, 256), r.Next(0, 256), r.Next(0, 256), 256)
+        //        };
+        //        MainHexagonLayout.Children.Add(bv);
+        //    }
+        //}
     }
 }

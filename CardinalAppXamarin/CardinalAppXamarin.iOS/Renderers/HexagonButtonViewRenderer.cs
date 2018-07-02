@@ -36,6 +36,10 @@ namespace CardinalAppXamarin.iOS.Renderers
             {
                 SetNeedsDisplay();
             }
+            if(e.PropertyName == HexagonButtonView.HeightProperty.PropertyName)
+            {
+                SetNeedsDisplay();
+            }
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<HexagonButtonView> e)
@@ -124,7 +128,7 @@ namespace CardinalAppXamarin.iOS.Renderers
                 Text = Element.Text,
                 TextAlignment = UITextAlignment.Center,
                 TextColor = Element.TextColor.ToUIColor(),
-                Font = UIFont.FromName("highlandgothiclightflf", Element.FontSize)
+                Font = UIFont.FromName(Element.FontFamily, Element.FontSize)
                 //Font = UIFont.SystemFontOfSize(12f)
             };
             NativeView.AddSubview(label);

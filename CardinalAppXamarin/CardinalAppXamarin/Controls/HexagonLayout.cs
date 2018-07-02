@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
@@ -75,11 +76,20 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(RowSpacingProperty, value); }
         }
 
+        //public static readonly BindableProperty ItemsSourceProperty =
+        //    BindableProperty.Create(nameof(ItemsSource),
+        //                            typeof(IList),
+        //                            typeof(HexagonLayout),
+        //                            propertyChanged: OnItemsSourceChanged);
         public static readonly BindableProperty ItemsSourceProperty =
-            BindableProperty.Create(nameof(ItemsSource),
-                                    typeof(IList),
-                                    typeof(HexagonLayout),
-                                    propertyChanged: OnItemsSourceChanged);
+    BindableProperty.Create(
+        nameof(ItemsSource),
+        typeof(IEnumerable),
+        typeof(HexagonLayout),
+        null,
+        defaultBindingMode: BindingMode.OneWay,
+        propertyChanged: ItemsChanged
+    );
 
         public IList ItemsSource
         {
@@ -87,11 +97,26 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(ItemsSourceProperty, value); }
         }
 
+        //public static readonly BindableProperty ItemTemplateProperty =
+        //    BindableProperty.Create(nameof(ItemTemplate),
+        //                            typeof(DataTemplate),
+        //                            typeof(HexagonLayout),
+        //                            propertyChanged: OnItemTemplateChanged);
         public static readonly BindableProperty ItemTemplateProperty =
-            BindableProperty.Create(nameof(ItemTemplate),
-                                    typeof(DataTemplate),
-                                    typeof(HexagonLayout),
-                                    propertyChanged: OnItemTemplateChanged);
+            BindableProperty.Create(
+                nameof(ItemTemplate),
+                typeof(DataTemplate),
+                typeof(HexagonLayout),
+                default(DataTemplate),
+                propertyChanged: (bindable, oldValue, newValue) => {
+                    var control = (HexagonLayout)bindable;
+                    //when to occur propertychanged earlier ItemsSource than ItemTemplate, raise ItemsChanged manually
+                    if (newValue != null && control.ItemsSource != null && !control.doneItemSourceChanged)
+                    {
+                        ItemsChanged(bindable, null, control.ItemsSource);
+                    }
+                }
+            );
 
         public DataTemplate ItemTemplate
         {
@@ -99,13 +124,13 @@ namespace CardinalAppXamarin.Controls
             set { SetValue(ItemTemplateProperty, value); }
         }
 
-        private static void OnItemTemplateChanged(BindableObject pObj, object pOldVal, object pNewVal)
-        {
-            var layout = pObj as HexagonLayout;
+        //private static void OnItemTemplateChanged(BindableObject pObj, object pOldVal, object pNewVal)
+        //{
+        //    var layout = pObj as HexagonLayout;
 
-            if (layout != null && layout.ItemsSource != null)
-                layout.BuildLayout();
-        }
+        //    if (layout != null && layout.ItemsSource != null)
+        //        layout.BuildLayout();
+        //}
 
         private static void OnItemsSourceChanged(BindableObject pObj, object pOldVal, object pNewVal)
         {
@@ -365,6 +390,127 @@ namespace CardinalAppXamarin.Controls
         {
             base.OnChildMeasureInvalidated();
             layoutDataCache.Clear();
+        }
+
+        //start of copied section
+        private bool doneItemSourceChanged = false;
+
+        private static void ItemsChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var control = (HexagonLayout)bindable;
+            // when to occur propertychanged earlier ItemsSource than ItemTemplate, do nothing.
+            if (control.ItemTemplate == null)
+            {
+                control.doneItemSourceChanged = false;
+                return;
+            }
+
+            control.doneItemSourceChanged = true;
+
+            IEnumerable newValueAsEnumerable;
+            try
+            {
+                newValueAsEnumerable = newValue as IEnumerable;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            var oldObservableCollection = oldValue as INotifyCollectionChanged;
+
+            if (oldObservableCollection != null)
+            {
+                oldObservableCollection.CollectionChanged -= control.OnItemsSourceCollectionChanged;
+            }
+
+            var newObservableCollection = newValue as INotifyCollectionChanged;
+
+            if (newObservableCollection != null)
+            {
+                newObservableCollection.CollectionChanged += control.OnItemsSourceCollectionChanged;
+            }
+
+            control.Children.Clear();
+
+            if (newValueAsEnumerable != null)
+            {
+                foreach (var item in newValueAsEnumerable)
+                {
+                    var view = CreateChildViewFor(control.ItemTemplate, item, control);
+
+                    control.Children.Add(view);
+                }
+            }
+
+            control.UpdateChildrenLayout();
+            control.InvalidateLayout();
+        }
+
+        private void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+
+                this.Children.RemoveAt(e.OldStartingIndex);
+
+                var item = e.NewItems[e.NewStartingIndex];
+                var view = CreateChildViewFor(this.ItemTemplate, item, this);
+
+                this.Children.Insert(e.NewStartingIndex, view);
+            }
+
+            else if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                if (e.NewItems != null)
+                {
+                    for (var i = 0; i < e.NewItems.Count; ++i)
+                    {
+                        var item = e.NewItems[i];
+                        var view = CreateChildViewFor(this.ItemTemplate, item, this);
+
+                        this.Children.Insert(i + e.NewStartingIndex, view);
+                    }
+                }
+            }
+
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                if (e.OldItems != null)
+                {
+                    this.Children.RemoveAt(e.OldStartingIndex);
+                }
+            }
+
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                this.Children.Clear();
+            }
+
+            else
+            {
+                return;
+            }
+
+        }
+
+        private View CreateChildViewFor(object item)
+        {
+            this.ItemTemplate.SetValue(BindableObject.BindingContextProperty, item);
+            return (View)this.ItemTemplate.CreateContent();
+        }
+
+        private static View CreateChildViewFor(DataTemplate template, object item, BindableObject container)
+        {
+            var selector = template as DataTemplateSelector;
+
+            if (selector != null)
+            {
+                template = selector.SelectTemplate(item, container);
+            }
+            //Binding context
+            template.SetValue(BindableObject.BindingContextProperty, item);
+            return (View)template.CreateContent();
         }
     }
 }

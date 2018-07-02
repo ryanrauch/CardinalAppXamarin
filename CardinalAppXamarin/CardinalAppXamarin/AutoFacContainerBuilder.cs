@@ -22,6 +22,7 @@ namespace CardinalAppXamarin
             containerBuilder.RegisterType<HeaderViewModel>().SingleInstance();
             containerBuilder.RegisterType<ZoneHexagonViewModel>().SingleInstance();
             containerBuilder.RegisterType<TestMainViewModel>().SingleInstance();
+            containerBuilder.RegisterType<HexagonButtonViewModel>().SingleInstance();
 
             containerBuilder.RegisterType<ZoneMapViewModel>();
             containerBuilder.RegisterType<ZoneViewModel>();
