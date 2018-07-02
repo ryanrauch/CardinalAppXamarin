@@ -58,6 +58,28 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private Color _hexBorderColor { get; set; } = Color.Transparent;
+        public Color HexBorderColor
+        {
+            get { return _hexBorderColor; }
+            set
+            {
+                _hexBorderColor = value;
+                RaisePropertyChanged(() => HexBorderColor);
+            }
+        }
+
+        private Double _hexBorderSize { get; set; } = 4d;
+        public Double HexBorderSize
+        {
+            get { return _hexBorderSize; }
+            set
+            {
+                _hexBorderSize = value;
+                RaisePropertyChanged(() => HexBorderSize);
+            }
+        }
+
         private string _hexText { get; set; } = String.Empty;
         public string HexText
         {

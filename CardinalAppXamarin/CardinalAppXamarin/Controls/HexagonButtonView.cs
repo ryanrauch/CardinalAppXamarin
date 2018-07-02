@@ -35,7 +35,6 @@ namespace CardinalAppXamarin.Controls
                 typeof(string),
                 typeof(HexagonButtonView),
                 string.Empty);
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -55,12 +54,12 @@ namespace CardinalAppXamarin.Controls
 
         public static readonly BindableProperty FontSizeProperty =
                     BindableProperty.Create(nameof(FontSize),
-                                            typeof(float),
+                                            typeof(Double),
                                             typeof(HexagonButtonView),
-                                            12f);
-        public float FontSize
+                                            10d);
+        public Double FontSize
         {
-            get { return (float)GetValue(FontSizeProperty); }
+            get { return (Double)GetValue(FontSizeProperty); }
             set { SetValue(FontSizeProperty, value); }
         }
 
@@ -100,13 +99,35 @@ namespace CardinalAppXamarin.Controls
 
         public static readonly BindableProperty FAFontSizeProperty =
             BindableProperty.Create(nameof(FAFontSize),
-                                    typeof(float),
+                                    typeof(Double),
                                     typeof(HexagonButtonView),
-                                    24f);
-        public float FAFontSize
+                                    18d);
+        public Double FAFontSize
         {
-            get { return (float)GetValue(FAFontSizeProperty); }
+            get { return (Double)GetValue(FAFontSizeProperty); }
             set { SetValue(FAFontSizeProperty, value); }
+        }
+
+        public static readonly BindableProperty BorderColorProperty =
+                    BindableProperty.Create(nameof(BorderColor),
+                                            typeof(Color),
+                                            typeof(HexagonButtonView),
+                                            Color.Transparent);
+        public Color BorderColor
+        {
+            get { return (Color)GetValue(BorderColorProperty); }
+            set { SetValue(BorderColorProperty, value); }
+        }
+
+        public static readonly BindableProperty BorderSizeProperty =
+            BindableProperty.Create(nameof(BorderSize),
+                                    typeof(Double),
+                                    typeof(HexagonButtonView),
+                                    4d);
+        public Double BorderSize
+        {
+            get { return (Double)GetValue(BorderSizeProperty); }
+            set { SetValue(BorderSizeProperty, value); }
         }
     }
 }

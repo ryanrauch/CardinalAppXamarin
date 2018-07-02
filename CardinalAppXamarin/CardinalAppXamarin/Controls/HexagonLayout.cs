@@ -53,11 +53,25 @@ namespace CardinalAppXamarin.Controls
                                     {
                                         ((HexagonLayout)bindable).InvalidateLayout();
                                     });
-
         public bool OriginTopLeft
         {
             get { return (bool)GetValue(OriginTopLeftProperty); }
             set { SetValue(OriginTopLeftProperty, value); }
+        }
+
+        public static readonly BindableProperty IsMenuProperty =
+            BindableProperty.Create("IsMenu",
+                                    typeof(bool),
+                                    typeof(HexagonLayout),
+                                    false,
+                                    propertyChanged: (bindable, oldvalue, newvalue) =>
+                                    {
+                                        ((HexagonLayout)bindable).InvalidateLayout();
+                                    });
+        public bool IsMenu
+        {
+            get { return (bool)GetValue(IsMenuProperty); }
+            set { SetValue(IsMenuProperty, value); }
         }
 
         public static readonly BindableProperty ColumnSpacingProperty = BindableProperty.Create(
@@ -310,7 +324,15 @@ namespace CardinalAppXamarin.Controls
                 }
                 else
                 {
-                    yChild = height - HexagonHeight;
+                    if (IsMenu)
+                    {
+                        xChild = x + ColumnSpacing / 2; //shift menu to far bottom-left corner
+                        yChild = height - halfHeight;
+                    }
+                    else
+                    {
+                        yChild = height - HexagonHeight;
+                    }
                 }
             }
             else

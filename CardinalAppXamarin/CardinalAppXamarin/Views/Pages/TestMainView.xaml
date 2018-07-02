@@ -13,6 +13,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0"
@@ -30,7 +31,8 @@
                                 Grid.Column="0"
                                 Grid.Row="1"
                                 PointyTop="True"
-                                OriginTopLeft="True"
+                                OriginTopLeft="False"
+                                IsMenu="False"
                                 ColumnSpacing="10"
                                 RowSpacing="10"
                                 ItemsSource="{Binding Models}"
@@ -41,10 +43,45 @@
                             <controls:HexagonButtonView Radius="{Binding HexRadius}"
                                                         PointyTop="{Binding HexPointyTop}"
                                                         BackgroundColor="{Binding HexBackgroundColor}"
+                                                        BorderColor="{Binding HexBorderColor}"
+                                                        BorderSize="{Binding HexBorderSize}"
                                                         Text="{Binding HexText}"
                                                         TextColor="{Binding HexTextColor}"
+                                                        FontSize="{StaticResource LittlerSize}"
                                                         FAText="{Binding HexFAText}"
-                                                        FAFontSize="24"
+                                                        FAFontSize="{StaticResource LargerSize}"
+                                                        FAFontFamily="{StaticResource FontAwesomeSolid}">
+                                <controls:HexagonButtonView.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference TestMainViewContentPage}, Path=BindingContext.TapCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </controls:HexagonButtonView.GestureRecognizers>
+                                <controls:HexagonButtonView.Behaviors>
+                                    <behaviors:ViewTappedButtonBehavior/>
+                                </controls:HexagonButtonView.Behaviors>
+                            </controls:HexagonButtonView>
+                        </ContentView>
+                    </DataTemplate>
+                </controls:HexagonLayout.ItemTemplate>
+            </controls:HexagonLayout>
+            <controls:HexagonLayout 
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                PointyTop="True"
+                                OriginTopLeft="False"
+                                IsMenu="True"
+                                ColumnSpacing="10"
+                                RowSpacing="10"
+                                ItemsSource="{Binding MenuModels}"
+                                Radius="40">
+                <controls:HexagonLayout.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView>
+                            <controls:HexagonButtonView Radius="{Binding HexRadius}"
+                                                        PointyTop="{Binding HexPointyTop}"
+                                                        BackgroundColor="{Binding HexBackgroundColor}"
+                                                        TextColor="{Binding HexTextColor}"
+                                                        FAText="{Binding HexFAText}"
+                                                        FAFontSize="{StaticResource ExtraBigSize}"
                                                         FAFontFamily="{StaticResource FontAwesomeSolid}">
                                 <controls:HexagonButtonView.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={x:Reference TestMainViewContentPage}, Path=BindingContext.TapCommand}"
