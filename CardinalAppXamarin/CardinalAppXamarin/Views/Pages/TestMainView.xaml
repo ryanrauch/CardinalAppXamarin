@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:TestMainViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
+                        xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
+                        x:Class="CardinalAppXamarin.Views.Pages.TestMainView">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <controls:HexagonLayout x:Name="MainHexagonLayout" 
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                PointyTop="True"
+                                ColumnSpacing="5"
+                                RowSpacing="5"
+                                Radius="25">
+            </controls:HexagonLayout>
+            <controls:HexagonLayout x:Name="MainHexagonLayout2" 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                PointyTop="True"
+                                ColumnSpacing="5"
+                                RowSpacing="5"
+                                Radius="25">
+            </controls:HexagonLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:TestMainViewBase>
