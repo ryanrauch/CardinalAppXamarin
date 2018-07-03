@@ -15,8 +15,18 @@
             <!-- Color Schemed Colors -->
             <Color x:Key="CardinalRedColor">#CC0000</Color>
             <Color x:Key="CardinalRedDarkColor">#930000</Color>
+            <Color x:Key="CardinalRedLightColor">#FF4F30</Color>
             <Color x:Key="CardinalBackgroundColor">#E1E2E1</Color>
             <Color x:Key="CardinalBackgroundLightColor">#F5F5F6</Color>
+
+            <!--HexagonButton/List Static Variables-->
+            <x:Boolean x:Key="HexPointyTop">true</x:Boolean>
+            <x:Double x:Key="HexRadius">40</x:Double>
+            <x:Double x:Key="HexWidth">70</x:Double>
+            <x:Double x:Key="HexColumnSpacing">10</x:Double>
+            <x:Double x:Key="HexRowSpacing">10</x:Double>
+            <x:Double x:Key="HexRowSpacingList">5</x:Double>
+            <x:Double x:Key="HexBorderSize">4</x:Double>
 
             <!-- Colors -->
             <Color x:Key="CardinalErrorColor">#660000</Color>

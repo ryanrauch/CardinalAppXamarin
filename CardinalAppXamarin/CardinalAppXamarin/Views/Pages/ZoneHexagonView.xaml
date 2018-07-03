@@ -2,18 +2,20 @@
 <local:ZoneHexagonViewBase xmlns="http://xamarin.com/schemas/2014/forms"
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:b="clr-namespace:CardinalAppXamarin.Behaviors"
+                           xmlns:controls="clr-namespace:CardinalAppXamarin.Controls"
                            xmlns:conv="clr-namespace:CardinalAppXamarin.Converters"
                            xmlns:exs="clr-namespace:CardinalAppXamarin.Extensions"
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
                            xmlns:views="clr-namespace:CardinalAppXamarin.Views"
                            xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                           x:Name="ZoneHexagonViewContentPage"
                            x:Class="CardinalAppXamarin.Views.Pages.ZoneHexagonView">
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>
+    <ContentPage.Content BackgroundColor="{StaticResource CardinalBackgroundColor}">
         <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
@@ -72,7 +74,55 @@
                 <!--Text="&#xf013;" is regular settings-cog -->
             </Grid>
             <!--End of header section-->
-            <ListView Grid.Row="1"
+
+            <ScrollView Grid.Row="1"
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="StartAndExpand">
+                <controls:HexagonListView PointyTop="{StaticResource HexPointyTop}"
+                                RowSpacing="{StaticResource HexRowSpacingList}"
+                                ItemsSource="{Binding ZonesList}"
+                                Radius="{StaticResource HexRadius}">
+                    <controls:HexagonListView.ItemTemplate>
+                        <DataTemplate>
+                            <ContentView>
+                                <Grid HeightRequest="80">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{StaticResource HexWidth}"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <controls:HexagonButtonView Grid.Column="0" 
+                                                            Radius="{StaticResource HexRadius}"
+                                                            PointyTop="{StaticResource HexPointyTop}"
+                                                            IsMenu="False"
+                                                            BackgroundColor="{StaticResource CardinalBackgroundLightColor}"
+                                                            BorderColor="{StaticResource CardinalRedColor}"
+                                                            BorderSize="{StaticResource HexBorderSize}"
+                                                            TextColor="{StaticResource CardinalRedColor}"
+                                                            FontSize="{StaticResource LittlerSize}"
+                                                            FAText="{Binding HexFAText}"
+                                                            FAFontSize="{StaticResource LargerSize}"
+                                                            FAFontFamily="{StaticResource FontAwesomeSolid}">
+                                        <controls:HexagonButtonView.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference ZoneHexagonViewContentPage}, Path=BindingContext.SelectZoneCommand}"
+                                                                  CommandParameter="{Binding .}"/>
+                                        </controls:HexagonButtonView.GestureRecognizers>
+                                        <controls:HexagonButtonView.Behaviors>
+                                            <b:ViewTappedButtonBehavior/>
+                                        </controls:HexagonButtonView.Behaviors>
+                                    </controls:HexagonButtonView>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding ZoneDescription}"
+                                           VerticalOptions="StartAndExpand"
+                                           VerticalTextAlignment="Center"
+                                           HorizontalTextAlignment="Start"/>
+                                </Grid>
+                            </ContentView>
+                        </DataTemplate>
+                    </controls:HexagonListView.ItemTemplate>
+                </controls:HexagonListView>
+            </ScrollView>
+
+            <!--<ListView Grid.Row="1"
                           ItemsSource="{Binding ZonesList}"
                           SelectedItem="{Binding SelectedZone}"
                           HorizontalOptions="FillAndExpand"
@@ -88,7 +138,7 @@
                         <viewCells:ZoneListBriefViewCell BindingContext="{Binding}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
+            </ListView>-->
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

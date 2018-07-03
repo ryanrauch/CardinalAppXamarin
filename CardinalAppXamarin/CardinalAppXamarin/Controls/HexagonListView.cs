@@ -192,7 +192,7 @@ namespace CardinalAppXamarin.Controls
             if (PointyTop)
             {
                 return new SizeRequest(new Size(layoutData.CellSize.Width,
-                                                layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1) - layoutData.CellSize.Height/4 * (layoutData.Rows - 1)));
+                                                layoutData.CellSize.Height * 3/4 * layoutData.Rows + RowSpacing * (layoutData.Rows - 1) + layoutData.CellSize.Height));
             }
             Size totalSize = new Size(layoutData.CellSize.Width,
                                       layoutData.CellSize.Height * layoutData.Rows + RowSpacing * (layoutData.Rows - 1));

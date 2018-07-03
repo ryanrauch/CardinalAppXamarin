@@ -20,6 +20,7 @@ namespace CardinalAppXamarin.ViewModels
             List<UserInfoBriefViewCellModel> zoneUsers = null)
         {
             Initialize(zoneContract, zoneUsers);
+            HexFAText = FontAwesomeSolidConstants.GlassMartini;
         }
 
         public void Initialize(ZoneContract zoneContract, List<UserInfoBriefViewCellModel> zoneUsers)
@@ -98,6 +99,28 @@ namespace CardinalAppXamarin.ViewModels
         public override Task OnAppearingAsync()
         {
             return Task.CompletedTask;
+        }
+
+        private string _hexText { get; set; } = String.Empty;
+        public string HexText
+        {
+            get { return _hexText; }
+            set
+            {
+                _hexText = value;
+                RaisePropertyChanged(() => HexText);
+            }
+        }
+
+        private string _hexFAText { get; set; } = String.Empty;
+        public string HexFAText
+        {
+            get { return _hexFAText; }
+            set
+            {
+                _hexFAText = value;
+                RaisePropertyChanged(() => HexFAText);
+            }
         }
     }
 }
