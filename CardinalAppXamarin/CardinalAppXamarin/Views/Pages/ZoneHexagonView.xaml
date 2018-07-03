@@ -8,14 +8,15 @@
                            xmlns:local="clr-namespace:CardinalAppXamarin.Views.Pages"
                            xmlns:views="clr-namespace:CardinalAppXamarin.Views"
                            xmlns:viewCells="clr-namespace:CardinalAppXamarin.Views.ViewCells"
+                           BackgroundColor="{StaticResource CardinalBackgroundColor}"
                            x:Name="ZoneHexagonViewContentPage"
                            x:Class="CardinalAppXamarin.Views.Pages.ZoneHexagonView">
-    <ContentPage.Resources>
+    <!--<ContentPage.Resources>
         <ResourceDictionary>
             <conv:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
         </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.Content BackgroundColor="{StaticResource CardinalBackgroundColor}">
+    </ContentPage.Resources>-->
+    <ContentPage.Content>
         <Grid Style="{StaticResource GridContentPageStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
@@ -85,7 +86,7 @@
                     <controls:HexagonListView.ItemTemplate>
                         <DataTemplate>
                             <ContentView>
-                                <Grid HeightRequest="80">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="{StaticResource HexWidth}"/>
                                         <ColumnDefinition Width="*"/>

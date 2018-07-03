@@ -100,7 +100,7 @@
                                     <Label Grid.Column="1"
                                            Text="Rainey Street"
                                            VerticalOptions="StartAndExpand"
-                                           VerticalTextAlignment="Center"
+                                           VerticalTextAlignment="End"
                                            HorizontalTextAlignment="Start"/>
                                 </Grid>
                             </ContentView>
