@@ -129,5 +129,16 @@ namespace CardinalAppXamarin.Controls
             get { return (Double)GetValue(BorderSizeProperty); }
             set { SetValue(BorderSizeProperty, value); }
         }
+
+        public static readonly BindableProperty IsMenuProperty =
+            BindableProperty.Create("IsMenu",
+                                    typeof(bool),
+                                    typeof(HexagonButtonView),
+                                    false);
+        public bool IsMenu
+        {
+            get { return (bool)GetValue(IsMenuProperty); }
+            set { SetValue(IsMenuProperty, value); }
+        }
     }
 }

@@ -12,6 +12,12 @@
             <converters:IntEnumConverter x:Key="IntEnum"/>
             <converters:FirstValidationErrorConverter x:Key="FirstValidationError"/>
 
+            <!-- Color Schemed Colors -->
+            <Color x:Key="CardinalRedColor">#CC0000</Color>
+            <Color x:Key="CardinalRedDarkColor">#930000</Color>
+            <Color x:Key="CardinalBackgroundColor">#E1E2E1</Color>
+            <Color x:Key="CardinalBackgroundLightColor">#F5F5F6</Color>
+
             <!-- Colors -->
             <Color x:Key="CardinalErrorColor">#660000</Color>
             <Color x:Key="CardinalTransparentColor">#00FFFFFF</Color>

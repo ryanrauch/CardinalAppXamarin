@@ -34,6 +34,17 @@ namespace CardinalAppXamarin.ViewModels
             }
         }
 
+        private ObservableCollection<HexagonButtonViewModel> _listModels { get; set; }
+        public ObservableCollection<HexagonButtonViewModel> ListModels
+        {
+            get { return _listModels; }
+            set
+            {
+                _listModels = value;
+                RaisePropertyChanged(() => ListModels);
+            }
+        }
+
         private String _tappedText { get; set; } = "999123";
         public String TappedText
         {
@@ -55,9 +66,10 @@ namespace CardinalAppXamarin.ViewModels
         {
             MenuModels = new ObservableCollection<HexagonButtonViewModel>();
             Color menuColor = Color.FromRgba(0xCC, 0x00, 0x00, 0xFF);
+            Color menuSelectedColor = Color.FromRgba(0x93, 0x00, 0x00, 0xFF);
             MenuModels.Add(new HexagonButtonViewModel()
             {
-                HexBackgroundColor = menuColor,
+                HexBackgroundColor = menuSelectedColor,
                 HexPointyTop = true,
                 HexRadius = 40d,
                 HexTextColor = Color.White,
@@ -73,14 +85,14 @@ namespace CardinalAppXamarin.ViewModels
             });
             MenuModels.Add(new HexagonButtonViewModel()
             {
-                HexBackgroundColor = menuColor,
+                HexBackgroundColor = menuSelectedColor,
                 HexPointyTop = true,
                 HexRadius = 40d,
                 HexTextColor = Color.White,
-                HexFAText = FontAwesomeSolidConstants.AddressBook
+                HexFAText = FontAwesomeSolidConstants.AddressCard
             }); MenuModels.Add(new HexagonButtonViewModel()
             {
-                HexBackgroundColor = menuColor,
+                HexBackgroundColor = menuSelectedColor,
                 HexPointyTop = true,
                 HexRadius = 40d,
                 HexTextColor = Color.White,
@@ -89,23 +101,23 @@ namespace CardinalAppXamarin.ViewModels
 
             Random r = new Random();
             Models = new ObservableCollection<HexagonButtonViewModel>();
-            for(int i = 0; i < 15; ++i)
+            ListModels = new ObservableCollection<HexagonButtonViewModel>();
+            for(int i = 0; i < 5; ++i)
             {
-                //Models.Add(new HexagonButtonViewModel()
-                //{
-                //    HexText = i.ToString() + " " + r.Next(999999).ToString(),
-                //    HexBackgroundColor = Color.FromRgba(0x00, 0x00, 0x00, 0x50),
-                //    HexBorderColor = menuColor,
-                //    HexBorderSize = 4f,
-                //    HexPointyTop = true,
-                //    HexRadius = 40d,
-                //    HexTextColor = Color.White,
-                //    HexFAText = FontAwesomeSolidConstants.GlassMartini
-                //});
+                ListModels.Add(new HexagonButtonViewModel()
+                {
+                    HexBackgroundColor = Color.FromRgba(0xF5, 0xF5, 0xF6, 0xFF),
+                    HexBorderColor = menuColor,
+                    HexBorderSize = 4f,
+                    HexPointyTop = true,
+                    HexRadius = 40d,
+                    HexTextColor = menuColor,
+                    HexFAText = FontAwesomeSolidConstants.GlobeAmericas
+                });
                 Models.Add(new HexagonButtonViewModel()
                 {
-                    HexText = i.ToString() + " " + r.Next(999999).ToString(),
-                    HexBackgroundColor = Color.FromRgba(0xFF, 0xFF, 0xFF, 0xFF),
+                    HexText = "Rainey", //i.ToString() + " " + r.Next(999999).ToString(),
+                    HexBackgroundColor = Color.FromRgba(0xF5, 0xF5, 0xF6, 0xFF),
                     HexBorderColor = menuColor,
                     HexBorderSize = 4d,
                     HexPointyTop = true,

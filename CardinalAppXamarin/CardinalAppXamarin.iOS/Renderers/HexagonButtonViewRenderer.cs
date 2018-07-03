@@ -99,7 +99,7 @@ namespace CardinalAppXamarin.iOS.Renderers
             {
                 ShadowColor = UIColor.Gray,
                 ShadowOffset = new CGSize(3, 3),
-                ShadowBlurRadius = 5
+                ShadowBlurRadius = 3
             };
 
             // Draw the hexagon (POINTY-TOP ONLY)
@@ -124,9 +124,11 @@ namespace CardinalAppXamarin.iOS.Renderers
                 path.AddLineToPoint(new CGPoint(points[(i + 1) % points.Count].X, points[(i + 1) % points.Count].Y));
             }
             path.CloseSubpath();
+            
             context.AddPath(path);
 
-            context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
+            //CoreAnimation.CAShapeLayer mask = new CoreAnimation.CAShapeLayer();
+            //context.SetShadow(shadow.ShadowOffset, shadow.ShadowBlurRadius, UIColor.Gray.CGColor);
 
             context.SetFillColor(Element.BackgroundColor.ToCGColor());
             if(Element.BorderColor.A > 0
@@ -179,17 +181,34 @@ namespace CardinalAppXamarin.iOS.Renderers
                 }
                 else
                 {
-                    // FAText Icon only (used for IsMenu property of HexagonLayout)
-                    CGRect faRect = new CGRect(rect.X, rect.Y + eigthHeight, rect.Width, rect.Height / 2);
-                    UILabel faLabel = new UILabel(faRect)
+                    if (Element.IsMenu)
                     {
-                        Text = Element.FAText,
-                        TextAlignment = UITextAlignment.Center,
-                        TextColor = Element.TextColor.ToUIColor(),
-                        Font = UIFont.FromName(Element.FAFontFamily, 
-                                               (nfloat)Element.FAFontSize)
-                    };
-                    NativeView.AddSubview(faLabel);
+                        // FAText Icon only (used for IsMenu property of HexagonLayout)
+                        CGRect faRect = new CGRect(rect.X, rect.Y + eigthHeight, rect.Width, rect.Height / 2);
+                        UILabel faLabel = new UILabel(faRect)
+                        {
+                            Text = Element.FAText,
+                            TextAlignment = UITextAlignment.Center,
+                            TextColor = Element.TextColor.ToUIColor(),
+                            Font = UIFont.FromName(Element.FAFontFamily,
+                                                   (nfloat)Element.FAFontSize)
+                        };
+                        NativeView.AddSubview(faLabel);
+                    }
+                    else
+                    {
+                        // FAText Icon only (centered)
+                        CGRect faRect = new CGRect(rect.X, rect.Y, rect.Width, rect.Height);
+                        UILabel faLabel = new UILabel(faRect)
+                        {
+                            Text = Element.FAText,
+                            TextAlignment = UITextAlignment.Center,
+                            TextColor = Element.TextColor.ToUIColor(),
+                            Font = UIFont.FromName(Element.FAFontFamily,
+                                                   (nfloat)Element.FAFontSize)
+                        };
+                        NativeView.AddSubview(faLabel);
+                    }
                 }
             }
             else
